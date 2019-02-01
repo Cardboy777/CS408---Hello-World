@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-import './App.css'
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import FrontPage from './FrontPage';
+import Matches from './Matches';
+import Matching from './Matching';
+import './App.css';
+import UserProfile from './UserProfile';
 
 class App extends Component {
-  constructor(){
-    super();
-    this.state = {
-      message : null
-    }
-  }
-
-  //componentent did mount is called when the component is being rendered
-  componentDidMount() {
-    //fetch a request from the client
-    fetch("/api/getTestMessage")
-      .then(res=> res.json())
-      .then(message => this.setState({ message }, () => console.log('Test Message Fetched..', message)));
-  }
-
-  render() {
+    render() {
     return (
-      <div>
-        <h1>{ this.state.message }</h1>
-      </div>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Switch>
+          <Route exact path='/' component={ FrontPage } />
+          <Route path='/matches' component={ Matches }/>
+          <Route path= '/matching' component= { Matching }/>
+          <Route path= '/user/profile' component= { UserProfile }/>
+          <Route component= { FrontPage }/>
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
