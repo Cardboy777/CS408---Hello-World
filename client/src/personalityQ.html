@@ -2,24 +2,42 @@
 <head>
 
 </head>
-
 <html>
     <form>
+        <h3>Personality Questionnaire</h3>
         <div class="form-row">
             <p>Interested in:</p>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <label for="Gender">Gender</label>
-                <select class="form-control" id="gender" placeholder="Choose..">
-                    <option>Male</option> <option>Female</option> <option>Both</option>
+                <select class="form-control" id="gender" >
+                    <option selected>Choose..</option>
+                    <option>Male</option> 
+                    <option>Female</option>
+                    <option></option>
+                </select>
             </div>
             <div class="form-group col-md-6">
                 <label for="age">Age</label>
                 <input type="number" class="form-control" id="age"> 
             </div>
         </div>
-        <div class="form-row">
+        <div class="form-group col-md-12">
             <label>Question .... ?</label>
             <input type="answer" class="form-control" id="answer1">
-        </div>
+       <!-- </div>
+        <div class="form-row">-->
+            <label>Question .... ?</label>
+            <input type="answer" class="form-control" id="answer1">
+            <label>Question3 .... ?</label>
+            <input type="answer" class="form-control" id="answer3">
+       </div>
     </form>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </html>
