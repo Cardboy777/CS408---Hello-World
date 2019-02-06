@@ -4,11 +4,21 @@ class PersonalityQuestionnaire extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            q1:"",
-            q2:"",
-            q3:"",
-
-        }
+            gender:"",
+            age:"",
+            location:"",
+            a1:"",
+            a2:"",
+            a3:"",
+            a3:"",
+            a4:"",
+            a5:"",
+            a6:"",
+            a7:"",
+            a8:"",
+            a9:"",
+            a10:"",
+        };
     }
 
     handleSubmit (event){
@@ -31,44 +41,85 @@ class PersonalityQuestionnaire extends Component {
                 </label>
                 <br />
                 <label for="age">Age
-                    <input  class="form-control" id="age"/> 
+                    <input class="form-control" id="age"/> 
                 </label>
+                <br />
                 <label for="location">Location
                     <input type="text" class="form-control" id="location"/>
                 </label>
+                <br />
+                <h4>Interested in...</h4>
+                <label>Attracted to?
+                    <select class="form-control" id="">
+                        <option selected></option><option>Men</option><option>Women</option><option>Both</option> 
+                    </select>
+                </label>
+                <br />
                 <label>What motivates you?
-                    <select class="form-control" id="q1">
+                    <select class="form-control" id="a1">
                         <option selected></option><option>Inner Peace</option> <option>Success</option> <option>Family</option>
                         <option>Power</option> <option>Competition</option>
                     </select>
                 </label>
+                <br />
                 <label>What do you value the most?
-                    <select class="form-control" id="q2">
+                    <select class="form-control" id="a2">
                         <option selected></option><option>Spontaneity</option> <option>Wellness</option> <option>Intelligence</option>
                         <option>Fun</option> <option>Loyalty</option>
                     </select>
                 </label>
+                <br />
                 <label>Would you call yourself an introvert or an extrovert?
-                    <select class="form-control" id="q3">
+                    <select class="form-control" id="a3">
                         <option selected></option><option>Extrovert</option><option>Introvert</option> 
                     </select>
                 </label>
-                <label>Do you enjoy meeting people?
-                    <select class="form-control" id="q4">
+                <br />
+                <label>Do you enjoy meeting new people?
+                    <select class="form-control" id="a4">
                         <option selected></option><option>Yes</option><option>No</option> 
                     </select>
                 </label>
+                <br />
                 <label>Do you like helping people?
-                    <select class="form-control" id="q5">
+                    <select class="form-control" id="a5">
                         <option selected></option><option>Yes</option><option>No</option> 
                     </select>            
                 </label>
+                <br />
                 <label>What types of activities do you prefer?
-                    <select class="form-control" id="q7">
+                    <select class="form-control" id="a6">
                         <option selected></option><option>Indoor</option><option>Outdoor</option><option>Both</option> 
                     </select>
                 </label>
-
+                <br />
+                <label>Do you enjoy listetning to music?
+                    <select class="form-control" id="a7">
+                        <option selected></option><option>Yes, Love it!</option><option>Occasionally</option><option>Not really</option> <option>I hate it</option> 
+                    </select>
+                </label>
+                <br />
+                <label> When do you feel like you get the most done?
+                    <select class="form-control" id="a8">
+                        <option selected></option>
+                        <option>Early Morning</option><option>Late Night</option><option>Between Tasks</option>
+                        <option>Whenever Inspiration hits</option> <option>When I have planed a specific time to work on it</option>
+                    </select>
+                </label>
+                <br />
+                <label>Do you find it easy to stay relaxed when there is some pressure?
+                    <select class="form-control" id="a9">
+                        <option selected></option><option>Yes, always</option><option>Most of the time</option><option> Sometimes</option> 
+                        <option>Not so much, but I try too</option> <option>No</option>
+                    </select>
+                </label>
+                <br />
+                <label>Which word best describes you?
+                    <select class="form-control" id="a10">
+                        <option selected></option><option>Athletic</option><option>Word</option><option>word2</option> 
+                    </select>
+                </label>
+                <br />
             </form>
            
         );
