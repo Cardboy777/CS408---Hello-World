@@ -7,6 +7,7 @@ class PersonalityQuestionnaire extends Component {
             gender:"",
             age:"",
             location:"",
+            attrgender:"",
             a1:"",
             a2:"",
             a3:"",
@@ -24,6 +25,7 @@ class PersonalityQuestionnaire extends Component {
     handleSubmit (event){
 
     }
+    // need to add the bootstrap for this page
     //should add the value to all the options of select
     render() { 
         return ( 
@@ -33,23 +35,31 @@ class PersonalityQuestionnaire extends Component {
                         <h2 class="display-4">Personality Questionnaire</h2>
                     </div>
                 </div>
-                <h4>About You...</h4>
-                <label for="Gender">Gender
-                   <select class="form-control" id="gender" >
-                        <option selected>Choose..</option><option>Male</option><option>Female</option>
-                    </select>             
-                </label>
-                <br />
-                <label for="age">Age
-                    <input class="form-control" id="age"/> 
-                </label>
-                <br />
-                <label for="location">Location
-                    <input type="text" class="form-control" id="location"/>
-                </label>
-                <br />
-                <h4>Interested in...</h4>
-                <label>Attracted to?
+                <div class="form-row">
+                    <h4>About You...</h4>
+                    <div class="form-group col-md-6">
+                        <label for="Gender">Gender
+                        <select class="form-control" id="gender" >
+                            <option selected>Choose..</option><option>Male</option><option>Female</option>
+                        </select>             
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-group col-md-2">
+                        <label for="age">Age
+                            <input class="form-control" id="age"/> 
+                        </label>
+                    </div>
+                    <br />
+                    <div class="form-group col-md-4">
+                        <label for="location">Location
+                            <input type="text" class="form-control" id="location"/>
+                        </label>
+                    </div>
+                    <br />
+                </div>
+            <div class="form-group col-md-12">
+                <label> Interested in?
                     <select class="form-control" id="">
                         <option selected></option><option>Men</option><option>Women</option><option>Both</option> 
                     </select>
@@ -116,11 +126,12 @@ class PersonalityQuestionnaire extends Component {
                 <br />
                 <label>Which word best describes you?
                     <select class="form-control" id="a10">
-                        <option selected></option><option>Athletic</option><option>Word</option><option>word2</option> 
+                        <option selected></option><option>Athletic</option><option>Word1</option><option>Word2</option> 
                     </select>
                 </label>
                 <br />
-            </form>
+            </div>
+        </form>
            
         );
     }
