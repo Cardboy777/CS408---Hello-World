@@ -1,4 +1,30 @@
-h1 {
-    color: green;
-    background-color: gainsboro;
+h1.title {
+    align-content: center;
+    text-align: center;
+    padding: 1em;
+    font-size: 6em;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bolder;
+    
+}
+
+h4.frontpageHeaders{
+    align-content: center;
+    text-align: center;
+}
+
+#frontpageContainer{
+    padding-left: 4em;
+    padding-right: 4em;
+}
+#title{
+    background-image: url(./img/pixel_hearts50p.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 5em;
+    margin-right: 5em;
 }
