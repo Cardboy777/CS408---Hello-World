@@ -14,7 +14,6 @@ class App extends Component {
           <Route exact path='/' component={ FrontPage } />
           <Route path='/matches' component={ Matches }/>
           <Route path= '/matching' component= { Matching }/>
-          <Route path= '/user/profile' component= { UserProfile }/>
           <Route component= { FrontPage }/>
         </Switch>
       </BrowserRouter>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Matching.css'
+import Navbar from './Navbar';
 
 class Matching extends Component {
   constructor(){
@@ -20,6 +21,7 @@ class Matching extends Component {
   render() {
     return (
       <div>
+        <Navbar/>
         <h1>Matching Page{ this.state.message }</h1>
       </div>
     );
