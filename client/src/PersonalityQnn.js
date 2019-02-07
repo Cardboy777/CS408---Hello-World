@@ -27,6 +27,7 @@ class PersonalityQuestionnaire extends Component {
             a15:"",
             a16:"",
             a17:"",
+            description:""
         };
     }
 
@@ -180,6 +181,9 @@ class PersonalityQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
+                <label>Add a Description about yourself
+                    <input class="form-control" id="description" />
+                </label>
             </div>
         </form>
            
