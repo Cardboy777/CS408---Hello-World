@@ -3,21 +3,6 @@ import './UserProfile.css';
 import Navbar from './Navbar';
 
 class UserProfile extends Component {
-  constructor(){
-    super();
-    this.state = {
-      message : null
-    }
-  }
-
-  //componentent did mount is called when the component is being rendered
-  componentDidMount() {
-    //fetch a request from the client
-    fetch("/api/getTestMessage")
-      .then(res=> res.json())
-      .then(message => this.setState({ message }, () => console.log('Test Message Fetched..', message)));
-  }
-
   render() {
     return (
       <div>

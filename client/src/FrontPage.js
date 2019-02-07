@@ -20,10 +20,12 @@ class FrontPage extends Component {
 
   render() {
     return (
-      <div>
+      <div id="#pageDiv">
         <Navbar/>
-        <div id="title">
-          <h1 className="title">HƐ>LO WORLD</h1>
+        <div>
+          <div id="title">
+            <h1 className="title">HƐ>LO WORLD</h1>
+          </div>
         </div>
         <div id="frontpageContainer">
           <div className="row">
@@ -48,7 +50,7 @@ class FrontPage extends Component {
                 Getting Started
               </h4>
               <p>
-                First, you have to <a>create an account</a>. Once you're done creating your profile and you've completed our questoinnaires, head over to the <a>Matching page</a>. Be sure to 'Like' any of the profiles you're intersted in. Be careful when you 'Dislike' someone, they'll disappear for good!
+                First, you have to <a>create an account</a>. Once you're done creating your profile and you've completed our questoinnaires, head over to the <a href="/matching">Matching page</a>. Be sure to 'Like' any of the profiles you're intersted in. Be careful when you 'Dislike' someone, they'll disappear for good!
               </p>
             </div>
           </div>
