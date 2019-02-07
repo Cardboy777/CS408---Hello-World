@@ -32,7 +32,8 @@ class PersonalityQuestionnaire extends Component {
     }
 
     handleSubmit (event){
-
+        event.preventDefault();
+        
     }
     // need to add the bootstrap for this page
     //should add the value to all the options of select
@@ -185,6 +186,7 @@ class PersonalityQuestionnaire extends Component {
                     <input class="form-control" id="description" />
                 </label>
             </div>
+            <button type="submit">Submit</button>
         </form>
            
         );
