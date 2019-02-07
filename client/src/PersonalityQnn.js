@@ -19,6 +19,14 @@ class PersonalityQuestionnaire extends Component {
             a8:"",
             a9:"",
             a10:"",
+            a11:"",
+            a12:"",
+            a13:"",
+            a13:"",
+            a14:"",
+            a15:"",
+            a16:"",
+            a17:"",
         };
     }
 
@@ -124,9 +132,51 @@ class PersonalityQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
-                <label>Which word best describes you?
+                <label>Do you prefer variety to routine?
                     <select class="form-control" id="a10">
-                        <option selected></option><option>Athletic</option><option>Word1</option><option>Word2</option> 
+                        <option selected></option><option>Variety</option><option>Routine</option>
+                    </select>
+                </label>
+                <br />
+                <label>Do you love to solve complex problems?
+                    <select class="form-control" id="a11">
+                        <option selected></option><option>Yes, Love it!</option><option>Sometimes</option><option>Not really</option> <option>I hate it</option> 
+                    </select>
+                </label>
+                <br />
+                <label>Do you like to be in the center of attention?
+                    <select class="form-control" id="a12">
+                        <option selected></option><option>Yes, Love it!</option><option>Sometimes</option><option>It depends on the situation</option><option>Not really</option> <option>I hate it</option> 
+                    </select>
+                </label>
+                <br />
+                <label>How do you feel about trying new things?
+                    <select class="form-control" id="a13">
+                        <option selected></option><option>I love trying new things!</option><option>I'm okay at it</option><option>It depends on the thing</option> <option>I'd rather not if I could</option> 
+                    </select>
+                </label>
+                <br />
+                <label>Would you describe yourself as a go-getter?
+                    <select class="form-control" id="a14">
+                        <option selected></option><option>Yes, of course</option><option>Sometimes, when I need to be</option><option>Not really</option> 
+                    </select>
+                </label>
+                <br />
+                <label>How do you feel about large parties?
+                    <select class="form-control" id="a15">
+                        <option selected></option><option>I love them!</option> <option>They are fun every once in a while</option> <option>Not really a fan of them</option> <option>I hate them</option> 
+                    </select>
+                </label>
+                <br />
+                <label>Do you enjoy being part of a group?
+                    <select class="form-control" id="a16">
+                        <option selected></option><option>Yes, Love it!</option><option>Yes, they can be fun</option><option>Sometimes</option><option>No, I like to do my own thing </option> <option>I hate it</option> 
+                    </select>
+                </label>
+                <br />
+                <label>Do you believe others have good intentions?
+                    <select class="form-control" id="a17">
+                        <option selected></option><option>Yes!</option><option>Most people</option><option>Not sure</option><option>No, a few do</option> <option>No, I don't trust anyone</option> 
                     </select>
                 </label>
                 <br />
