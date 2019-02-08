@@ -1,5 +1,6 @@
 const request = require('request');
 const express = require('express');
+const router = express.Router();
 const http = require('http');
 const app = express();
 var server = require('http').Server(app);
@@ -8,7 +9,7 @@ var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 var port = process.env.PORT || 8080;
 
-const router = express.Router();
+var users = [];
 
 //Database access
 admin.initializeApp({
@@ -49,6 +50,25 @@ app.get('/', function(req, res){
 server.listen(port, function()
 {
     console.log('Server is listening on ' + port);
+});
+
+io.on('connection', function(socket)
+{
+	console.log('a user connected');
+	socket.id = Math.random();
+	
+	users[socket.id] = [];
+	var user = users[socket.id];
+	socket.on('disconnect', function()
+	{
+		delete[users[socket.id]];
+	});
+	
+	socket.on('ValidateToken', function(data)
+	{
+		///no idea how to validate user key
+		socket.emit("ValidateTokenResponse", {"success": false});
+	});
 });
 
 module.exports = router;
