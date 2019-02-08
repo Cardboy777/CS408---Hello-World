@@ -1,6 +1,6 @@
-div.panels-container{
+#matchingPage div.panels-container{
     padding: 1em 4em 1em 4em;
 }
-div.panel{
+#matchingPage div.panel{
     padding: 1em;
 }

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './Matches.css'
-import Navbar from './Navbar';
+import Header from './Header';
 
 class Matches extends Component {
   render() {
     return (
-      <div>
-        <Navbar/>
-        <h1>Matches Page{ this.state.message }</h1>
+      <div id="matchesPage">
+        <Header/>
+        <h1>Matches Page</h1>
       </div>
     );
   }

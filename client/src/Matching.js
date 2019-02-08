@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Matching.css';
-import Navbar from './Navbar';
 import MatchingPanel from './MatchingPanel';
+import Header from './Header';
 
 class Matching extends Component {
   constructor(){
@@ -31,8 +31,8 @@ class Matching extends Component {
 
   render() {
     return (
-      <div>
-        <Navbar/>
+      <div id="matchingPage">
+        <Header/>
         <div className="panels-container">
           <div className="row">
             { this.state.user_list.map((i) =>
@@ -42,7 +42,7 @@ class Matching extends Component {
               )
             }
           </div>
-          <button onClick={this.getMorePotentialMatches}>Test Fetch More</button>
+          <button className='btn btn-primary' onClick={this.getMorePotentialMatches}>Test Fetch More</button>
         </div>
       </div>
     );

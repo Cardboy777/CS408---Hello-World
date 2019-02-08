@@ -4,7 +4,6 @@ import FrontPage from './FrontPage';
 import Matches from './Matches';
 import Matching from './Matching';
 import './App.css';
-import UserProfile from './UserProfile';
 
 class App extends Component {
     render() {
