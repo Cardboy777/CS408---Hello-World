@@ -28,13 +28,13 @@
 					<!--<p style="font-size: calc(18px + 2vh); margin: 0px; border: 0px;">Login</p>-->
 				</div>
 				<div class="container">
-					<label for="uname"><b>Username</b></label>
-					<input type="text" placeholder="Enter Username" name="uname" required>
+					<label for="username"><b>Username</b></label>
+					<input type="text" placeholder="Enter Username" name="username" required>
 
-					<label for="psw"><b>Password</b></label>
-					<input type="password" placeholder="Enter Password" name="psw" required>
+					<label for="password"><b>Password</b></label>
+					<input type="password" placeholder="Enter Password" name="password" required>
 					
-					<button type="submit" onclick="login();">Login</button>
+					<button type="button" onclick="login();">Login</button>
 					<br>
 					<p style="text-align: center; ">Don't have an account? <a onclick="showSignup();" style="color: blue; cursor: pointer;">Sign Up</a> today!</p>
 					<!--<label>
@@ -57,16 +57,16 @@
 					<!--<p style="font-size: calc(18px + 2vh); margin: 0px; border: 0px;">Login</p>-->
 				</div>
 				<div class="container">
-					<label for="uname"><b>Username</b></label>
-					<input type="text" placeholder="Enter Username" name="uname" required>
+					<label for="username"><b>Username</b></label>
+					<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onfocusout="checkUsername();" required>
 					
-					<label for="uname"><b>Email</b></label>
-					<input type="text" placeholder="Enter Email" name="uname" required>
+					<label for="email"><b>Email</b></label>
+					<input id="emailBox" type="text" placeholder="Enter Email" name="email" onfocusout="checkEmail();" required>
 
-					<label for="psw"><b>Password</b></label>
-					<input type="password" placeholder="Enter Password" name="psw" required>
+					<label for="password"><b>Password</b></label>
+					<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onfocusout="checkPassword();" required>
 					
-					<button class="signup" onclick="signup();">Sign Up</button>
+					<button class="signup" type="button" onclick="signup();">Sign Up</button>
 				</div>
 
 				<!--<div class="container" style="background-color:#f1f1f1">

@@ -4,6 +4,43 @@ var data = JSON.parse(userData);
 
 function signup()
 {
+	var username = $("#usernameBox")[0].value;
+	var email = $("#emailBox")[0].value;
+	var pass = $("#passwordBox")[0].value;
+	//if username exists
+	
+}
+
+function checkUsername()
+{
+	var username = $("#usernameBox")[0].value;
+	if (username.length < 6)
+	{
+		alert("Username is too short.");
+	}
+	else if (username.length > 20)
+	{
+		alert("Username is too long.");
+	}
+	else if (!username.match(/^[0-9a-z]+$/))
+	{
+		alert("Invalid character used.");
+	}
+	///else check if username is already taken
+}
+
+function checkPassword()
+{
+	var pass = $("#passwordBox")[0].value;
+	if (pass.length < 8 || pass.length > 256)
+	{
+		//password is too short
+	}
+	
+}
+
+function checkEmail()
+{
 	
 }
 
