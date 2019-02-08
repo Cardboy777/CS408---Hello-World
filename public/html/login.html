@@ -60,15 +60,15 @@
 				</div>
 				<div class="container">
 					<label for="username"><b>Username</b></label>
-					<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onfocusout="checkUsername();" required>
+					<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onkeyup="checkUsername();" onfocusout="checkUsername();" required>
 					<label class="inputError" id="signupUsernameError">Error:</label>
 					
 					<label for="email"><b>Email</b></label>
-					<input id="emailBox" type="text" placeholder="Enter Email" name="email" onfocusout="checkEmail();" required>
+					<input id="emailBox" type="text" placeholder="Enter Email" name="email" onkeyup="checkEmail();" onfocusout="checkEmail();" required>
 					<label class="inputError" id="signupEmailError">Error:</label>
 					
 					<label for="password"><b>Password</b></label>
-					<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onfocusout="checkPassword();" required>
+					<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onkeyup="checkPassword();" onfocusout="checkPassword();" required>
 					<label class="inputError" id="signupPasswordError">Error:</label>
 					
 					<button class="signup" type="button" onclick="signup();">Sign Up</button>

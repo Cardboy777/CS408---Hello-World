@@ -10,7 +10,15 @@ function signup()
 	
 	if (checkUsername() == true && checkPassword() == true && checkEmail() == true)
 	{
-		alert("Signing up...");
+		var signupData = {
+			"username": username,
+			"email": email,
+			"password": pass
+		}
+		$.post("/signup", signupData, function(data)
+		{
+			alert("Logging in...");
+		});
 	}
 }
 
@@ -90,7 +98,14 @@ function login()
 	
 	if ((usernameBox.length > 5 || usernameBox.length < 21) && (passwordBox.length > 7 && passwordBox.length < 256))
 	{
-		window.alert("Logging in...");
+		var loginData = {
+			"username": usernameBox,
+			"password": passwordBox
+		}
+		$.post("/login", loginData, function(data)
+		{
+			alert("Logging in...");
+		});
 	}
 }
 
@@ -125,6 +140,10 @@ window.onclick = function(event) {
 	}
 }
 
+$("#usernameBox")[0].onchange = function() { checkUsername(); }
+$("#passwordBox")[0].onchange = function() { checkPassword(); }
+$("#emailBox")[0].onchange = function() { checkEmail(); }
+
 /*$(".display-4")[0].onmouseover = function()
 {
 	$(".display-4")[0].innerHTML = "Meat likeminded programmers";
@@ -133,6 +152,7 @@ $(".display-4")[0].onmouseout = function()
 {
 	$(".display-4")[0].innerHTML = "Meet likeminded programmers";
 }*/
+
 
 //picture cycle
 var pictures = ["HomepageImage1.jpeg", "HomepageImage2.jpg", "HomepageImage3.png"];
