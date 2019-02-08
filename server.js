@@ -37,4 +37,14 @@ io.on('connection', function(socket)
 		///no idea how to validate user key
 		socket.emit("ValidateTokenResponse", {"success": false});
 	});
+	
+	socket.on('Login', function(data)
+	{
+		
+	});
+	
+	socket.on('Signup', function(data)
+	{
+		
+	});
 });

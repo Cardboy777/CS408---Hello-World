@@ -29,10 +29,12 @@
 				</div>
 				<div class="container">
 					<label for="username"><b>Username</b></label>
-					<input type="text" placeholder="Enter Username" name="username" required>
+					<input id="loginUsername" type="text" placeholder="Enter Username" name="username" required>
+					<label class="inputError" id="loginUsernameError">Error:</label>
 
 					<label for="password"><b>Password</b></label>
-					<input type="password" placeholder="Enter Password" name="password" required>
+					<input id="loginPassword" type="password" placeholder="Enter Password" name="password" required>
+					<label class="inputError" id="loginPasswordError">Error:</label>
 					
 					<button type="button" onclick="login();">Login</button>
 					<br>
@@ -59,12 +61,15 @@
 				<div class="container">
 					<label for="username"><b>Username</b></label>
 					<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onfocusout="checkUsername();" required>
+					<label class="inputError" id="signupUsernameError">Error:</label>
 					
 					<label for="email"><b>Email</b></label>
 					<input id="emailBox" type="text" placeholder="Enter Email" name="email" onfocusout="checkEmail();" required>
-
+					<label class="inputError" id="signupEmailError">Error:</label>
+					
 					<label for="password"><b>Password</b></label>
 					<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onfocusout="checkPassword();" required>
+					<label class="inputError" id="signupPasswordError">Error:</label>
 					
 					<button class="signup" type="button" onclick="signup();">Sign Up</button>
 				</div>

@@ -164,3 +164,11 @@ span.psw {
 .signup:hover {
 	background-color: #47E;
 }
+
+.inputError {
+	color: red;
+	margin: 0px;
+	width: 100%;
+	display: none;
+	#text-align: center;
+}
