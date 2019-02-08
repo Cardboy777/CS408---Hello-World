@@ -50,7 +50,7 @@ class PersonalityQuestionnaire extends Component {
 
     handleSubmit (event){
         event.preventDefault();
-        const questionnaireRef = firebase.database().ref('user');
+        const questionnaireRef = firebase.database().ref('usersPQ');
         const questionnaire ={
             user: this.state.username,
             gender: this.state.gender,
