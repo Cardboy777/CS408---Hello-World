@@ -1,0 +1,53 @@
+#pageDiv{
+    background-color: #990000;
+}
+
+h1.title {
+    align-content: center;
+    text-align: center;
+    padding: 1em;
+    font-size: 6em;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bolder;
+    text-shadow: 0 0 20px palevioletred;
+    background-image: url(./img/pixel_hearts50p.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    margin: 0 1em 0 1em;
+}
+
+h4.frontpageHeaders{
+    padding: 1em 0 0.3em 0;
+    align-content: center;
+    text-align: center;
+}
+
+#frontpageContainer{
+    padding-left: 4em;
+    padding-right: 4em;
+    position: relative;
+    bottom:0;
+}
+
+#frontpageContainer p{
+    padding: 0.2em 1em 2em 1em;
+}
+
+#title{
+    background-color: #080808;
+}
+a:link{
+    color: #afafaf;
+}
+a:visited{
+    color: #afafaf;
+}
+a:hover{
+    color: #919191;
+    text-decoration: none;
+}
+a:active{
+    color: #919191;
+}

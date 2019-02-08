@@ -1,0 +1,10 @@
+html, body{
+    font-size: 1.1em;
+    height:100vh;
+    background-color: #181818;
+    color: white;
+}
+div{
+    margin:0;
+    padding:0;
+}
