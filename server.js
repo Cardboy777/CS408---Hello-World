@@ -28,7 +28,7 @@ function findMatches(userName){
     var users = [];
     querySnapshot.forEach(function(doc) {
 
-        if(doc.data().user !== userName || doc.data().user.contains(userName) === false){
+        if(doc.data().user !== userName || doc.data().user.includes(userName) === false){
           this.push(doc.data());
         }
 
