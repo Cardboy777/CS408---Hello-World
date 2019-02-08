@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import firebase from './firebase.js';
-//var database = firebase.database();
+//import firebase from './firebase.js';
+var database = firebase.database();
 //username
 
 class PersonalityQuestionnaire extends Component {
