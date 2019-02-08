@@ -1,11 +1,7 @@
-#pageDiv{
-    background-color: #990000;
-}
-
-h1.title {
+#frontpageDiv h1.title {
     align-content: center;
     text-align: center;
-    padding: 1em;
+    padding: 1.3em;
     font-size: 6em;
     font-family: Ubuntu;
     font-style: normal;
@@ -18,36 +14,36 @@ h1.title {
     margin: 0 1em 0 1em;
 }
 
-h4.frontpageHeaders{
+#frontpageDiv h4.frontpageHeaders{
     padding: 1em 0 0.3em 0;
     align-content: center;
     text-align: center;
 }
 
-#frontpageContainer{
+#frontpageDiv #frontpageContainer{
     padding-left: 4em;
     padding-right: 4em;
     position: relative;
     bottom:0;
 }
 
-#frontpageContainer p{
+#frontpageDiv #frontpageContainer p{
     padding: 0.2em 1em 2em 1em;
 }
 
-#title{
+#frontpageDiv #title{
     background-color: #080808;
 }
-a:link{
+#frontpageDiv a:link{
     color: #afafaf;
 }
-a:visited{
+#frontpageDiv a:visited{
     color: #afafaf;
 }
-a:hover{
+#frontpageDiv a:hover{
     color: #919191;
     text-decoration: none;
 }
-a:active{
+#frontpageDiv a:active{
     color: #919191;
 }

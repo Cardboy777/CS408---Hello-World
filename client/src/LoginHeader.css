@@ -1,0 +1,12 @@
+#LoginHeader{
+    font-size: 0.8em;
+}
+#LoginHeader input{
+    padding: 0.4em 0.7em 0.4em 0.7em;
+    margin-left: 0.3em;
+    margin-right: 20em;
+}
+#LoginHeader p{
+    padding-top: 0.2em;
+    margin:0;
+}

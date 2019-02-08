@@ -10,15 +10,15 @@ div.MatchingPanel img{
     border-radius: 0.5em;
 }
 
-.MatchingPanel button{
+div.MatchingPanel button{
     margin-right: 1em;
     width: 25%;
 }
-.MatchingPanel h5{
+div.MatchingPanel h5{
     padding-top: 1em;
 }
 
-h.compat-percent{
+div.MatchingPanel h.compat-percent{
     text-align: right;
     font-size: 2em;
 }

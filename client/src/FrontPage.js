@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './FrontPage.css'
-import Navbar from './Navbar';
+import Header from './Header';
 
 class FrontPage extends Component {
   constructor(){
@@ -20,8 +20,8 @@ class FrontPage extends Component {
 
   render() {
     return (
-      <div id="#pageDiv">
-        <Navbar/>
+      <div id="frontpageDiv">
+        <Header/>
         <div>
           <div id="title">
             <h1 className="title">HƐ>LO WORLD</h1>
@@ -50,7 +50,7 @@ class FrontPage extends Component {
                 Getting Started
               </h4>
               <p>
-                First, you have to <a>create an account</a>. Once you're done creating your profile and you've completed our questoinnaires, head over to the <a href="/matching">Matching page</a>. Be sure to 'Like' any of the profiles you're intersted in. Be careful when you 'Dislike' someone, they'll disappear for good!
+                First, you have to create an account, or if you already have an account, login. Once you're done creating your profile and you've completed our personality and coding questoinnaires, head over to the <a href="/matching">Matching page</a>. 'Like' any of the profiles you're intersted in. Be careful when you 'Dislike' someone, they'll disappear for good!
               </p>
             </div>
           </div>
