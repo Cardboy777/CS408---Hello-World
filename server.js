@@ -1,12 +1,20 @@
 const request = require('request');
-const express = require('express'); 
+const express = require('express');
 const http = require('http');
 const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var admin = require('firebase-admin');
+var serviceAccount = require('./serviceAccountKey.json');
 var port = process.env.PORT || 8080;
 
 const router = express.Router();
+
+//Database access
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://cs-408-hello-world.firebaseio.com'
+});
 
 //Client-callable API call
 router.get("/getTestMessage", (req, res) => {
