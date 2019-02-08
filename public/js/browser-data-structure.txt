@@ -1,0 +1,11 @@
+/*
+	data: 
+	{
+		"UserKey": the user's access token/key for their actions
+		"UserName": the user's username
+		"Email": the user's email
+		"KeyRefresh": a Date().getTime() object updated every time they go to a new page,
+					  expires after x hours to make them log in again if need be
+		"PageData": a JSON of whatever data might be useful for loading the next page
+	}
+*/
