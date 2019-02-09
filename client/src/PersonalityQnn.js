@@ -36,18 +36,7 @@ class PersonalityQuestionnaire extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-   /*writePQData(gender,age,location, attrgender,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,
-        a12,a13,a14,a15,a16,a17,description){
-         firebase.database().ref('Users/').set({
-            gender,age,location, attrgender,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,
-            a12,a13,a14,a15,a16,a17,description
-         }).then((data)=>{
-             console.log('data',data)
-         }).catch((error)=>{
-             console.log('error',error)
-         })
-        }*/
-
+   
     /*handleSubmit (event){
         event.preventDefault();
         const questionnaireRef = firebase.database().ref('usersPQ');
@@ -110,7 +99,7 @@ class PersonalityQuestionnaire extends Component {
         db.settings({
             timestampsInSnapshots: true
         });
-        const questionnaireRef=db.collection("userPQ").add({
+        const questionnaireRef=db.collection("usersPQ").add({
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,
@@ -218,38 +207,27 @@ class PersonalityQuestionnaire extends Component {
                         <h2 class="display-4">Personality Questionnaire</h2>
                     </div>
                 </div>
-                <div class="form-row">
-                    <h4>About You...</h4>
-                    <div class="form-group col-md-12">
+                <div class="form-group col-md-12">
+                    <h4>About You...</h4>    
                     <label> Please enter your username:
                         <input class="form-control" id="username" name="username" onChange={this.handleChange} value={this.state.username}/>
                     </label>
-                    </div>
-                    <br />
-                    </div>
-                   
-                    <div class="form-group col-md-12"> 
-
-                    <label for="Gender">Gender
-                    <select class="form-control" id="gender" name="gender" onChange={this.handleChange} value={this.state.gender}>
-                        <option>Choose..</option> <option>Male</option><option>Female</option>
-                    </select>             
-                    </label>
-                
-                    <label for="age">Age
-                        <input class="form-control" id="age" name="age" onChange={this.handleChange} value={this.state.age}/> 
-                    </label>
-                    
-                    
-                    
-                        <label for="location">Location
-                            <input type="text" class="form-control" id="location" name="location" onChange={this.handleChange} value={this.state.location}/>
-                        </label>
+                </div>
+                <div class="form-group col-md-12"> 
+                <label for="Gender">Gender
+                <select class="form-control" id="gender" name="gender" onChange={this.handleChange} value={this.state.gender}>
+                    <option>Choose..</option> <option>Male</option><option>Female</option>
+                </select>             
+                </label>
+                <label for="age">Age
+                    <input class="form-control" id="age" name="age" onChange={this.handleChange} value={this.state.age}/> 
+                </label>
+                <label for="location">Location
+                    <input type="text" class="form-control" id="location" name="location" onChange={this.handleChange} value={this.state.location}/>
+                </label>
             </div>        
-                    
-                
             <div class="form-group col-md-12">
-                <label> Interested in?
+                <label>Interested in?
                     <select class="form-control" id="attrgender" name="attrgender" onChange={this.handleChange} value={this.state.attrgender}>
                         <option selected></option><option>Men</option><option>Women</option><option>Both</option> 
                     </select>
@@ -367,8 +345,7 @@ class PersonalityQuestionnaire extends Component {
                 </label>
             </div>
             <button type="submit" onClick={this.handleSubmit}>Submit</button>
-        </form>
-           
+        </form>        
         );
     }
 }
