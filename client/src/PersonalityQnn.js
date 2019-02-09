@@ -175,7 +175,6 @@ class PersonalityQuestionnaire extends Component {
                         </select>             
                         </label>
                     </div>
-                    
                     <div class="form-group col-md-2">
                         <label for="age">Age
                             <input class="form-control" id="age" name="age" onChange={this.handleChange} value={this.state.age}/> 
@@ -307,7 +306,7 @@ class PersonalityQuestionnaire extends Component {
                     <input class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
                 </label>
             </div>
-            <button type="submit" onSubmit={this.handleSubmit}>Submit</button>
+            <button type="submit" onClick={this.handleSubmit}>Submit</button>
         </form>
            
         );
