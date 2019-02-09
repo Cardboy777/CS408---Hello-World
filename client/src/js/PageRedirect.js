@@ -19,7 +19,7 @@ function changeLocation(str)
 {
 	if (str == "login")
 	{
-		//document.getElementById("loginLogoutButton").innerHTML = "Login";
+		document.getElementById("loginLogoutButton").innerHTML = "Login";
 	}
 	if (str == "login")
 	{
