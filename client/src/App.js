@@ -3,6 +3,7 @@ import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import FrontPage from './FrontPage';
 import Matches from './Matches';
 import Matching from './Matching';
+import Messages from './Messages';
 import './App.css';
 import UserProfile from './UserProfile';
 import UserSettings from './UserSettings';
