@@ -19,7 +19,8 @@ function changeLocation(str)
 {
 	if (str == "login")
 	{
-		document.getElementById("loginLogoutButton").innerHTML = "Login";
+		//document.getElementById("loginLogoutButton").innerHTML = "Login";
+		console.log("Redirect them to login.");
 	}
 	if (str == "login")
 	{
