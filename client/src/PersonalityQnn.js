@@ -48,7 +48,7 @@ class PersonalityQuestionnaire extends Component {
          })
         }*/
 
-    handleSubmit (event){
+    /*handleSubmit (event){
         event.preventDefault();
         const questionnaireRef = firebase.database().ref('usersPQ');
         const questionnaire ={
@@ -103,7 +103,65 @@ class PersonalityQuestionnaire extends Component {
             description:""
         });
     }
-
+    */
+    handleSubmit = e =>{
+        e.preventDefault();
+        const db =firebase.firestore();
+        db.settings({
+            timestampsInSnapshots: true
+        });
+        const questionnaireRef=db.collection("userPQ").add({
+            user: this.state.username,
+            gender: this.state.gender,
+            age: this.state.age,
+            location: this.state.location,
+            attractGender: this.state.attrgender,
+            panswer1: this.state.pa1,
+            panswer2: this.state.pa2,
+            panswer3: this.state.pa3,
+            panswer4: this.state.pa4,
+            panswer5: this.state.pa5,
+            panswer6: this.state.pa6,
+            panswer7: this.state.pa7,
+            panswer8: this.state.pa8,
+            panswer9: this.state.pa9,
+            panswer10: this.state.pa10,
+            panswer11: this.state.pa11,
+            panswer12: this.state.pa12,
+            panswer13: this.state.pa13,
+            panswer14: this.state.pa14,
+            panswer15: this.state.pa15,
+            panswer16: this.state.pa16,
+            panswer17: this.state.pa17,
+            describe: this.state.description
+        });
+        //reset the state
+        this.setState({
+            username:"",
+            gender:"",
+            age:"",
+            location:"",
+            attrgender:"",
+            pa1:"",
+            pa2:"",
+            pa3:"",
+            pa4:"",
+            pa5:"",
+            pa6:"",
+            pa7:"",
+            pa8:"",
+            pa9:"",
+            pa10:"",
+            pa11:"",
+            pa12:"",
+            pa13:"",
+            pa14:"",
+            pa15:"",
+            pa16:"",
+            pa17:"",
+            description:""
+        });
+    };
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value
@@ -168,26 +226,28 @@ class PersonalityQuestionnaire extends Component {
                     </label>
                     </div>
                     <br />
-                    <div class="form-group col-md-6">
-                        <label for="Gender">Gender
-                        <select class="form-control" id="gender" onChange={this.handleChange} value={this.state.gender}>
-                            <option selected>Choose..</option><option>Male</option><option>Female</option>
-                        </select>             
-                        </label>
                     </div>
-                    <div class="form-group col-md-2">
-                        <label for="age">Age
-                            <input class="form-control" id="age" name="age" onChange={this.handleChange} value={this.state.age}/> 
-                        </label>
-                    </div>
+                   
+                    <div class="form-group col-md-12"> 
+
+                    <label for="Gender">Gender
+                    <select class="form-control" id="gender" name="gender" onChange={this.handleChange} value={this.state.gender}>
+                        <option>Choose..</option> <option>Male</option><option>Female</option>
+                    </select>             
+                    </label>
+                
+                    <label for="age">Age
+                        <input class="form-control" id="age" name="age" onChange={this.handleChange} value={this.state.age}/> 
+                    </label>
                     
-                    <div class="form-group col-md-4">
+                    
+                    
                         <label for="location">Location
                             <input type="text" class="form-control" id="location" name="location" onChange={this.handleChange} value={this.state.location}/>
                         </label>
-                    </div>
+            </div>        
                     
-                </div>
+                
             <div class="form-group col-md-12">
                 <label> Interested in?
                     <select class="form-control" id="attrgender" name="attrgender" onChange={this.handleChange} value={this.state.attrgender}>
