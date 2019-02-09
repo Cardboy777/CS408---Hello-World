@@ -9,6 +9,11 @@ class Navbar extends Component {
     }
   }
   
+  componentDidMount() {
+	  var userData = window.localStorage.getItem("user");
+	  //if (user)
+  }
+  
   render() {
     return (
       <div id="navbar">
@@ -30,7 +35,7 @@ class Navbar extends Component {
               <a className="dropdown-item" href="/">Profile</a>
               <a className="dropdown-item" href="/">Account Settings</a>
               <div className="dropdown-divider"></div>
-              <a className="dropdown-item" href="/">Logout</a>
+              <a id="loginLogoutButton" className="dropdown-item">Logout</a>
             </div>
           </li>
         </ul>

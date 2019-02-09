@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './LoginHeader.css'
+//import './jquery.js';
+import './js/PageRedirect.js';
+//import './js/Login.js';
 
 class LoginHeader extends Component {
     constructor(){
@@ -38,10 +41,10 @@ class LoginHeader extends Component {
             <div id="login">
                 <form className="form-inline">
                     <label for="uname"><b>Username:</b></label>
-                    <input className="form-control mr-sm-2" type="text" placeholder="Enter Username" name="uname" required/>
+                    <input id="loginUsername" className="form-control mr-sm-2" type="text" placeholder="Enter Username" name="uname" required/>
 
                     <label for="psw"><b>Password:</b></label>
-                    <input className="form-control mr-sm-2" type="password" placeholder="Enter Password" name="psw" required/>
+                    <input id="loginPassword" className="form-control mr-sm-2" type="password" placeholder="Enter Password" name="psw" required/>
                     
                     <button className="btn button-light" type="submit" onclick={this.login}>Login</button>
                     <br/>
@@ -55,13 +58,13 @@ class LoginHeader extends Component {
             <div id="register">
                 <form className="form-inline">
                     <label for="uname"><b>Username:</b></label>
-                    <input className="form-control mr-sm-2" type="text" placeholder="Enter Username" name="uname" required/>
+                    <input id="signupUsername" className="form-control mr-sm-2" type="text" placeholder="Enter Username" name="uname" required/>
                     
                     <label for="uname"><b>Email:</b></label>
-                    <input className="form-control mr-sm-2" type="text" placeholder="Enter Email" name="uname" required/>
+                    <input id="signupEmail" className="form-control mr-sm-2" type="text" placeholder="Enter Email" name="uname" required/>
 
                     <label for="psw"><b>Password:</b></label>
-                    <input className="form-control mr-sm-2" type="password" placeholder="Enter Password" name="psw" required/>
+                    <input id="signupPassword" className="form-control mr-sm-2" type="password" placeholder="Enter Password" name="psw" required/>
                     
                     <button className="btn button-light signup" onclick={this.signUp}>Sign Up</button>
                     <br/>

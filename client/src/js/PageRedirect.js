@@ -1,18 +1,34 @@
-var socket = io();
+//var socket = io();
 var userData = window.localStorage.getItem("user");
-if (userData == undefined) { changeLocation(); }
-var data = JSON.parse(userData);
-
-function changeLocation()
+setTimeout(function()
 {
-	//window.location.href = "";
-	//window.alert("The location would have been changed.");
+	if (userData == undefined || userData.length < 1) 
+	{ 
+		changeLocation("login"); 
+	}
+	else
+	{
+		var data = JSON.parse(userData);
+		if (data.UserKey == undefined) { changeLocation("login"); }
+		else if (new Date().getTime() - data.KeyRefresh > 86400) { changeLocation("login"); }
+	}
+}, 1000);
+
+
+function changeLocation(str)
+{
+	if (str == "login")
+	{
+		//document.getElementById("loginLogoutButton").innerHTML = "Login";
+	}
+	if (str == "login")
+	{
+		//window.alert("The location would have been changed: " + window.location.href);
+	}
 }
 
-if (data.UserKey == undefined) { changeLocation(); }
-if (new Date().getTime() - data.KeyRefresh > 86400) { changeLocation(); }
 
-socket.on('ValidateTokenResponse', function(data)
+/*socket.on('ValidateTokenResponse', function(data)
 {
 	if (data.success == undefined || data.success == false)
 	{
@@ -20,4 +36,4 @@ socket.on('ValidateTokenResponse', function(data)
 	}
 });
 
-socket.emit("ValidateToken", userData);
+socket.emit("ValidateToken", userData);*/
