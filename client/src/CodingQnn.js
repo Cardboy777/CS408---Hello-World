@@ -23,9 +23,39 @@ class CodingQuestionnaire extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-   
+    handleSubmit = e =>{
+        e.preventDefault();
+        const db =firebase.firestore();
+        db.settings({
+            timestampsInSnapshots: true
+        }); 
+        const questionnaireRef=db.collection("usersPQ").add({
+            answer1: this.state.a1,
+            answer2: this.state.a2,
+            answer3: this.state.a3,
+            answer4: this.state.a4,
+            answer5: this.state.a5,
+            answer6: this.state.a6,
+            answer7: this.state.a7,
+            answer8: this.state.a8,
+            answer9: this.state.a9,
+            answer10: this.state.a10
+        });
+        this.setState({
+            a1:"",
+            a2:"",
+            a3:"",
+            a4:"",
+            a5:"",
+            a6:"",
+            a7:"",
+            a8:"",
+            a9:"",
+            a10:""
+        });
+    }
 
-    handleSubmit (event){
+    /*handleSubmit (event){
         event.preventDefault();
         const questionnaireRef = firebase.database().ref('usersCQ');
         const questionnaire ={
@@ -53,7 +83,7 @@ class CodingQuestionnaire extends Component {
             a9:"",
             a10:""
         });
-    }
+    }*/
 
     handleChange(e){
         this.setState({
