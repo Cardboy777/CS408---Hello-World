@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-//import firebase from './firebase.js';
-var database = firebase.database();
+import firebase from './firebase.js';
+
+//var firebase=require("firebase");
+//var database = firebase.database();
 //username
 
 class PersonalityQuestionnaire extends Component {
@@ -15,7 +17,6 @@ class PersonalityQuestionnaire extends Component {
             a1:"",
             a2:"",
             a3:"",
-            a3:"",
             a4:"",
             a5:"",
             a6:"",
@@ -25,7 +26,6 @@ class PersonalityQuestionnaire extends Component {
             a10:"",
             a11:"",
             a12:"",
-            a13:"",
             a13:"",
             a14:"",
             a15:"",
@@ -96,7 +96,6 @@ class PersonalityQuestionnaire extends Component {
             a11:"",
             a12:"",
             a13:"",
-            a13:"",
             a14:"",
             a15:"",
             a16:"",
@@ -163,9 +162,11 @@ class PersonalityQuestionnaire extends Component {
                 </div>
                 <div class="form-row">
                     <h4>About You...</h4>
+                    <div class="form-group col-md-12">
                     <label> Please enter your username:
                         <input class="form-control" id="username" name="username" onChange={this.handleChange} value={this.state.username}/>
                     </label>
+                    </div>
                     <br />
                     <div class="form-group col-md-6">
                         <label for="Gender">Gender
@@ -174,19 +175,19 @@ class PersonalityQuestionnaire extends Component {
                         </select>             
                         </label>
                     </div>
-                    <br />
+                    
                     <div class="form-group col-md-2">
                         <label for="age">Age
                             <input class="form-control" id="age" name="age" onChange={this.handleChange} value={this.state.age}/> 
                         </label>
                     </div>
-                    <br />
+                    
                     <div class="form-group col-md-4">
                         <label for="location">Location
                             <input type="text" class="form-control" id="location" name="location" onChange={this.handleChange} value={this.state.location}/>
                         </label>
                     </div>
-                    <br />
+                    
                 </div>
             <div class="form-group col-md-12">
                 <label> Interested in?
@@ -306,7 +307,7 @@ class PersonalityQuestionnaire extends Component {
                     <input class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
                 </label>
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit" onSubmit={this.handleSubmit}>Submit</button>
         </form>
            
         );
