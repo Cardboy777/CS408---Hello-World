@@ -1,18 +1,23 @@
-var socket = io();
-var userData = window.localStorage.getItem("user");
-if (userData == undefined) { changeLocation(); }
+//var socket = io();
+/*var userData = window.localStorage.getItem("user");
+if (userData == undefined || userData.length < 1) { changeLocation(); }
 var data = JSON.parse(userData);
 
 function changeLocation()
 {
 	//window.location.href = "";
-	//window.alert("The location would have been changed.");
+	window.alert("The location would have been changed.");
+	return;
 }
 
-if (data.UserKey == undefined) { changeLocation(); }
-if (new Date().getTime() - data.KeyRefresh > 86400) { changeLocation(); }
+if (data != undefined)
+{
+	if (data.UserKey == undefined) { changeLocation(); }
+	if (new Date().getTime() - data.KeyRefresh > 86400) { changeLocation(); }
+}*/
 
-socket.on('ValidateTokenResponse', function(data)
+
+/*socket.on('ValidateTokenResponse', function(data)
 {
 	if (data.success == undefined || data.success == false)
 	{
@@ -20,4 +25,4 @@ socket.on('ValidateTokenResponse', function(data)
 	}
 });
 
-socket.emit("ValidateToken", userData);
+socket.emit("ValidateToken", userData);*/

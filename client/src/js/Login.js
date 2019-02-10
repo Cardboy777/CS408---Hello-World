@@ -53,7 +53,7 @@ $(".display-4")[0].onmouseout = function()
 }
 
 //picture cycle
-var pictures = ["HomepageImage1.jpeg", "HomepageImage2.jpg", "HomepageImage3.png"];
+/*var pictures = ["HomepageImage1.jpeg", "HomepageImage2.jpg", "HomepageImage3.png"];
 var transitionTime = 5000;
 
 var tempCount = 0;
@@ -75,3 +75,4 @@ var outerLoop = setInterval(function()
 }, transitionTime * pictures.length + 10);
 
 
+*/
