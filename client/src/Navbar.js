@@ -9,6 +9,11 @@ class Navbar extends Component {
     }
   }
   
+  componentDidMount() {
+	  var userData = window.localStorage.getItem("user");
+	  //if (user)
+  }
+  
   render() {
     return (
       <div id="navbar">
@@ -20,17 +25,17 @@ class Navbar extends Component {
             <a className="nav-link" href="/matches">View Your Matches</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/">Messages</a>
+            <a className="nav-link" href="/messages">Messages</a>
           </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {this.state.username}
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a className="dropdown-item" href="/">Profile</a>
-              <a className="dropdown-item" href="/">Account Settings</a>
+              <a className="dropdown-item" href="/user/profile">Profile</a>
+              <a className="dropdown-item" href="/user/account">Account Settings</a>
               <div className="dropdown-divider"></div>
-              <a className="dropdown-item" href="/">Logout</a>
+              <a href="/logout" id="loginLogoutButton" className="dropdown-item">Logout</a>
             </div>
           </li>
         </ul>

@@ -7,7 +7,7 @@ class Header extends Component {
   render() {
     let headerContent;
     //user is logged in Use proper navbar
-    if(1){
+    if(0){
       headerContent = <Navbar/>;
     }
     //else use login bar
