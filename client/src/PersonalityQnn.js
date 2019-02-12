@@ -234,7 +234,7 @@ class PersonalityQuestionnaire extends Component {
     //should add the value to all the options of select
     render() { 
         return ( 
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} id="pform">
                 <div class="jumbotron jumbotron-fluid" >
                     <div class="container">
                         <h2 class="display-4"id="jumboText">Personality Questionnaire</h2>
@@ -249,7 +249,7 @@ class PersonalityQuestionnaire extends Component {
                 <div class="form-group col-md-12"> 
                 <label for="Gender">Gender
                 <select class="form-control" id="gender" name="gender" onChange={this.handleChange} value={this.state.gender}>
-                    <option>Choose..</option> <option>Male</option><option>Female</option>
+                    <option></option> <option>Male</option><option>Female</option>
                 </select>             
                 </label>
                 <label for="age">Age
@@ -260,7 +260,7 @@ class PersonalityQuestionnaire extends Component {
                 </label>
             </div>        
             <div class="form-group col-md-12">
-                <label>Interested in?
+                <label>Are you interested in?
                     <select class="form-control" id="attrgender" name="attrgender" onChange={this.handleChange} value={this.state.attrgender}>
                         <option selected></option><option>Men</option><option>Women</option><option>Both</option> 
                     </select>
@@ -373,11 +373,13 @@ class PersonalityQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
-                <label>Add a Description about yourself
-                    <input class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
+                <label>Add a Description about yourself: 
+                    <textarea class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
                 </label>
+                <br/>
+                <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
+                <button type="button" class="btn btn-outline-danger btn-lg">Cancel</button>
             </div>
-            <button type="submit" class="btn btn-outline-light">Submit</button>
         </form>        
         );
     }
