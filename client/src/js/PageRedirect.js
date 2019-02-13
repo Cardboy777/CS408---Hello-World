@@ -1,5 +1,6 @@
 //var socket = io();
 var userData = window.localStorage.getItem("user");
+var defaultLocation = "http://localhost:3000/";
 setTimeout(function()
 {
 	if (userData == undefined || userData.length < 1) 
@@ -19,8 +20,11 @@ function changeLocation(str)
 {
 	if (str == "login")
 	{
+		if (window.location.href == defaultLocation) { return; }
+		console.log("Link: '" + window.location.href + "'");
 		//document.getElementById("loginLogoutButton").innerHTML = "Login";
-		console.log("Redirect them to login.");
+		window.location.href = defaultLocation;
+		console.log("Logging in...");
 	}
 	if (str == "login")
 	{
