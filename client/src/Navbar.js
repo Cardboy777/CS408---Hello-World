@@ -9,11 +9,6 @@ class Navbar extends Component {
     }
   }
   
-  componentDidMount() {
-	  var userData = window.localStorage.getItem("user");
-	  //if (user)
-  }
-  
   render() {
     return (
       <div id="navbar">

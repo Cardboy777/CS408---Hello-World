@@ -2,8 +2,27 @@ import React, { Component } from 'react';
 import './Header.css'
 import Navbar from './Navbar';
 import LoginHeader from './LoginHeader';
+//import './js/PageRedirect.js';
 
-class Header extends Component {  
+class Header extends Component {  	
+	redirectPage(str) 
+	{
+		let defaultLocation = "http://localhost:3000/";
+		if (str == "login")
+		{
+			if (window.location.href == defaultLocation) { return; }
+			console.log("Link: '" + window.location.href + "'");
+			//window.location.href = defaultLocation;
+		}
+	}
+	
+	componentDidMount() {
+		var userData = window.localStorage.getItem("user");
+		if (userData == undefined || userData.length < 1) { this.redirectPage("login"); return; }
+		var data = JSON.parse(userData);
+		if (data && data.UserKey == undefined) { this.redirectPage("login"); return; }
+	}
+	
   render() {
     let headerContent;
     //user is logged in Use proper navbar

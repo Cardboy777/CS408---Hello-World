@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './LoginHeader.css'
 //import './jquery.js';
-import './js/PageRedirect.js';
 //import './js/Login.js';
 
 class LoginHeader extends Component {

@@ -22,13 +22,7 @@ function changeLocation(str)
 	{
 		if (window.location.href == defaultLocation) { return; }
 		console.log("Link: '" + window.location.href + "'");
-		//document.getElementById("loginLogoutButton").innerHTML = "Login";
 		window.location.href = defaultLocation;
-		console.log("Logging in...");
-	}
-	if (str == "login")
-	{
-		//window.alert("The location would have been changed: " + window.location.href);
 	}
 }
 
