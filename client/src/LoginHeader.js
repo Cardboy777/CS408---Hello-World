@@ -34,6 +34,18 @@ class LoginHeader extends Component {
         e.preventDefault();
         this.setState({loginToggle : !(this.state.loginToggle)});
         console.log(this.state.toggleLoginState);
+		if (this.state.loginToggle == false)
+		{
+			setTimeout(function()
+			{
+				var holder = document.getElementById("frontpageDiv");
+				var signupForm = document.getElementById("signupForm");
+				if (holder != undefined && signupForm != undefined)
+				{
+					holder.insertBefore(signupForm, holder.children[1]);
+				}
+			}, 100);
+		}
         this.forceUpdate();
     };
     clickMe = (e) =>{
@@ -44,6 +56,7 @@ class LoginHeader extends Component {
         e.preventDefault();
         var usernameString = document.getElementById("usernameBox").value;
 		var error = document.getElementById("signupUsernameError");
+		if (usernameString.length == 0) { error.style.display = "none"; return; }
 		if (usernameString.length < 6 || usernameString.length > 20)
 		{
 			error.innerHTML = "Your username must consist of between 6 and 20 alphanumeric characters."
@@ -66,6 +79,7 @@ class LoginHeader extends Component {
 		var email = document.getElementById("emailBox").value;
 		var error = document.getElementById("signupEmailError");
 		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (email.length == 0) { error.style.display = "none"; return; }
 		if (re.test(String(email).toLowerCase()))
 		{
 			error.style.display = "none";
@@ -82,6 +96,7 @@ class LoginHeader extends Component {
         e.preventDefault();
 		var pass = document.getElementById("passwordBox").value;
 		var error = document.getElementById("signupPasswordError");
+		if (pass.length == 0) { error.style.display = "none"; return; }
 		if (pass.length < 8 || pass.length > 256)
 		{
 			error.innerHTML = "Your password must be between 8 and 256 characters."
@@ -107,7 +122,7 @@ class LoginHeader extends Component {
                     <label for="psw"><b>Password:</b></label>
                     <input id="loginPassword" className="form-control mr-sm-2" type="password" placeholder="Enter Password" name="psw" required/>
                     
-                    <button className="btn button-light" type="submit" onclick={this.login}>Login</button>
+                    <button className="btn button-light" type="submit" onClick={this.login}>Login</button>
                     <br/>
                 </form>
                 <p>Don't have an account? <a href="#" onClick={this.toggleLoginState}>Sign Up</a></p>
@@ -116,32 +131,34 @@ class LoginHeader extends Component {
         }
         else{
             modal=
-            <form class="modal-content animate" action="">
-				<div class="imgcontainer">
-					<span onClick={this.toggleLoginState} class="close" title="Close Signup">&times;</span>
-				</div>
-				<div class="container">
-					<label class="black-text" for="username"><b>Username</b></label>
-					<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onKeyUp={this.checkUsername} onFocus={this.checkUsername} required/>
-					<label class="inputError" id="signupUsernameError">Error:</label>
-					
-					<label class="black-text" for="email"><b>Email</b></label>
-					<input id="emailBox" type="text" placeholder="Enter Email" name="email" onKeyUp={this.checkEmail} onFocus={this.checkEmail} required/>
-					<label class="inputError" id="signupEmailError">Error:</label>
-					
-					<label class="black-text" for="password"><b>Password</b></label>
-					<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onKeyUp={this.checkPassword} onFocus={this.checkPassword} required/>
-					<label class="inputError" id="signupPasswordError">Error:</label>
-					
-					<button class="signup" type="button" onclick="signup();">Sign Up</button>
-				</div>
-			</form>
+			<div class="centerThis">
+				<form id="signupForm" class="modal-content animate" action="">
+					<div class="imgcontainer">
+						<span onClick={this.toggleLoginState} class="close" title="Close Signup">&times;</span>
+					</div>
+					<div class="container">
+						<label class="black-text" for="username"><b>Username</b></label>
+						<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onKeyUp={this.checkUsername} onFocus={this.checkUsername} onBlur={this.checkUsername} required/>
+						<label class="inputError" id="signupUsernameError">Error:</label>
+						
+						<label class="black-text" for="email"><b>Email</b></label>
+						<input id="emailBox" type="text" placeholder="Enter Email" name="email" onKeyUp={this.checkEmail} onFocus={this.checkEmail} onBlur={this.checkEmail} required/>
+						<label class="inputError" id="signupEmailError">Error:</label>
+						
+						<label class="black-text" for="password"><b>Password</b></label>
+						<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onKeyUp={this.checkPassword} onFocus={this.checkPassword} onBlur={this.checkPassword} required/>
+						<label class="inputError" id="signupPasswordError">Error:</label>
+						
+						<button class="signup" type="button" onclick="signup();">Sign Up</button>
+					</div>
+				</form>
+			</div>
             ;
         }
         return (
-            <div id="LoginHeader" className="navbar navbar-expand-lg navbar-dark">
-                {modal}
-            </div>
+			<div id="LoginHeader" className="">
+				{modal}
+			</div>
         );
     }
 }
