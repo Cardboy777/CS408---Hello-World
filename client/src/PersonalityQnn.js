@@ -92,7 +92,7 @@ class PersonalityQuestionnaire extends Component {
     }
     */
     handleValidation(){
-        window.alert("Inside Validation function");
+        //window.alert("Inside Validation function");
         if(this.state.username===""){ window.alert("Invalid Username Input"); return false; }
         else if(this.state.gender===""){ window.alert("Invalid Gender Input"); return false; }
         else if(this.state.age===""){ window.alert("Invalid Age Input"); return false; }

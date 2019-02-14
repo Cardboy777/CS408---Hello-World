@@ -29,6 +29,9 @@ class CodingQuestionnaire extends Component {
         db.settings({
             timestampsInSnapshots: true
         }); 
+        if(!this.handleValidation()){
+            return;
+        }
         const questionnaireRef=db.collection("usersPQ").add({
             answer1: this.state.a1,
             answer2: this.state.a2,
@@ -90,9 +93,23 @@ class CodingQuestionnaire extends Component {
             [e.target.name]: e.target.value
         });
     }
+    handleValidation(){
+        if(this.state.a1===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a2===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a3===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a4===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a5===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a6===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a7===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a8===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a9===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.a10===""){ window.alert("Invalid Question Input"); return false;}
+        else{ return true; }
+        
+    }
     //not sure if i need this
-    componentDidMount(){
-        const questionnaireRef =firebase.database().ref('usersCQ');
+    /*componentDidMount(){
+        const questionnaireRef =firebase.database().ref('usersPQ');
         questionnaireRef.on('value',(snapshot)=>{
             let questionnaire=snapshot.val();
             let newState=[];
@@ -116,7 +133,7 @@ class CodingQuestionnaire extends Component {
                 questionnaire:newState
             });
         });
-    }
+    }*/
 
     // need to add the bootstrap for this page
     //should add the value to all the options of select
