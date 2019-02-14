@@ -191,7 +191,7 @@ class PersonalityQuestionnaire extends Component {
 
     
     //not sure if i need this
-    componentDidMount(){
+    /*componentDidMount(){
         const questionnaireRef =firebase.database().ref('usersPQ');
         questionnaireRef.on('value',(snapshot)=>{
             let questionnaire=snapshot.val();
@@ -229,7 +229,7 @@ class PersonalityQuestionnaire extends Component {
                 questionnaire:newState
             });
         });
-    }
+    }*/
 
     //should add the value to all the options of select
     render() { 
@@ -378,7 +378,7 @@ class PersonalityQuestionnaire extends Component {
                 </label>
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
-                <button type="button" class="btn btn-outline-danger btn-lg">Cancel</button>
+                
             </div>
         </form>        
         );
