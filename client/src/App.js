@@ -9,11 +9,11 @@ import UserProfile from './UserProfile';
 import UserSettings from './UserSettings';
 import Login from './Login';
 import Logout from './Logout';
+import PersonalityQuestionnaire from './PersonalityQnn';
 
 class App extends Component {
     render() {
-    return (
-      
+    return (     
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route exact path='/' component={ FrontPage } />
@@ -27,6 +27,7 @@ class App extends Component {
           <Route component= { FrontPage }/>
         </Switch>
       </BrowserRouter> 
+      
     );
   }
 }
