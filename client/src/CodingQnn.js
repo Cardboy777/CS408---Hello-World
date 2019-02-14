@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
-
+import './CodingQnn.css';
 //var firebase=require("firebase");
 //var database = firebase.database();
 //username
@@ -142,10 +142,10 @@ class CodingQuestionnaire extends Component {
             <form onSubmit={this.handleSubmit}>
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">Coding Questionnaire</h2>
+                        <h2 class="display-4" id="ctitle">Coding Questionnaire</h2>
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-group col-md-12">
                 <label>What motivates you to code?
                     <select class="form-control" id="ca1" name="ca1" onChange={this.handleChange} value={this.state.ca1}>
                         <option selected></option><option>Inner Peace</option> <option>Success</option> <option>Fun</option>
@@ -153,7 +153,7 @@ class CodingQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
-                <label>What is your favorite coding langugage
+                <label>What is your favorite coding language
                     <select class="form-control" id="ca2" name="ca2" onChange={this.handleChange} value={this.state.ca2}>
                         <option selected></option><option>C</option> <option>C++</option> <option>Python</option>
                         <option>Java</option> <option>Matlab</option><option>HTML</option> <option>R</option> <option>Visual Basic</option><option>Fortran</option>
@@ -189,7 +189,7 @@ class CodingQuestionnaire extends Component {
                 <br />
                 <label> How do you feel about web development?
                     <select class="form-control" id="ca7" name="ca7" onChange={this.handleChange} value={this.state.ca7}>
-                        <option selected></option><option>Yes, Love it!</option> <option>Not really</option> <option>I hate it</option> 
+                        <option selected></option><option>I love it!</option> <option>I'm neutral</option> <option>I hate it</option> 
                     </select>
                 </label>
                 <br />
@@ -216,8 +216,8 @@ class CodingQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
+                <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
             </div>
-            <button type="submit" onClick={this.handleSubmit}>Submit</button>
         </form>
            
         );
