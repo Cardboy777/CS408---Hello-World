@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
-
-//var firebase=require("firebase");
-//var database = firebase.database();
+import './PersonalityQnn.css';
 //username
 
 class PersonalityQuestionnaire extends Component {
@@ -93,12 +91,46 @@ class PersonalityQuestionnaire extends Component {
         });
     }
     */
+    handleValidation(){
+        //window.alert("Inside Validation function");
+        if(this.state.username===""){ window.alert("Invalid Username Input"); return false; }
+        else if(this.state.gender===""){ window.alert("Invalid Gender Input"); return false; }
+        else if(this.state.age===""){ window.alert("Invalid Age Input"); return false; }
+        else if(/[^0-9]+/.test(this.state.age)){ window.alert("Invalid Age Input"); return false;}
+        else if(this.state.location===""){ window.alert("Invalid Location Input"); return false; }
+        else if(this.state.attrgender===""){ window.alert("Invalid Interested In Input"); return false; }
+        else if(this.state.pa1===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa2===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa3===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa4===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa5===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa6===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa7===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa8===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa9===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa10===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa11===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa12===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa13===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa14===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa15===""){ window.alert("Invalid Question Input");return false;}
+        else if(this.state.pa16===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.pa17===""){ window.alert("Invalid Question Input"); return false;}
+        else if(this.state.description===""){ window.alert("Invalid Description Input"); return false;}
+        else{ /*window.alert("Returns true");*/ return true;}
+    }
+
     handleSubmit = e =>{
         e.preventDefault();
         const db =firebase.firestore();
         db.settings({
             timestampsInSnapshots: true
         });
+        
+        if (!this.handleValidation()){
+            //window.alert("Inside if");
+            return;
+        } 
         const questionnaireRef=db.collection("usersPQ").add({
             user: this.state.username,
             gender: this.state.gender,
@@ -156,8 +188,10 @@ class PersonalityQuestionnaire extends Component {
             [e.target.name]: e.target.value
         });
     }
+
+    
     //not sure if i need this
-    componentDidMount(){
+    /*componentDidMount(){
         const questionnaireRef =firebase.database().ref('usersPQ');
         questionnaireRef.on('value',(snapshot)=>{
             let questionnaire=snapshot.val();
@@ -195,16 +229,15 @@ class PersonalityQuestionnaire extends Component {
                 questionnaire:newState
             });
         });
-    }
+    }*/
 
-    // need to add the bootstrap for this page
     //should add the value to all the options of select
     render() { 
         return ( 
-            <form onSubmit={this.handleSubmit}>
-                <div class="jumbotron jumbotron-fluid">
+            <form onSubmit={this.handleSubmit} id="pform">
+                <div class="jumbotron jumbotron-fluid" >
                     <div class="container">
-                        <h2 class="display-4">Personality Questionnaire</h2>
+                        <h2 class="display-4"id="jumboText">Personality Questionnaire</h2>
                     </div>
                 </div>
                 <div class="form-group col-md-12">
@@ -216,7 +249,7 @@ class PersonalityQuestionnaire extends Component {
                 <div class="form-group col-md-12"> 
                 <label for="Gender">Gender
                 <select class="form-control" id="gender" name="gender" onChange={this.handleChange} value={this.state.gender}>
-                    <option>Choose..</option> <option>Male</option><option>Female</option>
+                    <option></option> <option>Male</option><option>Female</option>
                 </select>             
                 </label>
                 <label for="age">Age
@@ -227,7 +260,7 @@ class PersonalityQuestionnaire extends Component {
                 </label>
             </div>        
             <div class="form-group col-md-12">
-                <label>Interested in?
+                <label>Are you interested in?
                     <select class="form-control" id="attrgender" name="attrgender" onChange={this.handleChange} value={this.state.attrgender}>
                         <option selected></option><option>Men</option><option>Women</option><option>Both</option> 
                     </select>
@@ -340,11 +373,13 @@ class PersonalityQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
-                <label>Add a Description about yourself
-                    <input class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
+                <label>Add a Description about yourself: 
+                    <textarea class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
                 </label>
+                <br/>
+                <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
+                
             </div>
-            <button type="submit" onClick={this.handleSubmit}>Submit</button>
         </form>        
         );
     }
