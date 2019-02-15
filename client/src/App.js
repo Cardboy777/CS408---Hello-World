@@ -10,6 +10,7 @@ import UserSettings from './UserSettings';
 import Page404 from './Page404';
 import AuthUserContext from './UserSessionContext';
 import ReqUserAuth from './ReqUserAuth';
+import PersonalityQnn from './PersonalityQnn';
 import firebase from './firebase';
 
 class App extends Component {
@@ -24,7 +25,7 @@ class App extends Component {
     componentDidMount(){
       firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
     }
-    
+
     handleAuthStateChange(user){
       if (user) {
         // User is signed in.
@@ -38,7 +39,7 @@ class App extends Component {
     }
 
     render() {
-    return (     
+    return (
       <AuthUserContext.Provider value={this.state.currentUser}>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Switch>
@@ -49,10 +50,11 @@ class App extends Component {
               <Route path= '/messages' component= { Messages }/>
               <Route path= '/user/profile' component= { UserProfile }/>
               <Route path= '/user/account' component= { UserSettings }/>
+              <Route path= '/user/PersonalityQnn' component= { PersonalityQnn }/>
             </ReqUserAuth>
             <Route component= { Page404 }/>
           </Switch>
-        </BrowserRouter> 
+        </BrowserRouter>
       </AuthUserContext.Provider>
     );
   }
