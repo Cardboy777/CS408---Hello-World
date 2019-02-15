@@ -4,30 +4,56 @@ import FrontPage from './FrontPage';
 import Matches from './Matches';
 import Matching from './Matching';
 import Messages from './Messages';
-import './App.css';
+import './css/App.css';
 import UserProfile from './UserProfile';
 import UserSettings from './UserSettings';
-import Login from './Login';
-import Logout from './Logout';
-import PersonalityQuestionnaire from './PersonalityQnn';
+import Page404 from './Page404';
+import AuthUserContext from './UserSessionContext';
+import ReqUserAuth from './ReqUserAuth';
+import firebase from './firebase';
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state={
+      currentUser: null
+    }
+    this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
+  }
+
+    componentDidMount(){
+      firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
+    }
+    
+    handleAuthStateChange(user){
+      if (user) {
+        // User is signed in.
+        this.setState({currentUser : user});
+        this.forceUpdate();
+      } else {
+        //no user is signed in.
+        this.setState({currentUser : null});
+        this.forceUpdate();
+      }
+    }
+
     render() {
     return (     
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Switch>
-          <Route exact path='/' component={ FrontPage } />
-          <Route path='/matches' component={ Matches }/>
-          <Route path= '/matching' component= { Matching }/>
-          <Route path= '/messages' component= { Messages }/>
-          <Route path= '/user/profile' component= { UserProfile }/>
-          <Route path= '/user/account' component= { UserSettings }/>
-          <Route path= '/login' component= { Login }/>
-          <Route path= '/logout' component= { Logout }/>
-          <Route component= { FrontPage }/>
-        </Switch>
-      </BrowserRouter> 
-      
+      <AuthUserContext.Provider value={this.state.currentUser}>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <Switch>
+            <Route path='/' exact component={ FrontPage } />
+            <ReqUserAuth>
+              <Route path='/matches' component={ Matches }/>
+              <Route path= '/matching' component= { Matching }/>
+              <Route path= '/messages' component= { Messages }/>
+              <Route path= '/user/profile' component= { UserProfile }/>
+              <Route path= '/user/account' component= { UserSettings }/>
+            </ReqUserAuth>
+            <Route component= { Page404 }/>
+          </Switch>
+        </BrowserRouter> 
+      </AuthUserContext.Provider>
     );
   }
 }
