@@ -48,11 +48,14 @@ class LoginHeader extends Component {
     }
     signUp(e){
 		e.preventDefault();
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-		});
+		if (this.state.validUsername == true && this.state.validEmail == true && this.state.validPassword == true)
+		{
+			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+			});
+		}
     }
     toggleLoginState(e){
         e.preventDefault();
@@ -83,7 +86,7 @@ class LoginHeader extends Component {
 			error.innerHTML = "Your username must consist of between 6 and 20 alphanumeric characters."
 			error.style.display = "inline-block";
 		}
-		else if (!usernameString.match(/^[0-9a-z]+$/))
+		else if (!usernameString.match(/^[0-9a-zA-Z]+$/))
 		{
 			error.innerHTML = "Your username may only contain letters and numbers."
 			error.style.display = "inline-block";
@@ -92,11 +95,13 @@ class LoginHeader extends Component {
 		{
 			error.style.display = "none";
 			this.setState({validUsername: true});
+			return;
 		}
 		this.setState({validUsername: false});
     }
 	checkEmail(e){
         e.preventDefault();
+		//regex copied from stack overflow
 		var email = document.getElementById("emailBox").value;
 		this.setState({email : email});
 		var error = document.getElementById("signupEmailError");
@@ -107,6 +112,7 @@ class LoginHeader extends Component {
 		{
 			error.style.display = "none";
 			this.setState({validEmail: true});
+			return;
 		}
 		else
 		{
@@ -130,6 +136,7 @@ class LoginHeader extends Component {
 		{
 			error.style.display = "none";
 			this.setState({validPassword: true});
+			return;
 		}
 		this.setState({validPassword: false});
 	}

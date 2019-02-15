@@ -12,7 +12,11 @@ class Navbar extends Component {
     e.preventDefault();
     firebase.auth().signOut().then(this.forceUpdate()).catch(function(error) {
       // An error happened.
-    });
+	  
+    }).then(function()
+	{
+		window.location.href = "http://localhost:3000/"
+	});;
   }
   render() {
     return (
