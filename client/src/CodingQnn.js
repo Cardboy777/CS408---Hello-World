@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
 import './CodingQnn.css';
+import PersonalityQuestionnaire from './PersonalityQnn.js';
 //var firebase=require("firebase");
 //var database = firebase.database();
 //username
@@ -9,6 +10,7 @@ class CodingQuestionnaire extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            
             ca1:"",
             ca2:"",
             ca3:"",
@@ -20,9 +22,16 @@ class CodingQuestionnaire extends Component {
             ca9:"",
             ca10:"",
         }
+        
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
+    /*
+    myCallback=(username) =>{
+        //this.props.callbackFromParent(PersonalityQuestionnaire);
+        this.setState({username:username})
+    }*/
     handleSubmit = e =>{
         e.preventDefault();
         const db =firebase.firestore();
@@ -32,7 +41,7 @@ class CodingQuestionnaire extends Component {
         if(!this.handleValidation()){
             return;
         }
-        const questionnaireRef=db.collection("usersPQ").add({
+        const questionnaireRef=db.collection("usersPQ").doc(this.props.username).update({
             canswer1: this.state.ca1,
             canswer2: this.state.ca2,
             canswer3: this.state.ca3,
@@ -217,7 +226,7 @@ class CodingQuestionnaire extends Component {
                 </label>
                 <br />
             
-                <button type="submit" onClick={this.handleSubmit}>Submit</button>
+                <button type="submit" class="btn btn-outline-light btn-lg" onClick={this.handleSubmit}>Submit</button>
             </div>
         </form>
            
