@@ -1,4 +1,6 @@
-import firebase from 'firebase'
+import firebase from 'firebase';
+require('firebase/auth');
+
 const config = {
     apiKey: "AIzaSyB6iegdIcIdjfgIBrNsRySNSnYAiyuuf0A",
     authDomain: "cs-408-hello-world.firebaseapp.com",

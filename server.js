@@ -219,23 +219,37 @@ router.get("/getTestMessage", (req, res) => {
     res.json(msg);
 });
 
-//Returns an array of 5 User Objects
+//Returns an array of new User Objects that are matches for the User
 //NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
 router.get("/getMorePotentialMatches", (req, res) => {
     //const users = getPotentialMatches(5);
     result = findMatches("ReidK");
     result.then(function(ret){
       console.log(ret);
-      /**const users = [
+      res.json(ret);
+    });
+  });
+  
+  //Returns an array of users that contains the current list of potential matches for a user (does NOT return NEW matches, just the list of already generated matches)
+  //NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
+  router.get("/getListOfPotentialMatches", (req, res) => {
+    const users = [
           {uid: 12345, name: "John Smith", description: "I like long walks on the beach", fav_lang: "Java", match_percent: 92},
           {uid: 12341234, name: "John Doe", description: "I like People named David", fav_lang: "Ruby on Rails", match_percent: 73},
           {uid: 234432432, name: "Jane Does", description: "I'm an engineer", fav_lang: "MatLab", match_percent:60},
           {uid: 324363, name: "Yo Low", description: "I will try anything", fav_lang: "HTML", match_percent:45},
           {uid: 35234, name: "Cardboy777", description: "I like card games", fav_lang: "Visual Basic", match_percent:8}
-      ];**/
-      res.json(ret);
+        ];
+        res.json(users);
     });
 
+//Recieves json with 2 user objects. The two users should be removed from each other's list of potential users
+//NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
+router.get("/RemoveUsersFromPotentialMatches", (req, res) => {
+  var user1 = req.param('user1');
+  var user2 = req.param('user2');
+  console.log(user1);
+  res.json();
 });
 
 app.use(express.static('public'));
