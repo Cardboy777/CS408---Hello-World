@@ -43,13 +43,13 @@ class App extends Component {
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Switch>
             <Route path='/' exact component={ FrontPage } />
-            <ReqUserAuth>
+            
               <Route path='/matches' component={ Matches }/>
               <Route path= '/matching' component= { Matching }/>
               <Route path= '/messages' component= { Messages }/>
               <Route path= '/user/profile' component= { UserProfile }/>
               <Route path= '/user/account' component= { UserSettings }/>
-            </ReqUserAuth>
+            
             <Route component= { Page404 }/>
           </Switch>
         </BrowserRouter> 

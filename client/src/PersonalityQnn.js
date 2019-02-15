@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
-import './PersonalityQnn.css';
+import './css/PersonalityQnn.css';
+import CodingQuestionnaire from './CodingQnn';
 //username
 
 class PersonalityQuestionnaire extends Component {
@@ -91,6 +92,7 @@ class PersonalityQuestionnaire extends Component {
         });
     }
     */
+    //myCallback=()
     handleValidation(){
         //window.alert("Inside Validation function");
         if(this.state.username===""){ window.alert("Invalid Username Input"); return false; }
@@ -131,7 +133,7 @@ class PersonalityQuestionnaire extends Component {
             //window.alert("Inside if");
             return;
         } 
-        const questionnaireRef=db.collection("usersPQ").add({
+        const questionnaireRef=db.collection("usersPQ").doc(this.state.username).set({
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,
@@ -154,10 +156,20 @@ class PersonalityQuestionnaire extends Component {
             panswer15: this.state.pa15,
             panswer16: this.state.pa16,
             panswer17: this.state.pa17,
-            describe: this.state.description
+            describe: this.state.description,
+            canswer1:'',
+            canswer2:'',
+            canswer3:'',
+            canswer4:'',
+            canswer5:'',
+            canswer6:'',
+            canswer7:'',
+            canswer8:'',
+            canswer9:'',
+            canswer10:''
         });
         //reset the state
-        this.setState({
+        /*this.setState({
             username:"",
             gender:"",
             age:"",
@@ -181,7 +193,8 @@ class PersonalityQuestionnaire extends Component {
             pa16:"",
             pa17:"",
             description:""
-        });
+        });*/
+        window.alert("Survey Submitted. Please Click Next!");
     };
     handleChange(e){
         this.setState({
@@ -379,6 +392,7 @@ class PersonalityQuestionnaire extends Component {
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
                 
+                <a class="btn btn-outline-light btn-lg" href='/CodingQnn'>Next Questionnaire</a>
             </div>
         </form>        
         );

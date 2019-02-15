@@ -4,8 +4,17 @@ import Navbar from './Navbar';
 import LoginHeader from './LoginHeader';
 //import './js/PageRedirect.js';
 import AuthUserContext from './UserSessionContext';
+import firebase from './firebase';
 
-class Header extends Component {  	
+class Header extends Component {  
+	constructor(){
+		super();
+		this.state={
+			currentUser: null
+		}
+		this.redirectPage = this.redirectPage.bind(this);
+		this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
+	}	
 	redirectPage(str) 
 	{
 		let defaultLocation = "http://localhost:3000/";
@@ -13,15 +22,25 @@ class Header extends Component {
 		{
 			if (window.location.href === defaultLocation) { return; }
 			console.log("Link: '" + window.location.href + "'");
-			//window.location.href = defaultLocation;
+			window.location.href = defaultLocation;
 		}
 	}
 	
-	componentDidMount() {/*
-		var userData = window.localStorage.getItem("user");
-		if (userData === undefined || userData.length < 1) { this.redirectPage("login"); return; }
-		var data = JSON.parse(userData);
-		if (data && data.UserKey === undefined) { this.redirectPage("login"); return; }*/
+	handleAuthStateChange(user){
+      if (user) {
+        // User is signed in.
+        this.setState({currentUser : user});
+        this.forceUpdate();
+      } else {
+        //no user is signed in.
+        this.setState({currentUser : null});
+		this.redirectPage("login");
+        this.forceUpdate();
+      }
+    }
+	
+	componentDidMount() {
+		firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
 	};
 	
   render() {
