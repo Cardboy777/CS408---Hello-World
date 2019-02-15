@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
 import './PersonalityQnn.css';
+import CodingQuestionnaire from './CodingQnn';
 //username
 
 class PersonalityQuestionnaire extends Component {
@@ -378,7 +379,7 @@ class PersonalityQuestionnaire extends Component {
                 </label>
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
-                
+                <a class="btn btn-outline-light btn-lg" href='/CodingQnn'>Next Questionnaire</a>
             </div>
         </form>        
         );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
-
+import './CodingQnn.css';
 //var firebase=require("firebase");
 //var database = firebase.database();
 //username
@@ -142,10 +142,10 @@ class CodingQuestionnaire extends Component {
             <form onSubmit={this.handleSubmit}>
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">Coding Questionnaire</h2>
+                        <h2 class="display-4" id="jumboText">Coding Questionnaire</h2>
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-group col-md-12">
                 <label>What motivates you to code?
                     <select class="form-control" id="ca1" name="ca1" onChange={this.handleChange} value={this.state.ca1}>
                         <option selected></option><option>Inner Peace</option> <option>Success</option> <option>Fun</option>
@@ -216,8 +216,9 @@ class CodingQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
+            
+                <button type="submit" onClick={this.handleSubmit}>Submit</button>
             </div>
-            <button type="submit" onClick={this.handleSubmit}>Submit</button>
         </form>
            
         );
