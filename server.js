@@ -18,7 +18,10 @@ function findMatches(userName){
   mainUser = db.collection("usersPQ").where("user", "==", userName)
   .get()
   .then(function(querySnapshot) {
-    return querySnapshot.docs[0].data()
+    return {
+      "id": querySnapshot.docs[0].id,
+      "data": querySnapshot.docs[0].data()
+    }
   });
 
   //Query to get the quiz data for all the other users
@@ -27,9 +30,14 @@ function findMatches(userName){
   .then(function(querySnapshot) {
     var users = [];
     querySnapshot.forEach(function(doc) {
+        if(doc.data().user == null || doc.data().user == ''){
 
-        if(doc.data().user != userName || doc.data().user.includes(userName) === false){
-          this.push(doc.data());
+        }
+        else if(doc.data().user != userName || doc.data().user.includes(userName) === false){
+          this.push({
+            "id": doc.id,
+            "data": doc.data()
+          });
         }
 
     }, users);
@@ -41,36 +49,54 @@ function findMatches(userName){
   var finalMatches = [];
 
   finalMatches = Promise.all([mainUser, users]).then(function(values){
+
     var finalMatches = [];
     var mainUser = values[0];
     var users = values[1];
-    var scores = []
+    temp = mainUser["data"]["matchedUsers"];
 
+    if(temp.length > 0){
+      console.log(temp);
+      return temp;
+    }
+    var scores = []
     if(users.length < 100){
       for(i = 0; i < users.length;i++){
         var score = 0;
+        var valid = true;
         for(j = 1; j < 18; j++){
           var str = "panswer"+j;
-          if(mainUser[str] == users[i][str]){
+          if(users[i]["data"][str] == null || users[i]["data"][str] == ''){
+
+            valid = false;
+          }
+          if(mainUser["data"][str] == users[i]["data"][str]){
             score++;
           }
         }
         for(j = 1; j < 11; j++){
           var str = "canswer"+j;
-          if(mainUser[str] == users[i][str]){
+          if(users[i]["data"][str] == null || users[i]["data"][str] == ''){
+            valid = false;
+          }
+          if(mainUser["data"][str] == users[i]["data"][str]){
             score++;
           }
         }
         thisScore = {
-          "user" : users[i]["user"],
+          "user" : users[i]["data"]["user"],
           "score" : score,
-          "desc" : users[i]["describe"],
-          "gender" : users[i]["gender"],
-          "age" : users[i]["age"],
-          "usersPQID" : users[i]["usersPQID"]
+          "desc" : users[i]["data"]["describe"],
+          "gender" : users[i]["data"]["gender"],
+          "age" : users[i]["data"]["age"],
+          "usersPQID" : users[i]["id"],
+          "attractGender": users[i]["data"]["attractGender"]
         };
-        if(thisScore["gender"] == mainUser["attractGender"]){
-          scores.push(thisScore);
+        if(thisScore["gender"] == mainUser["data"]["attractGender"] && thisScore["attractGender"] == mainUser["data"]["gender"]){
+          if(valid){
+            scores.push(thisScore);
+          }
+
         }
 
       }
@@ -79,35 +105,44 @@ function findMatches(userName){
         while(count < 100){
           var random = Math.floor(Math.random() * users.length);
           var score = 0;
+          var valid = true;
           for(j = 1; j < 18; j++){
             var str = "panswer"+j;
-
-            if(mainUser[str] == users[random][str]){
+            if(users[random]["data"][str] == null || users[random]["data"][str] == ''){
+              valid = false;
+            }
+            if(mainUser["data"][str] == users[random]["data"][str]){
               score++;
             }
           }
           for(j = 1; j < 11; j++){
             var str = "canswer"+j;
-
-            if(mainUser[str] == users[random][str]){
+            if(users[random]["data"][str] == null || users[random]["data"][str] == ''){
+              valid = false;
+            }
+            if(mainUser["data"][str] == users[random]["data"][str]){
               score++;
             }
           }
           thisScore = {
-            "user" : users[i]["user"],
+            "user" : users[i]["data"]["user"],
             "score" : score,
-            "desc" : users[i]["describe"],
-            "gender" : users[i]["gender"],
-            "age" : users[i]["age"],
-            "usersPQID" : users[i]["usersPQID"]
+            "desc" : users[i]["data"]["describe"],
+            "gender" : users[i]["data"]["gender"],
+            "age" : users[i]["data"]["age"],
+            "usersPQID" : users[i]["id"],
+            "attractGender": users[i]["data"]["attractGender"]
           };
-          if(thisScore["gender"] == mainUser["attractGender"]){
-            scores.push(thisScore);
+          if(thisScore["gender"] == mainUser["data"]["attractGender"] && thisScore["attractGender"] == mainUser["data"]["gender"]){
+            if(valid){
+                scores.push(thisScore);
+            }
           }
           users.splice(random, 1);
           count++;
         }
     }
+    //console.log(scores);
     for(i = 0; i < 10; i++){
       if(scores.length === 0) {
         break;
@@ -122,11 +157,12 @@ function findMatches(userName){
           highMatch = {
             "name" : scores[i]["user"],
             "match_percent" : Math.floor(scores[i]["score"]*100/27),
-            "description" : scores[i]["describe"],
+            "description" : scores[i]["desc"],
             "gender" : scores[i]["gender"],
             "age" : scores[i]["age"],
-            "uid" : i,
-            "fav_lang" : "TEST"
+            "uid" : scores[i]["usersPQID"],
+            "fav_lang" : "TEST",
+            "attractGender": scores[i]["attractGender"]
           };
           matchNumber = j;
         }
@@ -135,6 +171,36 @@ function findMatches(userName){
       finalMatches.push(highMatch);
 
     }
+    var matchesIDS = [];
+    for(i = 0; i < finalMatches.length; i++){
+      main = {
+        "name" : mainUser["data"]["user"],
+        "match_percent" : finalMatches[i]["match_percent"],
+        "description" : mainUser["data"]["describe"],
+        "gender" : mainUser["data"]["gender"],
+        "age" : mainUser["data"]["age"],
+        "uid" : mainUser["id"],
+        "fav_lang" : "TEST",
+        "attractGender": mainUser["data"]["attractGender"]
+      }
+      var db = admin.firestore();
+      var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
+      var setMatched = matchRef.set({
+        matchedUsers: [main]
+      }, {merge: true});
+      var setPrevMatched = matchRef.set({
+        prevMatchedUsers: [mainUser["id"]]
+      }, {merge: true});
+      matchesIDS.push(finalMatches[i]["uid"]);
+    }
+    var db = admin.firestore();
+    var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+    var setMatched = matchRef.set({
+      matchedUsers: finalMatches
+    }, {merge: true});
+    var setPrevMatched = matchRef.set({
+      prevMatchedUsers: matchesIDS
+    }, {merge: true});
     return finalMatches;
 
   });
