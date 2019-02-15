@@ -92,7 +92,7 @@ class PersonalityQuestionnaire extends Component {
         });
     }
     */
-    //myCallback=()
+    
     handleValidation(){
         //window.alert("Inside Validation function");
         if(this.state.username===""){ window.alert("Invalid Username Input"); return false; }
@@ -121,19 +121,32 @@ class PersonalityQuestionnaire extends Component {
         else if(this.state.description===""){ window.alert("Invalid Description Input"); return false;}
         else{ /*window.alert("Returns true");*/ return true;}
     }
-
+    checkSubmit(){
+        if(!this.handleValidation()){
+            return;
+        }
+    }
     handleSubmit = e =>{
         e.preventDefault();
         const db =firebase.firestore();
         db.settings({
             timestampsInSnapshots: true
         });
-        
+        let cuid;
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              // User is signed in.
+              cuid=user.uid;
+            } else {
+              // No user is signed in.
+            }
+          });
         if (!this.handleValidation()){
             //window.alert("Inside if");
             return;
         } 
-        const questionnaireRef=db.collection("usersPQ").doc(this.state.username).set({
+        const questionnaireRef=db.collection("usersPQ").doc(cuid).set({
+            uid:cuid,
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,
@@ -392,7 +405,7 @@ class PersonalityQuestionnaire extends Component {
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
                 
-                <a class="btn btn-outline-light btn-lg" href='/CodingQnn'>Next Questionnaire</a>
+                <a class="btn btn-outline-light btn-lg" onClick={this.checkSubmit} href='/CodingQnn'>Next Questionnaire</a>
             </div>
         </form>        
         );

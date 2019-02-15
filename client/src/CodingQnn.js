@@ -10,7 +10,7 @@ class CodingQuestionnaire extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            username:null,
             ca1:"",
             ca2:"",
             ca3:"",
@@ -27,21 +27,30 @@ class CodingQuestionnaire extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
     }
-    /*
+    
     myCallback=(username) =>{
         //this.props.callbackFromParent(PersonalityQuestionnaire);
         this.setState({username:username})
-    }*/
+    }
     handleSubmit = e =>{
         e.preventDefault();
         const db =firebase.firestore();
         db.settings({
             timestampsInSnapshots: true
         }); 
+        let cuid;
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              // User is signed in.
+              cuid=user.uid;
+            } else {
+              // No user is signed in.
+            }
+          });
         if(!this.handleValidation()){
             return;
         }
-        const questionnaireRef=db.collection("usersPQ").doc(this.props.username).update({
+        const questionnaireRef=db.collection("usersPQ").doc(cuid).update({
             canswer1: this.state.ca1,
             canswer2: this.state.ca2,
             canswer3: this.state.ca3,

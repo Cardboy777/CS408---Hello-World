@@ -17,7 +17,7 @@ class App extends Component {
     return (     
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
-          <Route exact path='/' component={ PersonalityQuestionnaire } />
+          <Route exact path='/' component={ FrontPage } />
           <Route path='/matches' component={ Matches }/>
           <Route path= '/matching' component= { Matching }/>
           <Route path= '/messages' component= { Messages }/>
@@ -26,8 +26,8 @@ class App extends Component {
           <Route path= '/login' component= { Login }/>
           <Route path= '/logout' component= { Logout }/>
           <Route path= '/PersonalityQnn' component= { PersonalityQuestionnaire } />
-          <Route path= '/CodingQnn' component= { CodingQuestionnaire }/>
-          <Route component= { PersonalityQuestionnaire }/>
+          <Route path= '/CodingQnn' component ={CodingQuestionnaire} />
+          <Route component= { FrontPage }/>
         </Switch>
       </BrowserRouter> 
       
