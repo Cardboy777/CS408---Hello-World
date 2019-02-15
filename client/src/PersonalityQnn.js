@@ -131,6 +131,8 @@ class PersonalityQuestionnaire extends Component {
             //window.alert("Inside if");
             return;
         } 
+        //window.localStorage.setItem("username",this.state.username.jsonStringify);
+
         const questionnaireRef=db.collection("usersPQ").add({
             user: this.state.username,
             gender: this.state.gender,
@@ -154,7 +156,17 @@ class PersonalityQuestionnaire extends Component {
             panswer15: this.state.pa15,
             panswer16: this.state.pa16,
             panswer17: this.state.pa17,
-            describe: this.state.description
+            describe: this.state.description,
+            canswer1:'',
+            canswer2:'',
+            canswer3:'',
+            canswer4:'',
+            canswer5:'',
+            canswer6:'',
+            canswer7:'',
+            canswer8:'',
+            canswer9:'',
+            canswer10:''
         });
         //reset the state
         this.setState({
@@ -378,7 +390,7 @@ class PersonalityQuestionnaire extends Component {
                 </label>
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
-                
+                <a href="/PersonalityQuestionnaire" class="btn btn-outline-light btn-lg" >Next Questionnaire</a>
             </div>
         </form>        
         );

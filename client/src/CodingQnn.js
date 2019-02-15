@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
 import './CodingQnn.css';
-//var firebase=require("firebase");
-//var database = firebase.database();
-//username
+import PersonalityQuestionnaire from './PersonalityQnn';
+import { QuerySnapshot } from '@google-cloud/firestore';
 
 class CodingQuestionnaire extends Component {
     constructor(props) {
@@ -18,12 +17,13 @@ class CodingQuestionnaire extends Component {
             ca7:"",
             ca8:"",
             ca9:"",
-            ca10:"",
+            ca10:""
         }
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.collectionUpdate = this.collectionUpdate.bind(this);
+        
     }
-    handleSubmit = e =>{
+    collectionUpdate = (e) =>{
         e.preventDefault();
         const db =firebase.firestore();
         db.settings({
@@ -32,6 +32,35 @@ class CodingQuestionnaire extends Component {
         if(!this.handleValidation()){
             return;
         }
+        //let user_match=window.localStorage.getItem("username");
+        let user_match="username1";
+        const userRef=db.collection("usersPQ").where("user","array-contains",user_match);
+        
+        /*QuerySnapshot.foreach((doc) =>{
+            const {user_match,gender, age,location, attractGender,
+                panswer1, panswer2, panswer3, panswer4,panswer5,
+                panswer6,panswer7, panswer8,panswer9, panswer10,
+                panswer11,panswer12,panswer13,panswer14,panswer15,
+                panswer16,panswer17,describe, ca1,ca2,ca3,ca4,ca5,ca6,
+                ca7,ca8,ca9,ca10} = doc.data();
+        });
+        quest.push({
+            key: doc.id,
+            user_match,ca1,ca2,ca3,ca4,ca5,
+            ca6,ca7,ca8,ca9,ca10
+        });*/
+        userRef.set({
+            canswer1:this.state.ca1,
+            canswer2:this.state.ca2,
+            canswer3:this.state.ca3,
+            canswer4:this.state.ca4,
+            canswer5:this.state.ca5,
+            canswer6:this.state.ca6,
+            canswer7:this.state.ca7,
+            canswer8:this.state.ca8,
+            canswer9:this.state.ca9,
+            canswer10:this.state.ca10
+        });/*
         const questionnaireRef=db.collection("usersPQ").add({
             canswer1: this.state.ca1,
             canswer2: this.state.ca2,
@@ -41,10 +70,10 @@ class CodingQuestionnaire extends Component {
             canswer6: this.state.ca6,
             canswer7: this.state.ca7,
             canswer8: this.state.ca8,
-            canswer9: this.state.ca9,
+            canswer9: this.state.ca9,npm
             canswer10: this.state.ca10
-        });
-        this.setState({
+        }); */   
+        /*this.setState({
             ca1:"",
             ca2:"",
             ca3:"",
@@ -55,7 +84,7 @@ class CodingQuestionnaire extends Component {
             ca8:"",
             ca9:"",
             ca10:""
-        });
+        });*/
     }
 
     /*handleSubmit (event){
@@ -135,11 +164,10 @@ class CodingQuestionnaire extends Component {
         });
     }*/
 
-    // need to add the bootstrap for this page
     //should add the value to all the options of select
     render() { 
         return ( 
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.collectionUpdate}>
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
                         <h2 class="display-4" id="ctitle">Coding Questionnaire</h2>
@@ -217,6 +245,7 @@ class CodingQuestionnaire extends Component {
                 </label>
                 <br />
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
+                
             </div>
         </form>
            
