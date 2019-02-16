@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './css/Header.css'
 import Navbar from './Navbar';
 import LoginHeader from './LoginHeader';
-//import './js/PageRedirect.js';
-import AuthUserContext from './UserSessionContext';
 import firebase from './firebase';
 
 class Header extends Component {  
@@ -25,8 +23,12 @@ class Header extends Component {
 			window.location.href = defaultLocation;
 		}
 	}
-	
-	handleAuthStateChange(user){
+
+		componentDidMount(){
+      firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
+    }
+    
+    handleAuthStateChange(user){
       if (user) {
         // User is signed in.
         this.setState({currentUser : user});
@@ -34,14 +36,9 @@ class Header extends Component {
       } else {
         //no user is signed in.
         this.setState({currentUser : null});
-		this.redirectPage("login");
         this.forceUpdate();
       }
     }
-	
-	componentDidMount() {
-		firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
-	};
 	
   render() {
 	return (
@@ -50,23 +47,16 @@ class Header extends Component {
 			<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span className="navbar-toggler-icon"></span>
 			</button>
-
 			<div className="collapse navbar-collapse" id="navbarSupportedContent">
-				<AuthUserContext.Consumer>{
-										AuthUserContext =>{
-											if (AuthUserContext !== null){
-												return <Navbar user={this.props.user}/>;
-											}
-											else{
-												return <LoginHeader/>;
-											}
-										}
-				}</AuthUserContext.Consumer>
+				{this.state.currentUser ? 
+					<Navbar user={this.state.currentUser}/> :
+					<LoginHeader/> 
+				}
 			</div>
-	  </nav>
+		</nav>
 	);
     
   }
 }
-
 export default Header;
+
