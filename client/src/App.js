@@ -11,6 +11,7 @@ import Page404 from './Page404';
 import AuthUserContext from './UserSessionContext';
 import ReqUserAuth from './ReqUserAuth';
 import PersonalityQnn from './PersonalityQnn';
+import CodingQnn from './CodingQnn';
 import firebase from './firebase';
 
 class App extends Component {
@@ -51,6 +52,7 @@ class App extends Component {
               <Route path= '/user/profile' component= { UserProfile }/>
               <Route path= '/user/account' component= { UserSettings }/>
               <Route path= '/user/PersonalityQnn' component= { PersonalityQnn }/>
+              <Route path= '/user/CodingQnn' component= { CodingQnn }/>
             </ReqUserAuth>
             <Route component= { Page404 }/>
           </Switch>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './css/LoginHeader.css';
+import PersonalityQnn from './PersonalityQnn';
 import firebase from './firebase';
+import { browserHistory } from 'react-router';
 
 class LoginHeader extends Component {
     constructor(){
@@ -47,12 +49,20 @@ class LoginHeader extends Component {
 		  });
     }
     signUp(e){
+    var that = this;
 		e.preventDefault();
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-		});
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(user) {
+          var user = firebase.auth().currentUser;
+          const db = firebase.firestore();
+          const docRef = db.collection("usersPQ").doc(user.uid).set({
+            user: that.state.username,
+            email: that.state.email
+          });
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+		    });
     }
     toggleLoginState(e){
         e.preventDefault();
@@ -101,7 +111,7 @@ class LoginHeader extends Component {
 		this.setState({email : email});
 		var error = document.getElementById("signupEmailError");
 		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		
+
 		if (email.length === 0) { error.style.display = "none"; return; }
 		if (re.test(String(email).toLowerCase()))
 		{
@@ -145,7 +155,7 @@ class LoginHeader extends Component {
 
                     <label htmlFor="psw"><b>Password:</b></label>
                     <input id="loginPassword" className="form-control mr-sm-2" type="password" onKeyUp={this.updateLoginPassword} placeholder="Enter Password" name="psw" required/>
-                    
+
                     <button className="btn btn-primary" type="submit" onClick={this.login}>Login</button>
                     <br/>
                 </form>
@@ -164,15 +174,15 @@ class LoginHeader extends Component {
 						<label className="black-text" htmlFor="username"><b>Username</b></label>
 						<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onKeyUp={this.checkUsername} onFocus={this.checkUsername} onBlur={this.checkUsername} required/>
 						<label className="inputError" id="signupUsernameError">Error:</label>
-						
+
 						<label className="black-text" htmlFor="email"><b>Email</b></label>
 						<input id="emailBox" type="text" placeholder="Enter Email" name="email" onKeyUp={this.checkEmail} onFocus={this.checkEmail} onBlur={this.checkEmail} required/>
 						<label className="inputError" id="signupEmailError">Error:</label>
-						
+
 						<label className="black-text" htmlFor="password"><b>Password</b></label>
 						<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onKeyUp={this.checkPassword} onFocus={this.checkPassword} onBlur={this.checkPassword} required/>
 						<label className="inputError" id="signupPasswordError">Error:</label>
-						
+
 						<button className="signup" type="button" onClick={this.signUp}>Sign Up</button>
 					</div>
 				</form>

@@ -9,16 +9,16 @@ class CodingQuestionnaire extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ca1:"",
-            ca2:"",
-            ca3:"",
-            ca4:"",
-            ca5:"",
-            ca6:"",
-            ca7:"",
-            ca8:"",
-            ca9:"",
-            ca10:"",
+            ca1:this.props.location.state.ca1,
+            ca2:this.props.location.state.ca2,
+            ca3:this.props.location.state.ca3,
+            ca4:this.props.location.state.ca4,
+            ca5:this.props.location.state.ca5,
+            ca6:this.props.location.state.ca6,
+            ca7:this.props.location.state.ca7,
+            ca8:this.props.location.state.ca8,
+            ca9:this.props.location.state.ca9,
+            ca10:this.props.location.state.ca10,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,7 +28,7 @@ class CodingQuestionnaire extends Component {
         const db =firebase.firestore();
         db.settings({
             timestampsInSnapshots: true
-        }); 
+        });
         if(!this.handleValidation()){
             return;
         }
@@ -105,7 +105,7 @@ class CodingQuestionnaire extends Component {
         else if(this.state.ca9===""){ window.alert("Invalid Question Input"); return false;}
         else if(this.state.ca10===""){ window.alert("Invalid Question Input"); return false;}
         else{ return true; }
-        
+
     }
     //not sure if i need this
     /*componentDidMount(){
@@ -137,8 +137,8 @@ class CodingQuestionnaire extends Component {
 
     // need to add the bootstrap for this page
     //should add the value to all the options of select
-    render() { 
-        return ( 
+    render() {
+        return (
             <form onSubmit={this.handleSubmit}>
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
@@ -170,26 +170,26 @@ class CodingQuestionnaire extends Component {
                 <br />
                 <label>Do you enjoy working in groups?
                     <select class="form-control" id="ca4"name="ca4" onChange={this.handleChange} value={this.state.ca4}>
-                        <option selected></option><option>Yes</option><option>No</option> 
+                        <option selected></option><option>Yes</option><option>No</option>
                     </select>
                 </label>
                 <br />
                 <label>IOS: Swift or Android Development?
                     <select class="form-control" id="ca5" name="ca5" onChange={this.handleChange} value={this.state.ca5}>
-                        <option selected></option><option>Swift</option><option>Android</option> 
-                    </select>            
+                        <option selected></option><option>Swift</option><option>Android</option>
+                    </select>
                 </label>
                 <br />
                 <label>What is your favorite IDE?
                     <select class="form-control" id="ca6" name="ca6" onChange={this.handleChange} value={this.state.ca6}>
-                        <option selected></option><option>Vim</option><option>Emacs</option><option>IntelliJ</option> 
+                        <option selected></option><option>Vim</option><option>Emacs</option><option>IntelliJ</option>
                         <option>Eclipse</option> <option>Visual Studio Code</option> <option>CodeBlocks</option> <option>Other</option>
                     </select>
                 </label>
                 <br />
                 <label> How do you feel about web development?
                     <select class="form-control" id="ca7" name="ca7" onChange={this.handleChange} value={this.state.ca7}>
-                        <option selected></option><option>Yes, Love it!</option> <option>Not really</option> <option>I hate it</option> 
+                        <option selected></option><option>Yes, Love it!</option> <option>Not really</option> <option>I hate it</option>
                     </select>
                 </label>
                 <br />
@@ -204,7 +204,7 @@ class CodingQuestionnaire extends Component {
                 <br />
                 <label>Do you enjoy participating in Hackathons?
                     <select class="form-control" id="ca9" name="ca9" onChange={this.handleChange} value={this.state.ca9}>
-                        <option selected></option><option>Yes, always</option><option>Most of the time</option><option> Sometimes</option> 
+                        <option selected></option><option>Yes, always</option><option>Most of the time</option><option> Sometimes</option>
                         <option>Not so much, but I try too</option> <option>No</option>
                     </select>
                 </label>
@@ -219,9 +219,9 @@ class CodingQuestionnaire extends Component {
             </div>
             <button type="submit" onClick={this.handleSubmit}>Submit</button>
         </form>
-           
+
         );
     }
 }
- 
+
 export default CodingQuestionnaire;
