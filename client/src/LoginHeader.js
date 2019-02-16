@@ -56,6 +56,8 @@ class LoginHeader extends Component {
 				var errorMessage = error.message;
 			});
 		}
+		//let transitionTo = Router.transitionTo('/PersonalityQuestionnaire')
+
     }
     toggleLoginState(e){
         e.preventDefault();

@@ -12,6 +12,7 @@ import AuthUserContext from './UserSessionContext';
 import ReqUserAuth from './ReqUserAuth';
 import firebase from './firebase';
 import PersonalityQuestionnaire from './PersonalityQnn';
+import CodingQuestionnaire from './CodingQnn';
 
 class App extends Component {
   constructor(){
@@ -50,6 +51,7 @@ class App extends Component {
               <Route path= '/user/profile' component= { UserProfile }/>
               <Route path= '/user/account' component= { UserSettings }/>
               <Route path= '/user/questionnaire' component= { PersonalityQuestionnaire }/>
+              <Route path= '/user/cquestionnaire' component= { CodingQuestionnaire }/>
             <Route component= { Page404 }/>
           </Switch>
         </BrowserRouter> 

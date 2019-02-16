@@ -23,6 +23,9 @@ class Navbar extends Component {
       <div id="navbar">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
+            <a className="nav-link" href="/user/questionnaire">Take the Questionnaire</a>
+          </li>
+          <li className="nav-item">
             <a className="nav-link" href="/matching">Find a Match</a>
           </li>
           <li className="nav-item">
@@ -32,7 +35,7 @@ class Navbar extends Component {
             <a className="nav-link" href="/messages">Messages</a>
           </li>
           <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a className="nav-link dropdown-toggle" href="/FrontPage" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <AuthUserContext.Consumer>{
                 AuthUserContext =>
                 AuthUserContext.username

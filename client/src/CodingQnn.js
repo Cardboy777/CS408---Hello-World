@@ -25,7 +25,7 @@ class CodingQuestionnaire extends Component {
         
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.checkCompleted = this.checkCompleted.bind(this);
     }
     /*
     myCallback=(username) =>{
@@ -38,19 +38,22 @@ class CodingQuestionnaire extends Component {
         db.settings({
             timestampsInSnapshots: true
         }); 
-        let cuid;
+        //let cuid;
+        let user = firebase.auth().currentUser;
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
               // User is signed in.
-              cuid=user.uid;
+          //    cuid=user.uid;
             } else {
               // No user is signed in.
             }
           });
+       // window.alert(cuid);
+       // console.log(cuid);
         if(!this.handleValidation()){
             return;
         }
-        const questionnaireRef=db.collection("usersPQ").doc(cuid).update({
+        const questionnaireRef=db.collection("usersPQ").doc(user.uid).update({
             canswer1: this.state.ca1,
             canswer2: this.state.ca2,
             canswer3: this.state.ca3,
@@ -62,7 +65,7 @@ class CodingQuestionnaire extends Component {
             canswer9: this.state.ca9,
             canswer10: this.state.ca10
         });
-        this.setState({
+        /* this.setState({
             ca1:"",
             ca2:"",
             ca3:"",
@@ -73,7 +76,9 @@ class CodingQuestionnaire extends Component {
             ca8:"",
             ca9:"",
             ca10:""
-        });
+        }); */
+        window.alert("You've successfully finished the Questionnaires!!");
+        
     }
 
     /*handleSubmit (event){
@@ -124,6 +129,13 @@ class CodingQuestionnaire extends Component {
         else if(this.state.ca10===""){ window.alert("Invalid Question Input"); return false;}
         else{ return true; }
         
+    }
+    checkCompleted(){
+        if(!this.handleValidation()){
+            return;
+        }else{
+            window.location.href="/";
+        }
     }
     //not sure if i need this
     /*componentDidMount(){
@@ -236,6 +248,7 @@ class CodingQuestionnaire extends Component {
                 <br />
             
                 <button type="submit" class="btn btn-outline-light btn-lg" onClick={this.handleSubmit}>Submit</button>
+                <button class="btn btn-outline-light btn-lg" onClick={this.checkCompleted}  >Done</button>
             </div>
         </form>
            

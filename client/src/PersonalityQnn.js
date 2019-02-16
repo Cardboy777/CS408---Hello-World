@@ -30,10 +30,12 @@ class PersonalityQuestionnaire extends Component {
             pa15:"",
             pa16:"",
             pa17:"",
-            description:""
+            description:"",
+            nextToggle:false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.checkSubmit = this.checkSubmit.bind(this);
     }
    
     /*handleSubmit (event){
@@ -125,6 +127,8 @@ class PersonalityQuestionnaire extends Component {
         if(!this.handleValidation()){
             return;
         }
+        this.setState.nextToggle=true
+        window.location.href='/user/cquestionnaire';
     }
     handleSubmit = e =>{
         e.preventDefault();
@@ -132,21 +136,26 @@ class PersonalityQuestionnaire extends Component {
         db.settings({
             timestampsInSnapshots: true
         });
-        let cuid;
+        //let cuid;
+        let user = firebase.auth().currentUser;
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
               // User is signed in.
-              cuid=user.uid;
+           // let cuid=user.uid;
             } else {
               // No user is signed in.
+              window.alert("Not getting cid");
             }
           });
+       // window.alert(cuid);
+        //console.log(cuid);
         if (!this.handleValidation()){
             //window.alert("Inside if");
             return;
         } 
-        const questionnaireRef=db.collection("usersPQ").doc(cuid).set({
-            uid:cuid,
+
+        const questionnaireRef=db.collection("usersPQ").doc(user.uid).set({
+            uid:user.uid,
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,
@@ -181,6 +190,8 @@ class PersonalityQuestionnaire extends Component {
             canswer9:'',
             canswer10:''
         });
+        window.alert("Survey Submitted! Please fill out the next one");
+        this.setState.nextToggle=true; 
         //reset the state
         /*this.setState({
             username:"",
@@ -207,7 +218,8 @@ class PersonalityQuestionnaire extends Component {
             pa17:"",
             description:""
         });*/
-        window.alert("Survey Submitted. Please Click Next!");
+       
+       
     };
     handleChange(e){
         this.setState({
@@ -405,7 +417,7 @@ class PersonalityQuestionnaire extends Component {
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
                 
-                <a class="btn btn-outline-light btn-lg" onClick={this.checkSubmit} href='/CodingQnn'>Next Questionnaire</a>
+                <button class="btn btn-outline-light btn-lg" onClick={this.checkSubmit} checked={this.state.nextToggle===true} >Next Questionnaire</button>
             </div>
         </form>        
         );
