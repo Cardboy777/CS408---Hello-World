@@ -38,62 +38,6 @@ class PersonalityQuestionnaire extends Component {
         this.checkSubmit = this.checkSubmit.bind(this);
     }
    
-    /*handleSubmit (event){
-        event.preventDefault();
-        const questionnaireRef = firebase.database().ref('usersPQ');
-        const questionnaire ={
-            user: this.state.username,
-            gender: this.state.gender,
-            age: this.state.age,
-            location: this.state.location,
-            attractGender: this.state.attrgender,
-            panswer1: this.state.pa1,
-            panswer2: this.state.pa2,
-            panswer3: this.state.pa3,
-            panswer4: this.state.pa4,
-            panswer5: this.state.pa5,
-            panswer6: this.state.pa6,
-            panswer7: this.state.pa7,
-            panswer8: this.state.pa8,
-            panswer9: this.state.pa9,
-            panswer10: this.state.pa10,
-            panswer11: this.state.pa11,
-            panswer12: this.state.pa12,
-            panswer13: this.state.pa13,
-            panswer14: this.state.pa14,
-            panswer15: this.state.pa15,
-            panswer16: this.state.pa16,
-            panswer17: this.state.pa17,
-            describe: this.state.description
-        }
-        questionnaireRef.push(questionnaire);
-        this.setState({
-            username:"",
-            gender:"",
-            age:"",
-            location:"",
-            attrgender:"",
-            pa1:"",
-            pa2:"",
-            pa3:"",
-            pa4:"",
-            pa5:"",
-            pa6:"",
-            pa7:"",
-            pa8:"",
-            pa9:"",
-            pa10:"",
-            pa11:"",
-            pa12:"",
-            pa13:"",
-            pa14:"",
-            pa15:"",
-            pa16:"",
-            pa17:"",
-            description:""
-        });
-    }
-    */
     
     handleValidation(){
         //window.alert("Inside Validation function");
@@ -127,8 +71,9 @@ class PersonalityQuestionnaire extends Component {
         if(!this.handleValidation()){
             return;
         }
-        this.setState.nextToggle=true
-        window.location.href='/user/cquestionnaire';
+        //this.setState.nextToggle=true
+       window.location.href='/user/cquestionnaire';
+//        window.location.replace='/user/cquestionnaire';
     }
     handleSubmit = e =>{
         e.preventDefault();
@@ -191,35 +136,8 @@ class PersonalityQuestionnaire extends Component {
             canswer10:''
         });
         window.alert("Survey Submitted! Please fill out the next one");
-        this.setState.nextToggle=true; 
-        //reset the state
-        /*this.setState({
-            username:"",
-            gender:"",
-            age:"",
-            location:"",
-            attrgender:"",
-            pa1:"",
-            pa2:"",
-            pa3:"",
-            pa4:"",
-            pa5:"",
-            pa6:"",
-            pa7:"",
-            pa8:"",
-            pa9:"",
-            pa10:"",
-            pa11:"",
-            pa12:"",
-            pa13:"",
-            pa14:"",
-            pa15:"",
-            pa16:"",
-            pa17:"",
-            description:""
-        });*/
-       
-       
+       //this.setState.nextToggle=true; 
+              
     };
     handleChange(e){
         this.setState({
@@ -228,50 +146,12 @@ class PersonalityQuestionnaire extends Component {
     }
 
     
-    //not sure if i need this
-    /*componentDidMount(){
-        const questionnaireRef =firebase.database().ref('usersPQ');
-        questionnaireRef.on('value',(snapshot)=>{
-            let questionnaire=snapshot.val();
-            let newState=[];
-            for(let q in questionnaire){
-                newState.push({
-                    id:q,
-                    user: questionnaire[q].user,
-                    gender: questionnaire[q].gender,
-                    age: questionnaire[q].age,
-                    location: questionnaire[q].location,
-                    attractGender: questionnaire[q].attractGender,
-                    panswer1: questionnaire[q].panswer1,
-                    panswer2: questionnaire[q].panswer2,
-                    panswer3: questionnaire[q].panswer3,
-                    panswer4: questionnaire[q].panswer4,
-                    panswer5: questionnaire[q].panswer5,
-                    panswer6: questionnaire[q].panswer6,
-                    panswer7: questionnaire[q].panswer7,
-                    panswer8: questionnaire[q].panswer8,
-                    panswer9: questionnaire[q].panswer9,
-                    panswer10: questionnaire[q].panswer10,
-                    panswer11: questionnaire[q].panswer11,
-                    panswer12: questionnaire[q].panswer12,
-                    panswer13: questionnaire[q].panswer13,
-                    panswer14: questionnaire[q].panswer14,
-                    panswer15: questionnaire[q].panswer15,
-                    panswer16: questionnaire[q].panswer16,
-                    panswer17: questionnaire[q].panswer17,
-                    describe: questionnaire[q].description 
-                    //
-                });
-            }
-            this.setState({
-                questionnaire:newState
-            });
-        });
-    }*/
+    
 
     //should add the value to all the options of select
     render() { 
         return ( 
+            <div>
             <form onSubmit={this.handleSubmit} id="pform">
                 <div class="jumbotron jumbotron-fluid" >
                     <div class="container">
@@ -417,9 +297,13 @@ class PersonalityQuestionnaire extends Component {
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
                 
-                <button class="btn btn-outline-light btn-lg" onClick={this.checkSubmit} checked={this.state.nextToggle===true} >Next Questionnaire</button>
             </div>
-        </form>        
+        </form>    
+        <div class="form-group col-md-12">
+        <button type="redirect" class="btn btn-outline-danger btn-lg" onClick={this.checkSubmit}>Next Questionnaire</button>
+        </div>    
+        
+        </div>
         );
     }
 }

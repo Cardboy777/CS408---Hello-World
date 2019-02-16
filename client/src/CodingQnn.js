@@ -169,6 +169,7 @@ class CodingQuestionnaire extends Component {
     //should add the value to all the options of select
     render() { 
         return ( 
+            <div>
             <form onSubmit={this.handleSubmit}>
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
@@ -248,10 +249,13 @@ class CodingQuestionnaire extends Component {
                 <br />
             
                 <button type="submit" class="btn btn-outline-light btn-lg" onClick={this.handleSubmit}>Submit</button>
-                <button class="btn btn-outline-light btn-lg" onClick={this.checkCompleted}  >Done</button>
+                
             </div>
         </form>
-           
+        <div class="form-group col-md-12">
+            <button class="btn btn-outline-danger btn-lg" onClick={this.checkCompleted}  >Done</button>
+        </div>
+        </div> 
         );
     }
 }
