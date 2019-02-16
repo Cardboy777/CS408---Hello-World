@@ -8,8 +8,6 @@ import './css/App.css';
 import UserProfile from './UserProfile';
 import UserSettings from './UserSettings';
 import Page404 from './Page404';
-import AuthUserContext from './UserSessionContext';
-import ReqUserAuth from './ReqUserAuth';
 import firebase from './firebase';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
@@ -40,22 +38,20 @@ class App extends Component {
     }
 
     render() {
-    return (     
-      <AuthUserContext.Provider value={this.state.currentUser}>
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
-          <Switch>
-            <Route path='/' exact component={ FrontPage } />
-              <Route path='/matches' component={ Matches }/>
-              <Route path= '/matching' component= { Matching }/>
-              <Route path= '/messages' component= { Messages }/>
-              <Route path= '/user/profile' component= { UserProfile }/>
-              <Route path= '/user/account' component= { UserSettings }/>
-              <Route path= '/user/questionnaire' component= { PersonalityQuestionnaire }/>
-              <Route path= '/user/cquestionnaire' component= { CodingQuestionnaire }/>
-            <Route component= { Page404 }/>
-          </Switch>
-        </BrowserRouter> 
-      </AuthUserContext.Provider>
+    return (
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Switch>
+          <Route path='/' exact component={ FrontPage } />
+            <Route path='/matches' component={ Matches }/>
+            <Route path= '/matching' component= { Matching }/>
+            <Route path= '/messages' component= { Messages }/>
+            <Route path= '/user/profile' component= { UserProfile }/>
+            <Route path= '/user/account' component= { UserSettings }/>
+            <Route path= '/user/questionnaire' component= { PersonalityQuestionnaire }/>
+            <Route path= '/user/cquestionnaire' component= { CodingQuestionnaire }/>
+          <Route component= { Page404 }/>
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
