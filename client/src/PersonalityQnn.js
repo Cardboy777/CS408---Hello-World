@@ -300,7 +300,7 @@ class PersonalityQuestionnaire extends Component {
             </div>
         </form>    
         <div class="form-group col-md-12">
-        <button type="redirect" class="btn btn-outline-danger btn-lg" onClick={this.checkSubmit}>Next Questionnaire</button>
+            <button type="redirect" class="btn btn-outline-danger btn-lg" onClick={this.checkSubmit}>Next Questionnaire</button>
         </div>    
         
         </div>
