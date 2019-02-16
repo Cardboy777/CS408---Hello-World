@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import AuthUserContext from './UserSessionContext';
 import firebase from './firebase';
 import './css/Navbar.css';
 
@@ -33,10 +32,7 @@ class Navbar extends Component {
           </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <AuthUserContext.Consumer>{
-                AuthUserContext =>
-                AuthUserContext.username
-            }</AuthUserContext.Consumer>
+                {this.props.user.uid}
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <a className="dropdown-item" href="/user/profile">Profile</a>

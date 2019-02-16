@@ -191,3 +191,9 @@
   text-decoration: none;
   color: #919191;
 }
+
+#LoginHeader .loginError{
+  text-decoration: none;
+  color: red;
+  padding-left: 1em;
+}

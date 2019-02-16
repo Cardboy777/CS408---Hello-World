@@ -39,10 +39,9 @@ class LoginHeader extends Component {
 		console.log("Email: " + this.state.email + "   Password: "+ this.state.password);
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
 			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			console.log(errorCode);
-			console.log(errorMessage);
+			var error = document.getElementById("loginError");
+			error.innerHTML='Login Error';
+			error.style.display = "inline-block";
 			// ...
 		  });
     }
@@ -152,9 +151,9 @@ class LoginHeader extends Component {
 
                     <label htmlFor="psw"><b>Password:</b></label>
                     <input id="loginPassword" className="form-control mr-sm-2" type="password" onKeyUp={this.updateLoginPassword} placeholder="Enter Password" name="psw" required/>
-                    
+
                     <button className="btn btn-primary" type="submit" onClick={this.login}>Login</button>
-                    <br/>
+					<label className="loginError" id="loginError"></label>
                 </form>
                 <p>Don't have an account? <button className="btn btn-link" onClick={this.toggleLoginState}>Sign Up</button></p>
             </div>
