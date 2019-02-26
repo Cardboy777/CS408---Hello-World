@@ -133,7 +133,8 @@ class PersonalityQuestionnaire extends Component {
             canswer7:'',
             canswer8:'',
             canswer9:'',
-            canswer10:''
+            canswer10:'',
+            avatarFile:null
         });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true; 
