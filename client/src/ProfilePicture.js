@@ -84,15 +84,16 @@ class ProfilePictureUpload extends Component {
     render() { 
         return (
             
-            <div>
-                <h6>Username: {this.state.username}</h6>
+            <div id="PPSection"> 
+                <h2>{this.state.username}</h2>
+                <br/>
                 <h6>
                 {
                     this.state.avatarURL &&
                     <img src={this.state.avatarURL} alt="Avatar" width="250" height="250"/>
                 }
                 </h6>
-                
+                <br/>
             <form>
                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#Upmodal">Change Profile Picture</button>
                 <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"id="Upmodal" aria-hidden="true">
