@@ -85,8 +85,6 @@ class ProfilePictureUpload extends Component {
         return (
             
             <div id="PPSection"> 
-                <h2>{this.state.username}</h2>
-                <br/>
                 <h6>
                 {
                     this.state.avatarURL &&

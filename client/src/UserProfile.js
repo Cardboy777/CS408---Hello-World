@@ -10,68 +10,43 @@ class UserProfile extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username:'',
+      name:'',
       age:'',
-      description:''
+      gender:'',
+      description:'',
+      attractGender:''
     }
   }
   componentDidMount(){
-  const db =firebase.firestore();
-    const docRef = db.collection("usersPQ").doc("Jh16YJvEoQwCZyau0BZ5");
-    var that = this
-    docRef.get().then(function(doc) {
-      if (doc.exists) {
-        var userInfo = doc.data();
-        console.log(userInfo);
+    const db =firebase.firestore();
+    let that =this;
+    firebase.auth().onAuthStateChanged((user)=>{
+      const docRef = db.collection("usersPQ").doc(user.uid);
+      docRef.get().then(function(doc) {
         that.setState({
-          name: userInfo["user"],
-          gender: userInfo["gender"],
-          age:  userInfo["age"],
-          description: userInfo["describe"],
-          attrgender: userInfo["attractGender"],
-          pa1:userInfo["panswer1"],
-          pa2:userInfo["panswer2"],
-          pa3:userInfo["panswer3"],
-          pa4:userInfo["panswer4"],
-          pa5:userInfo["panswer5"],
-          pa6:userInfo["panswer6"],
-          pa7:userInfo["panswer7"],
-          pa8:userInfo["panswer8"],
-          pa9:userInfo["panswer9"],
-          pa10:userInfo["panswer10"],
-          pa11:userInfo["panswer11"],
-          pa12:userInfo["panswer12"],
-          pa13:userInfo["panswer13"],
-          pa14:userInfo["panswer14"],
-          pa15:userInfo["panswer15"],
-          pa16:userInfo["panswer16"],
-          pa17:userInfo["panswer17"],
-          ca1: userInfo["canswer1"],
-          ca2: userInfo["canswer2"],
-          ca3: userInfo["canswer3"],
-          ca4: userInfo["canswer4"],
-          ca5: userInfo["canswer5"],
-          ca6: userInfo["canswer6"],
-          ca7: userInfo["canswer7"],
-          ca8: userInfo["canswer8"],
-          ca9: userInfo["canswer9"],
-          ca10: userInfo["canswer10"],
-        });
-
-      } else {
-        console.log("No such document!");
-      }
-    }).catch(function(error) {
-      console.log("Error getting document:", error);
+          name: doc.data().user,
+          gender: doc.data().gender,
+          age:  doc.data().age,
+          description: doc.data().describe,
+          attractgender: doc.data().attractGender,        
+          });
+      }).catch(function(error) {
+        console.log("Error getting document:", error);
+      });
     });
   }
   render() {
     return (
       <div id="UserProfilePage">
         <Header/><br/>
-        <h1>{this.state.name}</h1>
-        <h2>Age: {this.state.age}</h2>
-        <h2>Description: {this.state.description}</h2>
+        <div id="infoPage">
+          <h1>{this.state.name}</h1>
+          <h5>Gender: <b>{this.state.gender} </b></h5>
+          <h5>Age: <b> {this.state.age} </b></h5>
+          <h5>Interested in: <b>{this.state.attractgender}</b></h5>
+          <h5>Description: {this.state.description}</h5>
+        </div>
+        
         <Link to={{ pathname: '/user/PersonalityQnn', state: this.state }}>Profile Questionnaire</Link><br/>
         <Link to={{ pathname: '/user/CodingQnn', state: this.state }}>Coding Questionnaire</Link><br/>
         <div>
