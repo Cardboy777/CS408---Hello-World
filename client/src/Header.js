@@ -8,7 +8,7 @@ class Header extends Component {
 	constructor(){
 		super();
 		this.state={
-			currentUser: null
+			currentUser: null,
 		}
 		this.redirectPage = this.redirectPage.bind(this);
 		this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
@@ -25,6 +25,8 @@ class Header extends Component {
 	}
 
 		componentDidMount(){
+			var user = window.localStorage.getItem("user");
+			console.log(JSON.stringify(user));
       firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
     }
     

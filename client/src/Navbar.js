@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import firebase from './firebase';
 import './css/Navbar.css';
 
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:8080');
+
 class Navbar extends Component {
   constructor(){
     super();
     this.signOut= this.signOut.bind(this);
+	this.sendSocketData();
   }
   signOut(e){
     e.preventDefault();
@@ -17,6 +21,24 @@ class Navbar extends Component {
 		window.location.href = "http://localhost:3000/"
 	});;
   }
+  
+  sendSocketData()
+  {
+	  setTimeout(function()
+	  {
+		  socket.emit("testMessageClientToServer", "GSRG");
+		  var userData = window.localStorage.getItem("user");
+		  if (userData == undefined || userData == null) { return; }
+		  userData = JSON.parse(userData);
+		  if (userData.email == undefined || userData.uid == undefined) { return; }
+		  var newData = {};
+		  newData.email = userData.email;
+		  newData.token = userData.uid;
+		  socket.emit('giveSocketData', newData);
+	  }, 500);
+	  
+  }
+  
   render() {
     return (
       <div id="navbar">

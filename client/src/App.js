@@ -20,7 +20,7 @@ class App extends Component {
     }
     this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
   }
-
+	
     componentDidMount(){
       firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
     }
@@ -30,6 +30,16 @@ class App extends Component {
         // User is signed in.
         this.setState({currentUser : user});
         this.forceUpdate();
+		
+		const db = firebase.firestore();
+		var aa = setInterval(function()
+		{
+			db.collection("usersPQ").doc(user.uid).update({
+				lastOnlineTime: new Date().getTime(),
+			});
+		}, 10000);
+		
+		
       } else {
         //no user is signed in.
         this.setState({currentUser : null});

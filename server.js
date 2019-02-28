@@ -9,6 +9,9 @@ var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 var port = process.env.PORT || 8080;
 
+var users = {};
+var userSocketMap = {};
+
 
 function findMatches(userName){
   var mainUser;
@@ -270,13 +273,57 @@ io.on('connection', function(socket)
 {
 	console.log('a user connected');
 	socket.id = Math.random();
-
-	users[socket.id] = [];
-	var user = users[socket.id];
+	
 	socket.on('disconnect', function()
 	{
-		delete[users[socket.id]];
+		var str = user.token || user.email;
+		if (str != undefined && userSocketMap[str])
+		{
+			userSocketMap[str][socket.id] = undefined;
+		}
+		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
 	});
+	
+	users[socket.id] = {};
+	var user = users[socket.id];
+	user.email = "";
+	user.token = "";
+	user.username = "";
+	
+	socket.on('giveSocketData', function(data)
+	{
+		if (data.email) { user.email = data.email; }
+		if (data.token) { user.token = data.token;}
+		if (data.username) { user.username = data.username; }
+		var str = data.token || data.email;
+		//console.log(str);
+		if (userSocketMap[str] != undefined)
+		{
+			userSocketMap[str][socket.id] = true;
+		}
+		else
+		{
+			userSocketMap[str] = {};
+			userSocketMap[str][socket.id] = true;
+		}
+		
+		//console.log("Full user array: " + JSON.stringify(users));
+		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
+	});
+	
+	socket.on('testMessageClientToServer', function(msg)
+	{
+		console.log("C2S: " + msg);
+	});
+	
+	
+	setTimeout(function()
+	{
+		socket.emit('testFunc', "TESTING");
+	}, 2000);
+	
+	
+	
 
 	socket.on('ValidateToken', function(data)
 	{
