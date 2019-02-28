@@ -12,6 +12,9 @@ import firebase from './firebase';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
 
+const linkPQ = "http://localhost:3000/user/questionnaire";
+const linkCQ = "http://localhost:3000/user/cquestionnaire";
+
 class App extends Component {
   constructor(){
     super();
@@ -20,7 +23,7 @@ class App extends Component {
     }
     this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
   }
-
+	
     componentDidMount(){
       firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
     }
@@ -30,6 +33,46 @@ class App extends Component {
         // User is signed in.
         this.setState({currentUser : user});
         this.forceUpdate();
+		
+		const db = firebase.firestore();
+		
+		var age = db.collection("usersPQ").doc(user.uid).get().then(function(userData)
+		{
+			if (userData.exists)
+			{
+				var data = userData.data();
+				if (data.PQComplete == undefined || data.PQComplete != true)
+				{
+					if (window.location.href != linkPQ)
+					{
+						window.location.href = linkPQ;
+					}
+				}
+				else if (data.CQComplete == undefined || data.CQComplete != true)
+				{
+					if (window.location.href != linkCQ)
+					{
+						window.location.href = linkCQ;
+					}
+				}
+			}
+			else
+			{
+				alert("Data DNE");
+			}
+		}).error(function(err)
+		{
+			alert("Error getting stuff");
+		});
+		
+		var aa = setInterval(function()
+		{
+			db.collection("usersPQ").doc(user.uid).update({
+				lastOnlineTime: new Date().getTime(),
+			});
+		}, 10000);
+		
+		
       } else {
         //no user is signed in.
         this.setState({currentUser : null});

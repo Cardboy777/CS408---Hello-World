@@ -23,6 +23,7 @@ class LoginHeader extends Component {
 		this.updateLoginEmail = this.updateLoginEmail.bind(this);
 		this.updateLoginPassword = this.updateLoginPassword.bind(this);
     }
+	
 	updateLoginEmail(e){
 		e.preventDefault();
 		var email = document.getElementById("loginEmail").value;
@@ -37,8 +38,17 @@ class LoginHeader extends Component {
     login(e){
 		e.preventDefault();
 		console.log("Email: " + this.state.email + "   Password: "+ this.state.password);
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+        firebase.auth().signInWithEmailAndPassword(document.getElementById("emailBox").value, this.state.password).then(function(dat)
+		{
+			var newUser = {};
+			newUser.uid = dat.user.uid;
+			newUser.email = dat.user.email;
+			window.localStorage.setItem("user", JSON.stringify(newUser));
+			
+			//alert("New data: " + JSON.stringify(newUser));
+		}).catch(function(error) {
 			// Handle Errors here.
+			console.log(JSON.stringify(error));
 			var error = document.getElementById("loginError");
 			error.innerHTML='Login Error';
 			error.style.display = "inline-block";
