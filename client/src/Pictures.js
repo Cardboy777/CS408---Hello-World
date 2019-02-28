@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './css/Pictures.css';
 import FileUploader from 'react-firebase-file-uploader';
 import firebase from './firebase.js';
+import uploadLogo from './img/uploadSymbol.png';
 class Pictures extends Component {
     constructor(props) {
         super(props);
@@ -16,10 +17,15 @@ class Pictures extends Component {
             picture3URL:'',
             isuploading:false,
             progress:0,
-            chosenPic:1
+            chosenPic:''
          }
+         this.handleChange = this.handleChange.bind(this);
     }
-    
+    handleChange(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
     componentDidMount(){
         let this2=this;
         firebase.auth().onAuthStateChanged((user) => {
@@ -33,20 +39,15 @@ class Pictures extends Component {
                         pictureFile2:doc.data().pictureFile2,
                         pictureFile3:doc.data().pictureFile3,
                     });
-                    firebase.storage().ref('user_images').child(
-                        doc.data().pictureFile1
-                    ).getDownloadURL().then((url) => {
-                     //   let str="picture"+(i+1)+"URL";
+
+                    firebase.storage().ref('user_images').root(doc.data().pictureFile1, doc.data().picture2URL, doc.data().picture3URL).getDownloadURL().then((url,url2,url3) => {
                         this2.setState({ 
-                            picture1URL:url
+                            picture1URL:url, picture2URL:url2, picture3URL:url3
                         });
                     });
-               // }
                 }).catch(function(error){
                         console.log(error);
-                    });
-                
-                
+                    });                
                 }
                 else{
                     console.log("user not authenticated");
@@ -65,8 +66,6 @@ class Pictures extends Component {
                             this2.setState({ picture3URL: url,});
                         });
                     }*/
-                  
-           
     }
     handleUploadStart=()=>{
         this.setState({
@@ -109,6 +108,28 @@ class Pictures extends Component {
                             picture1URL:curr_url
                         });
                     }
+                    else if(this2.state.chosenPic===2){
+                        db.collection('usersPQ').doc(user.uid).update({
+                           pictureFile2:filename
+                        }).catch(function(error){
+                            console.log(error);
+                        });
+                        this2.setState({
+                            pictureFile2:filename,
+                            picture2URL:curr_url
+                        });
+                    }
+                    else if(this2.state.chosenPic===3){
+                        db.collection('usersPQ').doc(user.uid).update({
+                           pictureFile3:filename
+                        }).catch(function(error){
+                            console.log(error);
+                        });
+                        this2.setState({
+                            pictureFile3:filename,
+                            picture3URL:curr_url
+                        });
+                    }
                 }
             });
         }).catch(function(error){
@@ -122,18 +143,18 @@ class Pictures extends Component {
                     <div >
                     {   this.state.picture1URL &&
                         <img width="250" height="250" src={this.state.picture1URL} alt="first slide"/>
-                    }<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#ppmodal">Update</button>   
+                    }<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#ppmodal"><img src={uploadLogo} alt="Logo" id="uploadLogo"/></button>   
                     </div> 
                     <div>
                     {   this.state.picture2URL &&
                         <img width="250" height="250" src={this.state.picture2URL} alt="Second slide"/>
                     }
-                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#ppmodal">Update</button>  
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#ppmodal"><img src={uploadLogo} alt="Logo" id="uploadLogo"/></button>  
                     </div>
                     <div>
                     {   this.state.picture3URL &&
                         <img width="250" height="250" src={this.state.picture3URL} alt="third slide"/>
-                    }<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#ppmodal">Update</button>
+                    }<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#ppmodal"></button>
                     </div>
 
             <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#ppmodal">Update</button>
@@ -149,15 +170,15 @@ class Pictures extends Component {
                             <div class="modal-body">
                                 <form>
                                     <p>Choose picture to change:</p>
-                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons" onChange={event => this.handleChange(event)}>
                                         <label class="btn btn-secondary">
-                                            <input type="radio" name="options" id="option1" autocomplete="off"/> Picture 1
+                                            <input type="radio" name="chosenPic" id="option1"  autocomplete="off"  value={1}/>1
                                         </label>
                                         <label class="btn btn-secondary">
-                                            <input type="radio" name="options" id="option2" autocomplete="off" /> Picture 2
+                                            <input type="radio" name="chosenPic" id="option2" autocomplete="off"  value={2}/>2
                                         </label>
                                         <label class="btn btn-secondary">
-                                            <input type="radio" name="options" id="option3" autocomplete="off" /> Picture 3
+                                            <input type="radio" name="chosenPic" id="option3" autocomplete="off"  value={3}/>3
                                         </label>
                                     </div>
                                 

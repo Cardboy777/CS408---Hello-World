@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import ProfilePicture from './ProfilePicture';
-import Pictures from './Pictures';
+import Picture from './Picture';
 
 class UserProfile extends Component {
   render() {
@@ -12,7 +12,8 @@ class UserProfile extends Component {
         <div>
           <ProfilePicture/>
         </div>
-        <div>
+        <div >
+        <Picture/>
         </div>
         
       </div>
