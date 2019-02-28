@@ -39,19 +39,41 @@ class UserProfile extends Component {
     return (
       <div id="UserProfilePage">
         <Header/><br/>
-        <div id="infoPage">
-          <h1>{this.state.name}</h1>
-          <h5>Gender: <b>{this.state.gender} </b></h5>
-          <h5>Age: <b> {this.state.age} </b></h5>
-          <h5>Interested in: <b>{this.state.attractgender}</b></h5>
-          <h5>Description: {this.state.description}</h5>
-        </div>
+        <div id="profileNameAndPicture">
+          <h1 id="pname">{this.state.name}</h1>
+           <div id="infoPage"> 
+            <h5>Gender: <b>{this.state.gender} </b></h5>
+            <h5>Age: <b> {this.state.age} </b></h5>
+            <h5>Interested in: <b>{this.state.attractgender}</b></h5>
+            <h5>Description: {this.state.description}</h5>
+          </div>
+          <ProfilePicture/>
+          <div id="userInterestPhotos">
+          <Picture name="pictureFile1"/>
+          <Picture name="pictureFile2"/>
+          <Picture name="pictureFile3"/>
+          <br/>
+          </div>
+        </div> 
+        <br/>
+        <div id="buttonBlock">
+        <button class="btn btn-outline-light">Edit Personality Questionnaire</button>
+          <br/>
+        <button class="btn btn-outline-light"> Edit Coding Questionnaire</button>
+         </div> 
+      </div>    
+    );
+  }
+}
+
+export default UserProfile;
+/**
+ * 
+ * 
         
         <Link to={{ pathname: '/user/PersonalityQnn', state: this.state }}>Profile Questionnaire</Link><br/>
         <Link to={{ pathname: '/user/CodingQnn', state: this.state }}>Coding Questionnaire</Link><br/>
-        <div>
-          <ProfilePicture/>
-        </div><br/>
+        <br/>
         <div>
           <Picture name="pictureFile1"/>
           <Picture name="pictureFile2"/>
@@ -59,8 +81,4 @@ class UserProfile extends Component {
         </div>
         <button>Edit Personality Qtestionnaire</button>
     </div>
-    );
-  }
-}
-
-export default UserProfile;
+ */

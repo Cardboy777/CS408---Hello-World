@@ -1,7 +1,22 @@
-#infoPage{
-    margin-left: 50px;
-    color:red;
-}
-#profileName{
+#profileNameAndPicture{
     color:white;
+    margin-left: 50px;
+    float: left;
+    width: 50%;
+}
+#pname{
+    margin-left: 50px;
+}
+#infoPage{
+    display:block;
+    float: right;
+    top: 100%;
+    width: 50%;
+}
+#userInterestPhotos{
+    display: block;
+}
+
+#buttonBlock{
+    margin-left:25px;
 }
