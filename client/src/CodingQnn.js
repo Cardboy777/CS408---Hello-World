@@ -54,6 +54,7 @@ class CodingQuestionnaire extends Component {
             return;
         }
         const questionnaireRef=db.collection("usersPQ").doc(user.uid).update({
+			CQComplete: true,
             canswer1: this.state.ca1,
             canswer2: this.state.ca2,
             canswer3: this.state.ca3,

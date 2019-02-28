@@ -13,6 +13,7 @@ import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
 
 const linkPQ = "http://localhost:3000/user/questionnaire";
+const linkCQ = "http://localhost:3000/user/cquestionnaire";
 
 class App extends Component {
   constructor(){
@@ -47,9 +48,12 @@ class App extends Component {
 						window.location.href = linkPQ;
 					}
 				}
-				else if (data.CQComplete == undefined || data.CQComplet != true)
+				else if (data.CQComplete == undefined || data.CQComplete != true)
 				{
-					////redirect to CQ
+					if (window.location.href != linkCQ)
+					{
+						window.location.href = linkCQ;
+					}
 				}
 			}
 			else
