@@ -24,6 +24,11 @@ class Navbar extends Component {
   
   sendSocketData()
   {
+	  socket.on('incomingMessage', function(data)
+	  {
+		 console.log(JSON.stringify(data)); 
+	  });
+	  
 	  setTimeout(function()
 	  {
 		  socket.emit("testMessageClientToServer", "GSRG");

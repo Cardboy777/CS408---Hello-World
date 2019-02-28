@@ -316,20 +316,18 @@ io.on('connection', function(socket)
 		console.log("C2S: " + msg);
 	});
 	
+	setInterval(function()
+	{
+		setTimeout(function()
+		{
+			socket.emit('incomingMessage', {"from":"hotguy69@gmail.com", "msg":"hey babe"});
+		}, Math.floor(1000 + Math.random() * 14000));
+	}, 15000);
 	
 	setTimeout(function()
 	{
 		socket.emit('testFunc', "TESTING");
 	}, 2000);
-	
-	
-	
-
-	socket.on('ValidateToken', function(data)
-	{
-		///no idea how to validate user key
-		socket.emit("ValidateTokenResponse", {"success": false});
-	});
 });
 
 module.exports = router;
