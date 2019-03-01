@@ -39,8 +39,8 @@ function likeUser(userName, likedUserName){
   finalMatches = Promise.all([mainUser, likedUser]).then(function(values){
     var mainUser = values[0];
     var likedUser = values[1];
-    mainUserPot = mainUser["data"]["potentialMatches"];
-    likedUsersLiked = likedUser["data"]["likedUsers"];
+    var mainUserPot = mainUser["data"]["potentialMatches"];
+    var likedUsersLiked = likedUser["data"]["likedUsers"];
     var inMatches = false;
     var match;
     for(var i = 0; i < mainUserPot.length; i++){
@@ -92,6 +92,7 @@ function likeUser(userName, likedUserName){
     return findMatches(userName);
 
   });
+  return finalMatches;
 
 }
 
@@ -108,7 +109,7 @@ function dislikeUser(userName, dislikedUserName){
     }
   });
 
-  dislikedUser = db.collection("usersPQ").where("user", "==", likedUserName)
+  dislikedUser = db.collection("usersPQ").where("user", "==", dislikedUserName)
   .get()
   .then(function(querySnapshot) {
     return {
@@ -122,8 +123,8 @@ function dislikeUser(userName, dislikedUserName){
   finalMatches = Promise.all([mainUser, dislikedUser]).then(function(values){
     var mainUser = values[0];
     var dislikedUser = values[1];
-    mainUserPot = mainUser["data"]["potentialMatches"];
-    dislikedUsersLiked = dislikedUser["data"]["likedUsers"];
+    var mainUserPot = mainUser["data"]["potentialMatches"];
+    var dislikedUsersLiked = dislikedUser["data"]["likedUsers"];
     var inMatches = false;
     var match;
     for(var i = 0; i < mainUserPot.length; i++){
@@ -170,14 +171,81 @@ function dislikeUser(userName, dislikedUserName){
     return findMatches(userName);
 
   });
-
+  return finalMatches;
 }
 function getMatches(userName){
-  return "";
+  var mainUserMatches;
+  mainUserMatches = db.collection("usersPQ").where("user", "==", userName)
+  .get()
+  .then(function(querySnapshot) {
+    return querySnapshot.docs[0].data()["matchedUsers"];
+  });
+  return mainUserMatches;
 }
 
 function removeMatch(userName, removeUserName){
-  return "";
+  var mainUser;
+  var dislikedUser;
+  var db = admin.firestore();
+  mainUser = db.collection("usersPQ").where("user", "==", userName)
+  .get()
+  .then(function(querySnapshot) {
+    return {
+      "id": querySnapshot.docs[0].id,
+      "data": querySnapshot.docs[0].data()
+    }
+  });
+
+  dislikedUser = db.collection("usersPQ").where("user", "==", removeUserName)
+  .get()
+  .then(function(querySnapshot) {
+    return {
+      "id": querySnapshot.docs[0].id,
+      "data": querySnapshot.docs[0].data()
+    }
+  });
+
+  var finalMatches = [];
+
+  finalMatches = Promise.all([mainUser, dislikedUser]).then(function(values){
+    var mainUser = values[0];
+    var dislikedUser = values[1];
+    var mainUserMatches = mainUser["data"]["matchedUsers"];
+    var dislikedUserMatches = dislikedUser["data"]["matchedUsers"];
+    var inMatches = false;
+    var match;
+    for(var i = 0; i < mainUserPot.length; i++){
+      if(mainUserMatches[i]["name"] === removeUserName){
+        match = mainUserMatches[i];
+        inMatches = true;
+      }
+    }
+
+    if(!inMatches){
+      return "404";
+    }
+    var matchedNum
+    for(var i = 0; i < dislikedUserMatches.length; i++){
+      if(dislikedUserMatches[i]["name"] === userName){
+
+        matchedNum = i;
+      }
+    }
+    var db = admin.firestore();
+
+    var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+    var remMatch = matchRef.update({
+      matchedUsers: admin.firestore.FieldValue.arrayRemove(match)
+    });
+    matchRef = db.collection('usersPQ').doc(dislikedUser["id"]);
+    var remMatch = matchRef.update({
+      matchedUsers: admin.firestore.FieldValue.arrayRemove(dislikedUserMatches[matchedNum])
+    });
+    return findMatches(userName);
+
+  });
+  return finalMatches;
+
 }
 function findMatches(userName){
   var mainUser;
