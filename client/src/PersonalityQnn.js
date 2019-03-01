@@ -101,8 +101,7 @@ class PersonalityQuestionnaire extends Component {
             //window.alert("Inside if");
             return;
         } 
-
-        const questionnaireRef=db.collection("usersPQ").doc(user.uid).set({
+        const questionnaireRef=db.collection("usersPQ").doc(user.uid).update({
             uid:user.uid,
             user: this.state.username,
             gender: this.state.gender,
@@ -128,20 +127,6 @@ class PersonalityQuestionnaire extends Component {
             panswer16: this.state.pa16,
             panswer17: this.state.pa17,
             describe: this.state.description,
-            canswer1:'',
-            canswer2:'',
-            canswer3:'',
-            canswer4:'',
-            canswer5:'',
-            canswer6:'',
-            canswer7:'',
-            canswer8:'',
-            canswer9:'',
-            canswer10:'',
-            avatarFile:'b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png',
-            pictureFile1:'1efd88dc-6df2-4735-81ea-93a555901556.jpg',
-            pictureFile2:'1efd88dc-6df2-4735-81ea-93a555901556.jpg',
-            pictureFile3:'1efd88dc-6df2-4735-81ea-93a555901556.jpg'
         });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true; 
@@ -197,7 +182,7 @@ class PersonalityQuestionnaire extends Component {
                     });
                   }else{
                     this2.setState({
-                        button1Name:"Sub"
+                        button1Name:"Submit"
                     }); 
                   }
             }
@@ -240,7 +225,7 @@ class PersonalityQuestionnaire extends Component {
             <div class="form-group col-md-12">
                 <label>Are you interested in?
                     <select class="form-control" id="attrgender" name="attractGender" onChange={this.handleChange} value={this.state.attrgender}>
-                        <option selected></option><option>Men</option><option>Women</option><option>Both</option> 
+                        <option selected></option><option>Male</option><option>Female</option><option>Both</option> 
                     </select>
                 </label>
                 <br />
