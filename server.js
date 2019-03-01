@@ -321,15 +321,11 @@ function findMatches(userName){
           }
         }
         thisScore = {
-          "user" : users[i]["data"]["user"],
-          "score" : score,
-          "desc" : users[i]["data"]["describe"],
-          "gender" : users[i]["data"]["gender"],
-          "age" : users[i]["data"]["age"],
-          "usersPQID" : users[i]["id"],
-          "attractGender": users[i]["data"]["attractGender"]
+          "score": score,
+          "userID": users[i]["id"],
+          "data": users[i]["data"]
         };
-        if(thisScore["gender"] == mainUser["data"]["attractGender"] && thisScore["attractGender"] == mainUser["data"]["gender"]){
+        if(thisScore["data"]["gender"] == mainUser["data"]["attractGender"] && thisScore["data"]["attractGender"] == mainUser["data"]["gender"]){
           if(valid){
             scores.push(thisScore);
           }
@@ -362,15 +358,11 @@ function findMatches(userName){
             }
           }
           thisScore = {
-            "user" : users[i]["data"]["user"],
-            "score" : score,
-            "desc" : users[i]["data"]["describe"],
-            "gender" : users[i]["data"]["gender"],
-            "age" : users[i]["data"]["age"],
-            "usersPQID" : users[i]["id"],
-            "attractGender": users[i]["data"]["attractGender"]
+            "score": score,
+            "userID": users[random]["id"],
+            "data": users[random]["data"]
           };
-          if(thisScore["gender"] == mainUser["data"]["attractGender"] && thisScore["attractGender"] == mainUser["data"]["gender"]){
+          if(thisScore["data"]["gender"] == mainUser["data"]["attractGender"] && thisScore["data"]["attractGender"] == mainUser["data"]["gender"]){
             if(valid){
                 scores.push(thisScore);
             }
@@ -392,14 +384,9 @@ function findMatches(userName){
       for(j = 0; j < scores.length; j++){
         if(scores[j]["score"] > highMatch["score"]){
           highMatch = {
-            "name" : scores[i]["user"],
+            "data" : scores[i]["data"],
             "match_percent" : Math.floor(scores[i]["score"]*100/27),
-            "description" : scores[i]["desc"],
-            "gender" : scores[i]["gender"],
-            "age" : scores[i]["age"],
-            "uid" : scores[i]["usersPQID"],
-            "fav_lang" : "TEST",
-            "attractGender": scores[i]["attractGender"]
+            "uid" : scores[i]["userID"],
           };
           matchNumber = j;
         }
@@ -411,14 +398,9 @@ function findMatches(userName){
     var matchesIDS = [];
     for(i = 0; i < finalMatches.length; i++){
       main = {
-        "name" : mainUser["data"]["user"],
+        "data" : mainUser["data"],
         "match_percent" : finalMatches[i]["match_percent"],
-        "description" : mainUser["data"]["describe"],
-        "gender" : mainUser["data"]["gender"],
-        "age" : mainUser["data"]["age"],
         "uid" : mainUser["id"],
-        "fav_lang" : "TEST",
-        "attractGender": mainUser["data"]["attractGender"]
       }
       var db = admin.firestore();
       var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
