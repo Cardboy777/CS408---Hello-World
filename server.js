@@ -11,7 +11,19 @@ var port = process.env.PORT || 8080;
 
 var users = {};
 var userSocketMap = {};
+function reportUser(userName){
+  var user;
+  var db = admin.firestore();
+  mainUser = db.collection("usersPQ").where("user", "==", userName)
+  .get()
+  .then(function(querySnapshot) {
+    var matchRef = db.collection('reportedUsers').doc(querySnapshot.docs[0].id);
+    var setMatched = matchRef.update({
+      reportedUser: querySnapshot.docs[0].data()
+    });
+  });
 
+}
 function likeUser(userName, likedUserName){
   var mainUser;
   var likedUser;
