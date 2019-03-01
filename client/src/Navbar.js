@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from './firebase';
-import FirebaseTools from './FirebaseTools';
+//import FirebaseTools from './FirebaseTools';
 import './css/Navbar.css';
 
 import openSocket from 'socket.io-client';
