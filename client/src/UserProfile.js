@@ -4,6 +4,8 @@ import ProfilePicture from './ProfilePicture';
 import firebase from './firebase';
 import Picture from './Picture';
 import './css/UserProfile.css';
+import PersonalityQuestionnaire from './PersonalityQnn';
+import CodingQuestionnaire from './CodingQnn';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class UserProfile extends Component {
@@ -57,7 +59,7 @@ class UserProfile extends Component {
         </div> 
         <br/>
         <div id="buttonBlock">
-        <button class="btn btn-outline-light">Edit Personality Questionnaire</button>
+        <a class="btn btn-outline-light" href='/user/questionnaire'>Edit Personality Questionnaire</a>
           <br/>
         <button class="btn btn-outline-light"> Edit Coding Questionnaire</button>
          </div> 

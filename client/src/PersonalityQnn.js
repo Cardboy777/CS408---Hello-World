@@ -32,7 +32,9 @@ class PersonalityQuestionnaire extends Component {
             pa16:"",
             pa17:"",
             description:"",
-            nextToggle:false
+            nextToggle:false,
+            complete:false,
+            button1Name:""
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -151,7 +153,59 @@ class PersonalityQuestionnaire extends Component {
         });
     }
 
-    
+    componentDidMount(){
+        let this2=this;
+        const db=firebase.firestore();
+        firebase.auth().onAuthStateChanged((user)=>{
+            if(user){
+                const docRef = db.collection("usersPQ").doc(user.uid);
+                docRef.get().then(function(doc) {
+                    this2.setState({
+                        username: doc.data().user,
+                        gender: doc.data().gender,
+                        age:  doc.data().age,
+                        description: doc.data().describe,
+                        attrgender: doc.data().attractGender, 
+                        location:doc.data().location,
+                        pa1:doc.data().panswer1,
+                        pa2:doc.data().panswer2,
+                        pa3:doc.data().panswer3,
+                        pa4:doc.data().panswer4,
+                        pa5:doc.data().panswer5,
+                        pa6:doc.data().panswer6,
+                        pa7:doc.data().panswer7,
+                        pa8:doc.data().panswer8,
+                        pa9:doc.data().panswer9,
+                        pa10:doc.data().panswer10,
+                        pa11:doc.data().panswer11,
+                        pa12:doc.data().panswer12,
+                        pa13:doc.data().panswer13,
+                        pa14:doc.data().panswer14,
+                        pa15:doc.data().panswer15,
+                        pa16:doc.data().panswer16,
+                        pa17:doc.data().panswer17,
+                        complete:doc.data().PQComplete
+                    });
+                  }).catch(function(error) {
+                    console.log("Error getting document:", error);
+                  });
+                  window.alert(this2.state.complete)
+                  if(this2.state.complete==="true"){
+                    window.alert(true);
+                    this2.setState({
+                        button1Name:"Save"
+                    });
+                  }else{
+                    this2.setState({
+                        button1Name:"Sub"
+                    }); 
+                  }
+            }
+
+        });
+    }
+
+
     
 
     //should add the value to all the options of select
@@ -185,7 +239,7 @@ class PersonalityQuestionnaire extends Component {
             </div>        
             <div class="form-group col-md-12">
                 <label>Are you interested in?
-                    <select class="form-control" id="attrgender" name="attrgender" onChange={this.handleChange} value={this.state.attrgender}>
+                    <select class="form-control" id="attrgender" name="attractGender" onChange={this.handleChange} value={this.state.attrgender}>
                         <option selected></option><option>Men</option><option>Women</option><option>Both</option> 
                     </select>
                 </label>
@@ -301,7 +355,8 @@ class PersonalityQuestionnaire extends Component {
                     <textarea class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
                 </label>
                 <br/>
-                <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
+                
+                <button type="submit" class="btn btn-outline-light btn-lg">{this.state.button1Name}</button>
                 
             </div>
         </form>    
