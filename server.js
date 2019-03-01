@@ -12,7 +12,173 @@ var port = process.env.PORT || 8080;
 var users = {};
 var userSocketMap = {};
 
+function likeUser(userName, likedUserName){
+  var mainUser;
+  var likedUser;
+  var db = admin.firestore();
+  mainUser = db.collection("usersPQ").where("user", "==", userName)
+  .get()
+  .then(function(querySnapshot) {
+    return {
+      "id": querySnapshot.docs[0].id,
+      "data": querySnapshot.docs[0].data()
+    }
+  });
 
+  likedUser = db.collection("usersPQ").where("user", "==", likedUserName)
+  .get()
+  .then(function(querySnapshot) {
+    return {
+      "id": querySnapshot.docs[0].id,
+      "data": querySnapshot.docs[0].data()
+    }
+  });
+
+  var finalMatches = [];
+
+  finalMatches = Promise.all([mainUser, likedUser]).then(function(values){
+    var mainUser = values[0];
+    var likedUser = values[1];
+    mainUserPot = mainUser["data"]["potentialMatches"];
+    likedUsersLiked = likedUser["data"]["likedUsers"];
+    var inMatches = false;
+    var match;
+    for(var i = 0; i < mainUserPot.length; i++){
+      if(mainUserPot[i]["name"] === likedUserName){
+        match = mainUserPot[i];
+        inMatches = true;
+      }
+    }
+
+    if(!inMatches){
+      return "404";
+    }
+    var liked = false;
+    var likedNum;
+    for(var i = 0; i < likedUsersLiked.length; i++){
+      if(likedUsersLiked[i]["name"] === userName){
+        liked = true;
+        likedNum = i;
+      }
+    }
+    var db = admin.firestore();
+    if(liked){
+      var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+      var setMatched = matchRef.update({
+        matchedUsers: admin.firestore.FieldValue.arrayUnion(match)
+      });
+      var remPot = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayRemove(match)
+      });
+      matchRef = db.collection('usersPQ').doc(likedUser["id"]);
+      var setMatched = matchRef.update({
+        matchedUsers: admin.firestore.FieldValue.arrayUnion(likedUsersLiked[likedNum])
+      });
+      var remLiked = matchRef.update({
+        likedUsers: admin.firestore.FieldValue.arrayRemove(likedUsersLiked[likedNum])
+      });
+
+    }
+    else{
+      var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+      var setLiked = matchRef.update({
+        likedUsers: admin.firestore.FieldValue.arrayUnion(match)
+      });
+      var remPot = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayRemove(match)
+      });
+
+    }
+    return findMatches(userName);
+
+  });
+
+}
+
+function dislikeUser(userName, dislikedUserName){
+  var mainUser;
+  var dislikedUser;
+  var db = admin.firestore();
+  mainUser = db.collection("usersPQ").where("user", "==", userName)
+  .get()
+  .then(function(querySnapshot) {
+    return {
+      "id": querySnapshot.docs[0].id,
+      "data": querySnapshot.docs[0].data()
+    }
+  });
+
+  dislikedUser = db.collection("usersPQ").where("user", "==", likedUserName)
+  .get()
+  .then(function(querySnapshot) {
+    return {
+      "id": querySnapshot.docs[0].id,
+      "data": querySnapshot.docs[0].data()
+    }
+  });
+
+  var finalMatches = [];
+
+  finalMatches = Promise.all([mainUser, dislikedUser]).then(function(values){
+    var mainUser = values[0];
+    var dislikedUser = values[1];
+    mainUserPot = mainUser["data"]["potentialMatches"];
+    dislikedUsersLiked = dislikedUser["data"]["likedUsers"];
+    var inMatches = false;
+    var match;
+    for(var i = 0; i < mainUserPot.length; i++){
+      if(mainUserPot[i]["name"] === dislikedUserName){
+        match = mainUserPot[i];
+        inMatches = true;
+      }
+    }
+
+    if(!inMatches){
+      return "404";
+    }
+    var liked = false;
+    var likedNum;
+    for(var i = 0; i < dislikedUsersLiked.length; i++){
+      if(dislikedUsersLiked[i]["name"] === userName){
+        liked = true;
+        likedNum = i;
+      }
+    }
+    var db = admin.firestore();
+    if(liked){
+      var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+      var remPot = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayRemove(match)
+      });
+      matchRef = db.collection('usersPQ').doc(dislikedUser["id"]);
+      var remLiked = matchRef.update({
+        likedUsers: admin.firestore.FieldValue.arrayRemove(dislikedUsersLiked[likedNum])
+      });
+
+    }
+    else{
+      var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+      var remPot = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayRemove(match)
+      });
+      matchRef = db.collection('usersPQ').doc(dislikedUser["id"]);
+      var remPot = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayRemove(dislikedUsersLiked[likedNum])
+      });
+
+    }
+    return findMatches(userName);
+
+  });
+
+}
+function getMatches(userName){
+  return "";
+}
+
+function removeMatch(userName, removeUserName){
+  return "";
+}
 function findMatches(userName){
   var mainUser;
   var users = [];
@@ -56,7 +222,7 @@ function findMatches(userName){
     var finalMatches = [];
     var mainUser = values[0];
     var users = values[1];
-    temp = mainUser["data"]["matchedUsers"];
+    temp = mainUser["data"]["potentialMatches"];
 
     if(temp.length > 0){
       console.log(temp);
@@ -188,22 +354,22 @@ function findMatches(userName){
       }
       var db = admin.firestore();
       var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
-      var setMatched = matchRef.set({
-        matchedUsers: [main]
-      }, {merge: true});
-      var setPrevMatched = matchRef.set({
-        prevMatchedUsers: [mainUser["id"]]
-      }, {merge: true});
+      var setMatched = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayUnion(match)
+      });
+      var setPrevMatched = matchRef.update({
+        prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(mainUser["id"])
+      });
       matchesIDS.push(finalMatches[i]["uid"]);
     }
     var db = admin.firestore();
     var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
-    var setMatched = matchRef.set({
-      matchedUsers: finalMatches
-    }, {merge: true});
-    var setPrevMatched = matchRef.set({
-      prevMatchedUsers: matchesIDS
-    }, {merge: true});
+    var setMatched = matchRef.update({
+      potentialMatches: admin.firestore.FieldValue.arrayUnion(finalMatches)
+    });
+    var setPrevMatched = matchRef.update({
+      prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(matchesIDS)
+    });
     return finalMatches;
 
   });
@@ -232,7 +398,7 @@ router.get("/getMorePotentialMatches", (req, res) => {
       res.json(ret);
     });
   });
-  
+
   //Returns an array of users that contains the current list of potential matches for a user (does NOT return NEW matches, just the list of already generated matches)
   //NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
   router.get("/getListOfPotentialMatches", (req, res) => {
@@ -273,7 +439,7 @@ io.on('connection', function(socket)
 {
 	console.log('a user connected');
 	socket.id = Math.random();
-	
+
 	socket.on('disconnect', function()
 	{
 		var str = user.token || user.email;
@@ -283,13 +449,13 @@ io.on('connection', function(socket)
 		}
 		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
 	});
-	
+
 	users[socket.id] = {};
 	var user = users[socket.id];
 	user.email = "";
 	user.token = "";
 	user.username = "";
-	
+
 	socket.on('giveSocketData', function(data)
 	{
 		if (data.email) { user.email = data.email; }
@@ -306,16 +472,16 @@ io.on('connection', function(socket)
 			userSocketMap[str] = {};
 			userSocketMap[str][socket.id] = true;
 		}
-		
+
 		//console.log("Full user array: " + JSON.stringify(users));
 		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
-	
+
 	socket.on('testMessageClientToServer', function(msg)
 	{
 		console.log("C2S: " + msg);
 	});
-	
+
 	setInterval(function()
 	{
 		setTimeout(function()
@@ -323,7 +489,7 @@ io.on('connection', function(socket)
 			socket.emit('incomingMessage', {"from":"hotguy69@gmail.com", "msg":"hey babe"});
 		}, Math.floor(1000 + Math.random() * 14000));
 	}, 15000);
-	
+
 	setTimeout(function()
 	{
 		socket.emit('testFunc', "TESTING");
