@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './css/Header.css'
 import Navbar from './Navbar';
 import LoginHeader from './LoginHeader';
-import firebase from './firebase';
 
 class Header extends Component {  
 	constructor(){
@@ -10,10 +9,10 @@ class Header extends Component {
 		this.state={
 			currentUser: null,
 		}
-		this.redirectPage = this.redirectPage.bind(this);
-		this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
+		//this.redirectPage = this.redirectPage.bind(this);
+		//this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
 	}	
-	redirectPage(str) 
+	/*redirectPage(str) 
 	{
 		let defaultLocation = "http://localhost:3000/";
 		if (str === "login")
@@ -22,25 +21,7 @@ class Header extends Component {
 			console.log("Link: '" + window.location.href + "'");
 			window.location.href = defaultLocation;
 		}
-	}
-
-		componentDidMount(){
-			var user = window.localStorage.getItem("user");
-			//console.log(JSON.stringify(user));
-      firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
-    }
-    
-    handleAuthStateChange(user){
-      if (user) {
-        // User is signed in.
-        this.setState({currentUser : user});
-        this.forceUpdate();
-      } else {
-        //no user is signed in.
-        this.setState({currentUser : null});
-        this.forceUpdate();
-      }
-    }
+	}*/
 	
   render() {
 	return (
@@ -50,8 +31,8 @@ class Header extends Component {
 				<span className="navbar-toggler-icon"></span>
 			</button>
 			<div className="collapse navbar-collapse" id="navbarSupportedContent">
-				{this.state.currentUser ? 
-					<Navbar user={this.state.currentUser}/> :
+				{ this.props.uid ? 
+					<Navbar {...this.props} /> :
 					<LoginHeader/> 
 				}
 			</div>

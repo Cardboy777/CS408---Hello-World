@@ -5,7 +5,7 @@ class Messages extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header {...this.props}/>
         <h1>Messages Page</h1>
       </div>
     );
