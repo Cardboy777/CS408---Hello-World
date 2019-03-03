@@ -19,8 +19,7 @@ class Navbar extends Component {
       () => {
         localStorage.removeItem('uAuth');
         localStorage.removeItem('uData');
-        this.setState({ uAuth: null, uData: null });
-        window.location.reload();
+        window.location.href="/";
       }
     )
   }
@@ -67,7 +66,7 @@ class Navbar extends Component {
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 { this.props.uData ?
                 this.props.uData.user :
-                "Loading"                  
+                "<=== TAKE THE PERSONALITY QUIZ THE BUTTON IS RIGHT THERE"                  
               }
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
