@@ -60,7 +60,7 @@ class LoginHeader extends Component {
 		e.preventDefault();
 		if (this.state.validUsername === true && this.state.validEmail === true && this.state.validPassword === true)
 		{
-			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(data){
+			/*firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(data){
 				window.alert(JSON.stringify(data.user.uid));
 				const db=firebase.firestore;
 			if(data.user.uid){
@@ -112,7 +112,7 @@ class LoginHeader extends Component {
 				.catch(function(error) {
 					console.error("Error writing document: ", error);
 				});
-			}
+			}*/
 			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(dat)
 			{
 				var newUser = {};

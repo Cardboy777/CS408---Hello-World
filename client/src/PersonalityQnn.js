@@ -92,7 +92,7 @@ class PersonalityQuestionnaire extends Component {
             return;
         } 
 
-        /*const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).set({
+        const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).update({
             uid: this.props.uAuth,
             user: this.state.username,
             gender: this.state.gender,
@@ -128,7 +128,7 @@ class PersonalityQuestionnaire extends Component {
             canswer8:'',
             canswer9:'',
             canswer10:''
-        });*/
+        });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true; 
               
@@ -224,9 +224,10 @@ class PersonalityQuestionnaire extends Component {
                 </label>
             </div>        
             <div class="form-group col-md-12">
+
                 <label>Are you interested in?
-                    <select class="form-control" id="attrgender" name="attractGender" onChange={this.handleChange} value={this.state.attrgender}>
-                        <option selected></option><option>Male</option><option>Female</option><option>Both</option> 
+                    <select class="form-control" id="attrgender" name="attrgender" onChange={this.handleChange} value={this.state.attrgender}>
+                        <option></option><option>Male</option><option>Female</option><option>Both</option> 
                     </select>
                 </label>
                 <br />
@@ -289,7 +290,7 @@ class PersonalityQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
-                <label>Do you prefer variety to routine?
+                <label>Do you like variety or routine?
                     <select class="form-control" id="pa10" name="pa10" onChange={this.handleChange} value={this.state.pa10}>
                         <option selected></option><option>Variety</option><option>Routine</option>
                     </select>
