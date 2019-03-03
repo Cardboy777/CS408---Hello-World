@@ -23,6 +23,7 @@ class App extends Component {
       uData: null
     }
     this.handleLoggedinUser = this.handleLoggedinUser.bind(this);
+    this.signedIn = this.signedIn.bind(this);
   }
 
 	componentDidMount(){
@@ -36,14 +37,16 @@ class App extends Component {
   getUserFromLocalStorage() {
     const uAuth = localStorage.getItem('uAuth');
     const uData = localStorage.getItem('uData');
-    if (!uAuth || !uData ){
+    if (!uAuth){
       return;
     }
-    console.log("uData: " + uData + "uAuth: " + uAuth)
     this.setState({ uAuth : uAuth, uData : uData });
   }
-  signedIn = () => {
-    return this.state.uAuth
+  signedIn(){
+    if(this.state.uAuth){
+      return true;
+    }
+    return false;
   }
   
   handleLoggedinUser(user){
@@ -110,6 +113,7 @@ class App extends Component {
   }
 
     render() {
+      console.log("uAuth state: " + this.state.uAuth);
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
@@ -117,39 +121,25 @@ class App extends Component {
               <FrontPage {...this.state}/>
           )} />
           <Route path="/matches" render={() => (
-            this.signedIn()
-              ? <Matches {...this.state} />
-              : <Redirect to="/" />
+            <Matches {...this.state} />
           )} />
           <Route path="/matching" render={() => (
-            this.signedIn()
-              ? <Matching {...this.state} />
-              : <Redirect to="/" />
+            <Matching {...this.state} />
           )} />
           <Route path="/messages" render={() => (
-            this.signedIn()
-              ? <Messages {...this.state} />
-              : <Redirect to="/" />
+            <Messages {...this.state} />
           )} />
           <Route path="/user/profile" render={() => (
-            this.signedIn()
-              ? <UserProfile {...this.state} />
-              : <Redirect to="/" />
+            <UserProfile {...this.state} />
           )} />
           <Route path="/user/account" render={() => (
-            this.signedIn()
-              ? <UserSettings {...this.state} />
-              : <Redirect to="/" />
+            <UserSettings {...this.state} />
           )} />
           <Route path="/user/questionnaire" render={() => (
-            this.signedIn()
-              ? <PersonalityQuestionnaire {...this.state} />
-              : <Redirect to="/" />
+            <PersonalityQuestionnaire {...this.state} />
           )} />
           <Route path="/user/cquestionnaire" render={() => (
-            this.signedIn()
-              ? <CodingQuestionnaire {...this.state} />
-              : <Redirect to="/" />
+            <CodingQuestionnaire {...this.state} />
           )} />
           <Route component= { Page404 }/>
         </Switch>
