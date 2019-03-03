@@ -6,7 +6,7 @@ class Matches extends Component {
   render() {
     return (
       <div id="matchesPage">
-        <Header {...this.props} user={this.props.user}/>
+        <Header user={this.props.user}/>
         <h1>Matches Page</h1>
       </div>
     );

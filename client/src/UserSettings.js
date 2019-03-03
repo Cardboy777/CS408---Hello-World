@@ -5,7 +5,7 @@ class UserSettings extends Component {
   render() {
     return (
       <div id="UserSettingsPage">
-        <Header {...this.props}/>
+        <Header/>
         <h1>User Settings Page</h1>
       </div>
     );

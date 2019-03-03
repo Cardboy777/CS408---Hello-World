@@ -5,7 +5,7 @@ class UserProfile extends Component {
   render() {
     return (
       <div id="UserProfilePage">
-        <Header {...this.props}/>
+        <Header/>
         <h1>Profile Page</h1>
       </div>
     );

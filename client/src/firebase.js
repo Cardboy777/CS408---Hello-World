@@ -12,35 +12,3 @@ const config = {
  
 firebase.initializeApp(config);
 export default firebase;
-
-
-/*getCurrentUserAuth(){
-        let currentuser;
-        firebase.auth().onAuthStateChanged( (user) => {
-            if (user) {
-                // User is signed in.
-                currentuser = user;
-              } else {
-                //no user is signed in.
-                currentuser = null;
-              }
-        });
-        return currentuser;
-    }
-    
-    getCurrentUserData(){
-        let currentuser = this.getCurrentUserAuth();
-        let data;
-        const db = firebase.firestore();
-        const docRef = db.collection("usersPQ").doc(currentuser.uid);
-        docRef.get().then( (userdoc) => {
-            if (userdoc.exists) {
-            data = userdoc.data();
-            } else {
-                data = null;
-            }
-        }).catch(function(error) {
-          data = null
-        });
-    
-    }*/

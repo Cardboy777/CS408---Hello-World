@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import './css/Matching.css';
 import MatchingPanel from './MatchingPanel';
 import Header from './Header';
-import firebase from './firebase'
 
 class Matching extends Component {
   constructor(){
     super();
     this.state = {
-      currentUser: null,
-      userdata: null,
       message : null,
       user_list: [],
       user_list_index: 0
@@ -20,17 +17,22 @@ class Matching extends Component {
     this.LikeUser = this.LikeUser.bind(this);
     this.DislikeUser = this.DislikeUser.bind(this);
     this.ViewNextProfile = this.ViewNextProfile.bind(this);
-    
-		this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
   }
 
   componentDidMount(){
-    this.fetchMorePotentialMatches();
+    this.fetchListOfPotentialMatches();
+  }
+
+  //gets the initial list of potetential matches from the server
+  fetchListOfPotentialMatches(){
+    fetch("/api/getListOfPotentialMatches")
+    .then(res => res.json())
+    .then(arrayList => this.setState({ user_list: arrayList }));
   }
 
   //requests more potentail matches from the server
   fetchMorePotentialMatches(){
-    fetch("/api/getMorePotentialMatches").then()
+    fetch("/api/getMorePotentialMatches")
       .then(res => res.json())
       .then(arrayList => this.setState({ user_list: this.state.user_list.concat(arrayList) }));
   }
@@ -53,23 +55,15 @@ class Matching extends Component {
     .then()*/
   }
 
-  LikeUser(likedUser){
-    fetch("/api/likeUser",{
-      method: 'POST',
-      body: JSON.stringify({
-        user1: this.state.currentUser.uid,
-        user2: likedUser.uid
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    }).then(res => res.json());
-    this.RemoveUsersFromPotentialMatches(likedUser);
+  LikeUser(matchedUser){
+    this.RemoveUsersFromPotentialMatches(matchedUser);
   }
-  DislikeUser(dislikedUser){
-    this.RemoveUsersFromPotentialMatches(dislikedUser);
+  DislikeUser(matchedUser){
+    this.RemoveUsersFromPotentialMatches(matchedUser);
   }
 
   ViewNextProfile(){
-    this.setState({user_list_index : this.user_list_index + 1});
+    this.setState({user_list_index : this.user_list_index + 1})
     this.forceUpdate();
   }
 
@@ -83,7 +77,7 @@ class Matching extends Component {
     }
     return (
       <div id="matchingPage">
-        <Header {...this.props} />
+        <Header/>
         <div className="panels-container">
           <div className="row">
             { this.state.user_list.map((i) =>
