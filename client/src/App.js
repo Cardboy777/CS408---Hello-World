@@ -80,7 +80,6 @@ class App extends Component {
         }
       })
       .catch( (error) => {
-        console.log("Here4-3");
         this.setState({
           uAuth : user,
           uData : null,
@@ -132,6 +131,7 @@ class App extends Component {
   }
 
   render() {
+    //console.log("uAuth: " + this.state.uAuth + "\tuData: " + this.state.uData + "\tChecked: " + this.state.checkedUser);
     return (
       <div id="App">
         { this.state.checkedUser ?

@@ -63,12 +63,13 @@ class Matching extends Component {
         user_list: this.state.user_list.splice(index, 1),
         user_list_index: this.state.user_list_index > (this.state.user_list.length - 2) ? this.state.user_list.length : this.state.user_list_index
       })
+      this.forceUpdate();
     }
   }
 
   findUserIndex(username){
     for( let i in this.state.user_list){
-      if(i.user === username){
+      if(i.data.user === username){
         return this.state.userName.indexOf(i);
       }
     }
@@ -149,16 +150,15 @@ class Matching extends Component {
         <Header {...this.props} />
         <div className="panels-container">
           <div className="row">
-            {/*this.state.user_list.map((i) =>
-                <div key={i.user} className="panel col-md-6">
-                  <MatchingPanel userData={i} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser}/>
+            {this.state.user_list.map((i) =>
+                <div key={i.data.user} className="panel col-md-6">
+                  <MatchingPanel match_percent={i.match_percent} userData={i.data} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser}/>
                 </div>
               )
-            */}
-            <MatchingPanel userData={this.props.uData} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser}/>
+            }
           </div>
         </div>
-        { this.state.user_list_index < 1 ?
+        { this.state.user_list.length < 1 ?
           <button id='fetchMoreMatches' className='btn btn-primary' onClick={this.getMorePotentialMatches}>Load More Potential Matches</button> :
           <br/>
         }

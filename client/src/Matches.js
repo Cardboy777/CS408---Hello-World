@@ -109,15 +109,14 @@ class Matches extends Component {
         <Header {...this.props} />
         <div className="panels-container">
           <div className="row">
-            {/*this.state.user_list.map((i) =>
+            {this.state.user_list.map((i) =>
                 <div key={i.user} className="panel col-md-6">
                   <MatchesPanel userData={i} unlikeFunct={this.UnlikeUser}/>
                 </div>
               )
-            */}
-            <MatchesPanel userData={this.props.uData} unlikeFunct={this.UnlikeUser}/>
+            }
           </div>
-          { this.state.user_list_index < 1 ?
+          { this.state.user_list.length < 1 ?
             <button id='fetchMoreMatches' className='btn btn-primary' onClick={this.getMoreMatches}>Load More Matches</button> :
             <br/>
           }
