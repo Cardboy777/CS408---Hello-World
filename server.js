@@ -438,6 +438,7 @@ function findMatches(userName){
     var setPrevMatched = matchRef.update({
       prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(matchesIDS)
     });
+    console.log("HERE5");
     return finalMatches;
 
   });
@@ -454,6 +455,7 @@ admin.initializeApp({
 router.post("/getMorePotentialMatches", (req, res) => {
   result = findMatches(req.body.username);
   result.then(function(ret){
+    console.log("HERE6");
     console.log(ret);
     res.json(ret);
   })

@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+node_modules/.bin/concurrently
+node_modules/concurrently/package.json
+node_modules/p-limit/package.json
+node_modules/p-limit/readme.md
+package-lock.json
