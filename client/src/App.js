@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import FrontPage from './FrontPage';
 import Matches from './Matches';
 import Matching from './Matching';
@@ -11,30 +11,85 @@ import Page404 from './Page404';
 import firebase from './firebase';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
-
-const linkPQ = "http://localhost:3000/user/questionnaire";
-const linkCQ = "http://localhost:3000/user/cquestionnaire";
+import loading from './img/loading.gif';
 
 class App extends Component {
   constructor(){
     super();
     this.state={
-      currentUser: null
+      uAuth: null,
+      uData: null,
+      checkedUser: false
     }
-    this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
+    this.handleLoggedinUser = this.handleLoggedinUser.bind(this);
+    this.isLoggedIn = this.isLoggedIn.bind(this);
   }
-	
-    componentDidMount(){
-      firebase.auth().onAuthStateChanged(this.handleAuthStateChange);
-    }
-    
-    handleAuthStateChange(user){
+
+	componentDidMount(){
+    this.getUserFromLocalStorage()
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in.
-        this.setState({currentUser : user});
-        this.forceUpdate();
-		
-		const db = firebase.firestore();
+        this.handleLoggedinUser(user)
+      }
+      else{
+        this.setState({
+          checkedUser: true
+        })
+      }
+    });
+  }
+  getUserFromLocalStorage() {
+    const uAuth = localStorage.getItem('uAuth');
+    const uData = localStorage.getItem('uData');
+    if (!uAuth || !uData){
+      return;
+    }
+    this.setState(
+      { uAuth: uAuth,
+        uData: uData,
+        checkedUser: true
+      });
+  }
+
+  isLoggedIn(){
+    if(this.state.checkedUser && this.state.uAuth){
+      return true;
+    }
+    return false;
+  }
+  
+  handleLoggedinUser(user){
+    localStorage.setItem('uAuth', user)
+    const db = firebase.firestore();
+    db.collection("usersPQ").doc(user.uid).get()
+      .then( (userdoc) => {
+        if (userdoc.exists) {
+          localStorage.setItem('uData', userdoc.data());
+          this.setState({
+            uAuth : user,
+            uData : userdoc.data(),
+            checkedUser: true
+          });
+        } else {
+          this.setState({
+            uAuth : user,
+            uData : null,
+            checkedUser: true
+          });
+          console.log('No user data available for '+ this.state.uAuth.uid);
+        }
+      })
+      .catch( (error) => {
+        console.log("Here4-3");
+        this.setState({
+          uAuth : user,
+          uData : null,
+          checkedUser: true
+        });
+          console.log("Error getting User Data:\n" + error);
+      });
+
+      /*const db = firebase.firestore();
 		
 		var age = db.collection("usersPQ").doc(user.uid).get().then(function(userData)
 		{
@@ -58,7 +113,10 @@ class App extends Component {
 			}
 			else
 			{
-				alert("Data DNE");
+				if (window.location.href != linkPQ)
+				{
+					window.location.href = linkPQ;
+				}
 			}
 		}).error(function(err)
 		{
@@ -70,31 +128,64 @@ class App extends Component {
 			db.collection("usersPQ").doc(user.uid).update({
 				lastOnlineTime: new Date().getTime(),
 			});
-		}, 10000);
-		
-		
-      } else {
-        //no user is signed in.
-        this.setState({currentUser : null});
-        this.forceUpdate();
-      }
-    }
+		}, 10000);*/
+  }
 
-    render() {
+  render() {
     return (
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Switch>
-          <Route path='/' exact component={ FrontPage } />
-            <Route path='/matches' component={ Matches }/>
-            <Route path= '/matching' component= { Matching }/>
-            <Route path= '/messages' component= { Messages }/>
-            <Route path= '/user/profile' component= { UserProfile }/>
-            <Route path= '/user/account' component= { UserSettings }/>
-            <Route path= '/user/questionnaire' component= { PersonalityQuestionnaire }/>
-            <Route path= '/user/cquestionnaire' component= { CodingQuestionnaire }/>
-          <Route component= { Page404 }/>
-        </Switch>
-      </BrowserRouter>
+      <div id="App">
+        { this.state.checkedUser ?
+          <BrowserRouter basename={process.env.PUBLIC_URL}>
+            <Switch>
+            <Route path="/" exact render={() => (
+                <FrontPage {...this.state}/>       
+              )} />
+              <Route path="/matches" render={() => (
+                this.state.uAuth ?
+                  <Matches {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/matching" render={() => (
+                this.state.uAuth ?
+                  <Matching {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/messages" render={() => (
+                this.state.uAuth ?
+                  <Messages {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/profile" render={() => (
+                this.state.uAuth ?
+                  <UserProfile {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/account" render={() => (
+                this.state.uAuth ?
+                  <UserSettings {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/questionnaire" render={() => (
+                this.state.uAuth ?
+                  <PersonalityQuestionnaire {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/cquestionnaire" render={() => (
+                this.state.uAuth ?
+                  <CodingQuestionnaire {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route component= { Page404 }/> :
+                <Redirect to='/'/>
+            </Switch>
+          </BrowserRouter> :
+          <div id="loading">
+            <img src={loading} alt="Loading"/>
+            <h2>Loading...</h2>
+          </div>
+          
+        }
+      </div>
     );
   }
 }

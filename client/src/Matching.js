@@ -11,84 +11,157 @@ class Matching extends Component {
       user_list: [],
       user_list_index: 0
     }
+    this.fetchPotentialMatches = this.fetchPotentialMatches.bind(this);
+    this.RemoveUserFromList = this.RemoveUserFromList.bind(this);
     this.getMorePotentialMatches = this.getMorePotentialMatches.bind(this);
-    this.fetchListOfPotentialMatches = this.fetchListOfPotentialMatches.bind(this);
-    this.RemoveUsersFromPotentialMatches = this.RemoveUsersFromPotentialMatches.bind(this);
     this.LikeUser = this.LikeUser.bind(this);
     this.DislikeUser = this.DislikeUser.bind(this);
+    this.SkipUser = this.SkipUser.bind(this);
     this.ViewNextProfile = this.ViewNextProfile.bind(this);
   }
 
   componentDidMount(){
-    this.fetchListOfPotentialMatches();
-  }
-
-  //gets the initial list of potetential matches from the server
-  fetchListOfPotentialMatches(){
-    fetch("/api/getListOfPotentialMatches")
-    .then(res => res.json())
-    .then(arrayList => this.setState({ user_list: arrayList }));
+    this.fetchPotentialMatches();
   }
 
   //requests more potentail matches from the server
-  fetchMorePotentialMatches(){
-    fetch("/api/getMorePotentialMatches")
+  fetchPotentialMatches(){
+    if(this.props.uData.user !== undefined){
+      fetch("/api/getMorePotentialMatches", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+        },
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        body: JSON.stringify({ username: this.props.uData.user }), // body data type must match "Content-Type" header
+      })
       .then(res => res.json())
-      .then(arrayList => this.setState({ user_list: this.state.user_list.concat(arrayList) }));
+      .then(arrayList => {
+        console.log(arrayList);
+        this.setState({ user_list: this.state.user_list.concat(arrayList) })
+      }).catch((message) =>{
+        console.log("Could not Retrieve Potential Matches");
+      });
+    }
   }
 
-  getMorePotentialMatches(){
-    this.fetchMorePotentialMatches();
+  getMorePotentialMatches(e){
+    e.preventDefault();
+    this.fetchPotentialMatches();
     this.forceUpdate();
   }
 
-  RemoveUsersFromPotentialMatches(matchedUser){
-    /*fetch("/api/RemoveUsersFromPotentialMatches",{
-      method: 'POST',
-      body: JSON.stringify({
-        user1: matchedUser,
-        user2: this.state.user
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(res => res.json())
-    .then()*/
+  RemoveUserFromList(matchedUser){
+    let index = this.findUserIndex(matchedUser);
+    if(index){
+      this.setState({
+        user_list: this.state.user_list.splice(index, 1),
+        user_list_index: this.state.user_list_index > (this.state.user_list.length - 2) ? this.state.user_list.length : this.state.user_list_index
+      })
+    }
   }
 
-  LikeUser(matchedUser){
-    this.RemoveUsersFromPotentialMatches(matchedUser);
+  findUserIndex(username){
+    for( let i in this.state.user_list){
+      if(i.user === username){
+        return this.state.userName.indexOf(i);
+      }
+    }
+    console.log("User not in matching list")
+    return null
   }
-  DislikeUser(matchedUser){
-    this.RemoveUsersFromPotentialMatches(matchedUser);
+
+  //Sends request to like the User
+  LikeUser(likedUser){
+    if(this.props.uData.user !== undefined){
+      fetch("/api/likeUser", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+        },
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        body: JSON.stringify({
+          userName: this.props.uData.user,
+          likedUserName: likedUser
+        }), // body data type must match "Content-Type" header
+      })
+      .then(res => res.json())
+      .then(response => {
+        if(response === "Success"){
+          this.RemoveUserFromList(likedUser);
+        }
+      }).catch((message) =>{
+        console.log("Could not Like user " + likedUser);
+      });
+    }
+  }
+  DislikeUser(dislikedUser){
+    if(this.props.uData.user !== undefined){
+      fetch("/api/dislikeUser", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+        },
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        body: JSON.stringify({
+          userName: this.props.uData.user,
+          dislikedUserName: dislikedUser
+        }), // body data type must match "Content-Type" header
+      })
+      .then(res => res.json())
+      .then(response => {
+        if(response === "Success"){
+          this.RemoveUserFromList(dislikedUser);
+        }
+      }).catch((message) =>{
+        console.log("Could not Dislike user " + dislikedUser);
+      });
+    }
+  }
+  SkipUser(skippedUser){
+    console.log(this.props.uData.user + " Skipped " + skippedUser)
+    this.RemoveUserFromList(skippedUser);
   }
 
   ViewNextProfile(){
-    this.setState({user_list_index : this.user_list_index + 1})
+    this.setState({user_list_index : this.user_list_index + 1});
     this.forceUpdate();
   }
 
   render() {
-    let refreshButton;
-    if (this.state.user_list.length < 1){
-      refreshButton=<button className='btn btn-primary' onClick={this.getMorePotentialMatches}>Test Fetch More</button>;
-    }
-    else{
-      refreshButton=<br/>
-    }
     return (
       <div id="matchingPage">
-        <Header/>
+        <Header {...this.props} />
         <div className="panels-container">
           <div className="row">
-            { this.state.user_list.map((i) =>
-                <div key={i.name} className="panel col-md-6">
-                  <MatchingPanel user={i}/>
+            {/*this.state.user_list.map((i) =>
+                <div key={i.user} className="panel col-md-6">
+                  <MatchingPanel userData={i} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser}/>
                 </div>
               )
-            }
+            */}
+            <MatchingPanel userData={this.props.uData} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser}/>
           </div>
-          {refreshButton}
         </div>
+        { this.state.user_list_index < 1 ?
+          <button id='fetchMoreMatches' className='btn btn-primary' onClick={this.getMorePotentialMatches}>Load More Potential Matches</button> :
+          <br/>
+        }
       </div>
     );
   }

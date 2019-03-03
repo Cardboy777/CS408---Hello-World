@@ -4,6 +4,7 @@
   "description": "## Hello World is the greatest man-made developement since the computer itself",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "express": "^4.16.4",
     "firebase": "^5.8.3",

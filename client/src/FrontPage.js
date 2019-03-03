@@ -13,7 +13,7 @@ class FrontPage extends Component {
   render() {
     return (
       <div id="frontpageDiv">
-        <Header/>
+        <Header {...this.props}/>
         <div>
           <div id="title">
             <h1 className="title">HƐ>LO WORLD</h1>

@@ -4,3 +4,7 @@
 #matchingPage div.panel{
     padding: 1em;
 }
+#matchingPage button#fetchMoreMatches{
+    margin-top : 2em;
+    margin-left: 6em;
+}

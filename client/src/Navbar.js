@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import firebase from './firebase';
-//import FirebaseTools from './FirebaseTools';
 import './css/Navbar.css';
 
 import openSocket from 'socket.io-client';
@@ -9,46 +8,20 @@ const socket = openSocket('http://localhost:8080');
 class Navbar extends Component {
   constructor(){
     super();
-    this.state= {
-      username: null
-    }
     this.signOut= this.signOut.bind(this);
-    this.getUserName = this.getUserName.bind(this);
-    this.updateUsername=this.updateUsername.bind(this);
 	  this.sendSocketData();
-  }
-
-  componentDidMount(){
-    this.getUserName();
-  }
-
-  getUserName(){
-    const db = firebase.firestore();
-    const docRef = db.collection("usersPQ").doc(this.props.user.uid);
-    docRef.get().then(this.updateUsername).catch(function(error) {
-      console.log("Error getting user's Username:", error);
-    });
-  }
-
-  updateUsername(userdoc){
-    if (userdoc.exists) {
-      console.log(userdoc.data().user);
-      this.setState({username : userdoc.data().user});
-    } else {
-        // doc.data() will be undefined in this case
-        console.log("No such User!");
-    }
   }
 
   signOut(e){
     e.preventDefault();
-    firebase.auth().signOut().then(this.forceUpdate()).catch(function(error) {
-      // An error happened.
-	  
-    }).then(function()
-	{
-		window.location.href = "http://localhost:3000/"
-	});;
+    firebase.auth().signOut()
+    .then(
+      () => {
+        localStorage.removeItem('uAuth');
+        localStorage.removeItem('uData');
+        window.location.href="/";
+      }
+    )
   }
   
   sendSocketData()
@@ -61,10 +34,10 @@ class Navbar extends Component {
 	  setTimeout(function()
 	  {
 		  socket.emit("testMessageClientToServer", "GSRG");
-		  var userData = window.localStorage.getItem("user");
-		  if (userData == undefined || userData == null) { return; }
+		  var userData = window.localStorage.getItem("uAuth");
+		  if (userData === undefined || userData == null) { return; }
 		  userData = JSON.parse(userData);
-		  if (userData.email == undefined || userData.uid == undefined) { return; }
+		  if (userData.email === undefined || userData.uid === undefined) { return; }
 		  var newData = {};
 		  newData.email = userData.email;
 		  newData.token = userData.uid;
@@ -91,7 +64,10 @@ class Navbar extends Component {
           </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {this.state.username}
+                { this.props.uData ?
+                this.props.uData.user :
+                "<=== TAKE THE PERSONALITY QUIZ THE BUTTON IS RIGHT OVER THERE"                  
+              }
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <a className="dropdown-item" href="/user/profile">Profile</a>

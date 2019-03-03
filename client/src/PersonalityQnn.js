@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
 import './css/PersonalityQnn.css';
-import CodingQuestionnaire from './CodingQnn';
+//import CodingQuestionnaire from './CodingQnn';
 //username
 
 class PersonalityQuestionnaire extends Component {
@@ -83,16 +83,6 @@ class PersonalityQuestionnaire extends Component {
             timestampsInSnapshots: true
         });
         //let cuid;
-        let user = firebase.auth().currentUser;
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              // User is signed in.
-           // let cuid=user.uid;
-            } else {
-              // No user is signed in.
-              window.alert("Not getting cid");
-            }
-          });
        // window.alert(cuid);
         //console.log(cuid);
         if (!this.handleValidation()){
@@ -100,8 +90,8 @@ class PersonalityQuestionnaire extends Component {
             return;
         } 
 
-        const questionnaireRef=db.collection("usersPQ").doc(user.uid).set({
-            uid:user.uid,
+        /*const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).set({
+            uid: this.props.uAuth,
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,
@@ -136,7 +126,7 @@ class PersonalityQuestionnaire extends Component {
             canswer8:'',
             canswer9:'',
             canswer10:''
-        });
+        });*/
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true; 
               

@@ -3,11 +3,15 @@ const express = require('express');
 const router = express.Router();
 const http = require('http');
 const app = express();
+var bodyParser = require('body-parser');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 var port = process.env.PORT || 8080;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 var users = {};
 var userSocketMap = {};
@@ -446,49 +450,46 @@ admin.initializeApp({
   databaseURL: 'https://cs-408-hello-world.firebaseio.com'
 });
 
-//Client-callable API call
-router.get("/getTestMessage", (req, res) => {
-    const msg = "David is the one and only match";
-    res.json(msg);
+//Returns an array of Objects [{userpq, percent_match}] that are matches for the given User
+router.post("/getMorePotentialMatches", (req, res) => {
+  result = findMatches(req.body.username);
+  result.then(function(ret){
+    console.log(ret);
+    res.json(ret);
+  })
 });
 
-//Returns an array of new User Objects that are matches for the User
-//NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
-router.get("/getMorePotentialMatches", (req, res) => {
-    //const users = getPotentialMatches(5);
-    result = findMatches("ReidK");
-    result.then(function(ret){
-      console.log(ret);
-      res.json(ret);
-    });
-  });
+router.post("/getMatches", (req, res) => {
+  result = getMatches(req.body.username);
+  result.then(function(ret){
+    console.log(ret);
+    res.json(ret);
+  })
+});
 
-  //Returns an array of users that contains the current list of potential matches for a user (does NOT return NEW matches, just the list of already generated matches)
-  //NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
-  router.get("/getListOfPotentialMatches", (req, res) => {
-    //const users = getPotentialMatches(5);
-    result = findMatches("indydcarr");
-    result.then(function(ret){
-      console.log(ret);
-      res.json(ret);
-    });
-    /**const users = [
-          {uid: 12345, name: "John Smith", description: "I like long walks on the beach", fav_lang: "Java", match_percent: 92},
-          {uid: 12341234, name: "John Doe", description: "I like People named David", fav_lang: "Ruby on Rails", match_percent: 73},
-          {uid: 234432432, name: "Jane Does", description: "I'm an engineer", fav_lang: "MatLab", match_percent:60},
-          {uid: 324363, name: "Yo Low", description: "I will try anything", fav_lang: "HTML", match_percent:45},
-          {uid: 35234, name: "Cardboy777", description: "I like card games", fav_lang: "Visual Basic", match_percent:8}
-        ];
-        res.json(users);**/
-    });
+//Handles Liking a user on the Matching Page
+router.post("/likeUser", (req, res) => {
+  console.log(req.body.userName + " Liked " + req.body.likedUserName);
+  result = likeUser(req.body.userName, req.body.likedUserName);
+  result.then(function(ret){
+    res.json("Success");
+  })
+});
 
-//Recieves json with 2 user objects. The two users should be removed from each other's list of potential users
-//NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
-router.get("/RemoveUsersFromPotentialMatches", (req, res) => {
-  var user1 = req.param('user1');
-  var user2 = req.param('user2');
-  console.log(user1);
-  res.json();
+router.post("/dislikeUser", (req, res) => {
+  console.log(req.body.userName + " Disiked " + req.body.dislikedUserName);
+  result = dislikeUser(req.body.userName, req.body.dislikedUserName);
+  result.then(function(ret){
+    res.json("Success");
+  })
+});
+
+router.post("/unlikeUser", (req, res) => {
+  console.log(req.body.userName + " Unliked " + req.body.unlikedUserName);
+  result = removeMatch(req.body.userName, req.body.dislikedUserName);
+  result.then(function(ret){
+    res.json("Success");
+  })
 });
 
 app.use(express.static('public'));
@@ -516,6 +517,7 @@ io.on('connection', function(socket)
 		if (str != undefined && userSocketMap[str])
 		{
 			userSocketMap[str][socket.id] = undefined;
+			if (userSocketMap[str].length < 1) { delete[userSocketMap[str]]; userSocketMap[str] = undefined; }
 		}
 		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
 	});
@@ -531,7 +533,7 @@ io.on('connection', function(socket)
 		if (data.email) { user.email = data.email; }
 		if (data.token) { user.token = data.token;}
 		if (data.username) { user.username = data.username; }
-		var str = data.token || data.email;
+		var str = data.email || data.token;
 		//console.log(str);
 		if (userSocketMap[str] != undefined)
 		{
@@ -542,7 +544,7 @@ io.on('connection', function(socket)
 			userSocketMap[str] = {};
 			userSocketMap[str][socket.id] = true;
 		}
-
+		console.log("Socket data.");
 		//console.log("Full user array: " + JSON.stringify(users));
 		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
@@ -550,6 +552,23 @@ io.on('connection', function(socket)
 	socket.on('testMessageClientToServer', function(msg)
 	{
 		console.log("C2S: " + msg);
+	});
+
+	socket.on('sendMessageToUser', function(messageData)
+	{
+		console.log("Got something!");
+
+		/*var id = messageData.id;
+		var sender = messageData.sender; //{email: fq, uid: fefew}
+		var receiver = messageData.receiver;//email
+		var message = messageData.message;
+
+		////send message to database
+		var receiverSockets = userSocketMap[receiver];///their email
+		Objects.keys(receiverSockets).forEach(function(key)
+		{
+			console.log(key);
+		});*/
 	});
 
 	setInterval(function()
