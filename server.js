@@ -3,11 +3,15 @@ const express = require('express');
 const router = express.Router();
 const http = require('http');
 const app = express();
+var bodyParser = require('body-parser');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 var port = process.env.PORT || 8080;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 var users = {};
 var userSocketMap = {};
@@ -444,43 +448,46 @@ admin.initializeApp({
   databaseURL: 'https://cs-408-hello-world.firebaseio.com'
 });
 
-//Client-callable API call
-router.get("/getTestMessage", (req, res) => {
-    const msg = "David is the one and only match";
-    res.json(msg);
+//Returns an array of Objects [{userpq, percent_match}] that are matches for the given User
+router.post("/getMorePotentialMatches", (req, res) => {
+  result = findMatches(req.body.username);
+  result.then(function(ret){
+    console.log(ret);
+    res.json(ret);
+  })
 });
 
-//Returns an array of new User Objects that are matches for the User
-//NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
-router.get("/getMorePotentialMatches", (req, res) => {
-    //const users = getPotentialMatches(5);
-    result = findMatches("ReidK");
-    result.then(function(ret){
-      console.log(ret);
-      res.json(ret);
-    });
-  });
+router.post("/getMatches", (req, res) => {
+  result = getMatches(req.body.username);
+  result.then(function(ret){
+    console.log(ret);
+    res.json(ret);
+  })
+});
 
-  //Returns an array of users that contains the current list of potential matches for a user (does NOT return NEW matches, just the list of already generated matches)
-  //NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
-  router.get("/getListOfPotentialMatches", (req, res) => {
-    const users = [
-          {uid: 12345, name: "John Smith", description: "I like long walks on the beach", fav_lang: "Java", match_percent: 92},
-          {uid: 12341234, name: "John Doe", description: "I like People named David", fav_lang: "Ruby on Rails", match_percent: 73},
-          {uid: 234432432, name: "Jane Does", description: "I'm an engineer", fav_lang: "MatLab", match_percent:60},
-          {uid: 324363, name: "Yo Low", description: "I will try anything", fav_lang: "HTML", match_percent:45},
-          {uid: 35234, name: "Cardboy777", description: "I like card games", fav_lang: "Visual Basic", match_percent:8}
-        ];
-        res.json(users);
-    });
+//Handles Liking a user on the Matching Page
+router.post("/likeUser", (req, res) => {
+  console.log(req.body.userName + " Liked " + req.body.likedUserName);
+  result = likeUser(req.body.userName, req.body.likedUserName);
+  result.then(function(ret){
+    res.json("Success");
+  })
+});
 
-//Recieves json with 2 user objects. The two users should be removed from each other's list of potential users
-//NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
-router.get("/RemoveUsersFromPotentialMatches", (req, res) => {
-  var user1 = req.param('user1');
-  var user2 = req.param('user2');
-  console.log(user1);
-  res.json();
+router.post("/dislikeUser", (req, res) => {
+  console.log(req.body.userName + " Disiked " + req.body.dislikedUserName);
+  result = dislikeUser(req.body.userName, req.body.dislikedUserName);
+  result.then(function(ret){
+    res.json("Success");
+  })
+});
+
+router.post("/unlikeUser", (req, res) => {
+  console.log(req.body.userName + " Unliked " + req.body.unlikedUserName);
+  result = dislikeUser(req.body.userName, req.body.dislikedUserName);
+  result.then(function(ret){
+    res.json("Success");
+  })
 });
 
 app.use(express.static('public'));
