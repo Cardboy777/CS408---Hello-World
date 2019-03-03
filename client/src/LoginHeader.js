@@ -37,7 +37,7 @@ class LoginHeader extends Component {
 
     login(e){
 		e.preventDefault();
-		console.log("Email: " + this.state.email + "   Password: "+ this.state.password);
+		//console.log("Email: " + this.state.email + "   Password: "+ this.state.password);
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(dat)
 		{
 			var newUser = {};

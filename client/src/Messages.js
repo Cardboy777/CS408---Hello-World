@@ -47,7 +47,7 @@ class Messages extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header {...this.props}/>
         <h1>Messages Page</h1>
 		<div id="messageBoxDiv">
 			<input id="messageTextBox" placeholder="Type your message here."></input>
