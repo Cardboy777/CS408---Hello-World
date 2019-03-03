@@ -400,9 +400,9 @@ function findMatches(userName){
       for(j = 0; j < scores.length; j++){
         if(scores[j]["score"] > highMatch["score"]){
           highMatch = {
-            "data" : scores[i]["data"],
-            "match_percent" : Math.floor(scores[i]["score"]*100/27),
-            "uid" : scores[i]["userID"],
+            "data" : scores[j]["data"],
+            "match_percent" : Math.floor(scores[j]["score"]*100/27),
+            "uid" : scores[j]["userID"],
           };
           matchNumber = j;
         }
@@ -411,34 +411,33 @@ function findMatches(userName){
       finalMatches.push(highMatch);
 
     }
-    var matchesIDS = [];
-    for(i = 0; i < finalMatches.length; i++){
-      main = {
-        "data" : mainUser["data"],
-        "match_percent" : finalMatches[i]["match_percent"],
-        "uid" : mainUser["id"],
+    if(finalMatches.length > 0){
+      var matchesIDS = [];
+      for(i = 0; i < finalMatches.length; i++){
+        main = {
+          "data" : mainUser["data"],
+          "match_percent" : finalMatches[i]["match_percent"],
+          "uid" : mainUser["id"],
+        }
+        var db = admin.firestore();
+        var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
+        var setMatched = matchRef.update({
+          potentialMatches: admin.firestore.FieldValue.arrayUnion(main)
+        });
+        var setPrevMatched = matchRef.update({
+          prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(mainUser["id"])
+        });
+        matchesIDS.push(finalMatches[i]["uid"]);
       }
       var db = admin.firestore();
-      var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
+      var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
       var setMatched = matchRef.update({
-        potentialMatches: admin.firestore.FieldValue.arrayUnion(match)
+        potentialMatches: admin.firestore.FieldValue.arrayUnion.apply(null, finalMatches)
       });
       var setPrevMatched = matchRef.update({
-        prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(mainUser["id"])
+        prevMatchedUsers: admin.firestore.FieldValue.arrayUnion.apply(null, matchesIDS)
       });
-      matchesIDS.push(finalMatches[i]["uid"]);
     }
-    var db = admin.firestore();
-    var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
-    console.log("HERE3");
-    var setMatched = matchRef.update({
-      potentialMatches: admin.firestore.FieldValue.arrayUnion(finalMatches)
-    });
-    console.log("HERE4");
-    var setPrevMatched = matchRef.update({
-      prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(matchesIDS)
-    });
-    console.log("HERE5");
     return finalMatches;
 
   });
