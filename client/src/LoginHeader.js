@@ -119,6 +119,8 @@ class LoginHeader extends Component {
 				newUser.uid = dat.user.uid;
 				newUser.email = dat.user.email;
 				window.localStorage.setItem("user", JSON.stringify(newUser));
+		
+
 			}).catch(function(error) {
 				// Handle Errors here.
 				let errorCode = error.code;

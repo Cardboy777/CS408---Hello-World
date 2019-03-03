@@ -18,6 +18,10 @@ class UserProfile extends Component {
       description:'',
       attractGender:''
     }
+    this.gotoQuestionnaires=this.gotoQuestionnaires.bind(this);
+  }
+  gotoQuestionnaires(){
+    window.location.href='/user/questionnaire';
   }
   componentDidMount(){
     const db =firebase.firestore();
@@ -59,9 +63,7 @@ class UserProfile extends Component {
         </div> 
         <br/>
         <div id="buttonBlock">
-        <a class="btn btn-outline-light" href='/user/questionnaire'>Edit Personality Questionnaire</a>
-          <br/>
-        <button class="btn btn-outline-light"> Edit Coding Questionnaire</button>
+        <button class="btn btn-outline-light" onClick={this.gotoQuestionnaires}>Edit your Questionnaires</button>
          </div> 
       </div>    
     );

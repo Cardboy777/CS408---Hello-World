@@ -34,11 +34,13 @@ class PersonalityQuestionnaire extends Component {
             description:"",
             nextToggle:false,
             complete:false,
-            button1Name:""
+            button1Name:"Submit",
+            functionName:"handleSubmit"
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.checkSubmit = this.checkSubmit.bind(this);
+        this.handeUpdate=this.handleUpdate.bind(this);
     }
    
     
@@ -127,12 +129,70 @@ class PersonalityQuestionnaire extends Component {
             canswer7:'',
             canswer8:'',
             canswer9:'',
-            canswer10:''
+            canswer10:'',
+            avatarFile:"b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png",
+            picture1File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+            picture2File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+            picture3File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg"
         });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true; 
               
     };
+    handeUpdate = e=>{
+        e.preventDefault();
+        const db =firebase.firestore();
+        db.settings({
+            timestampsInSnapshots: true
+        });
+        //let cuid;
+       // window.alert(cuid);
+        //console.log(cuid);
+        if (!this.handleValidation()){
+            //window.alert("Inside if");
+            return;
+        } 
+
+        db.collection("usersPQ").doc(this.props.uAuth.uid).update({
+            uid: this.props.uAuth.uid,
+            user: this.state.username,
+            gender: this.state.gender,
+            age: this.state.age,
+            location: this.state.location,
+			PQComplete: true,
+            attractGender: this.state.attrgender,
+            panswer1: this.state.pa1,
+            panswer2: this.state.pa2,
+            panswer3: this.state.pa3,
+            panswer4: this.state.pa4,
+            panswer5: this.state.pa5,
+            panswer6: this.state.pa6,
+            panswer7: this.state.pa7,
+            panswer8: this.state.pa8,
+            panswer9: this.state.pa9,
+            panswer10: this.state.pa10,
+            panswer11: this.state.pa11,
+            panswer12: this.state.pa12,
+            panswer13: this.state.pa13,
+            panswer14: this.state.pa14,
+            panswer15: this.state.pa15,
+            panswer16: this.state.pa16,
+            panswer17: this.state.pa17,
+            describe: this.state.description,
+            canswer1:'',
+            canswer2:'',
+            canswer3:'',
+            canswer4:'',
+            canswer5:'',
+            canswer6:'',
+            canswer7:'',
+            canswer8:'',
+            canswer9:'',
+            canswer10:'',
+        });
+        window.alert("Survey Saved. Please fill out the next one"); 
+    }
+
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value
@@ -142,6 +202,7 @@ class PersonalityQuestionnaire extends Component {
     componentDidMount(){
         let this2=this;
         const db=firebase.firestore();
+        window.alert("in component did mount");
         firebase.auth().onAuthStateChanged((user)=>{
             if(user){
                 const docRef = db.collection("usersPQ").doc(user.uid);
@@ -173,18 +234,29 @@ class PersonalityQuestionnaire extends Component {
                         complete:doc.data().PQComplete
                     });
                   }).catch(function(error) {
+                      //window.alert("UserPhotos");
                     console.log("Error getting document:", error);
+                   
                   });
                   window.alert(this2.state.complete)
-                  if(this2.state.complete==="true"){
+                  if(this2.state.complete===true){
                     window.alert(true);
                     this2.setState({
-                        button1Name:"Save"
+                        button1Name:"Save",
+                        functionName:"handleUpdate"
                     });
                   }else{
                     this2.setState({
-                        button1Name:"Submit"
+                        button1Name:"Submit",
+                        functionName:"handleSubmit"
                     }); 
+                    var db=firebase.firestore;
+                    db.collection("usersPhotos").doc(user.uid).set({
+                        avatarFile:"b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png",
+                        picture1File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+                        picture2File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+                        picture3File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg"
+                    });
                   }
             }
 
@@ -198,7 +270,7 @@ class PersonalityQuestionnaire extends Component {
     render() { 
         return ( 
             <div>
-            <form onSubmit={this.handleSubmit} id="pform">
+            <form onSubmit={this.functionName} id="pform">
                 <div class="jumbotron jumbotron-fluid" >
                     <div class="container">
                         <h2 class="display-4"id="jumboText">Personality Questionnaire</h2>
