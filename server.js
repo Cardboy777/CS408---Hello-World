@@ -508,6 +508,7 @@ io.on('connection', function(socket)
 		if (str != undefined && userSocketMap[str])
 		{
 			userSocketMap[str][socket.id] = undefined;
+			if (userSocketMap[str].length < 1) { delete[userSocketMap[str]]; userSocketMap[str] = undefined; }
 		}
 		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
 	});
@@ -523,7 +524,7 @@ io.on('connection', function(socket)
 		if (data.email) { user.email = data.email; }
 		if (data.token) { user.token = data.token;}
 		if (data.username) { user.username = data.username; }
-		var str = data.token || data.email;
+		var str = data.email || data.token;
 		//console.log(str);
 		if (userSocketMap[str] != undefined)
 		{
@@ -534,7 +535,7 @@ io.on('connection', function(socket)
 			userSocketMap[str] = {};
 			userSocketMap[str][socket.id] = true;
 		}
-
+		console.log("Socket data.");
 		//console.log("Full user array: " + JSON.stringify(users));
 		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
@@ -542,6 +543,23 @@ io.on('connection', function(socket)
 	socket.on('testMessageClientToServer', function(msg)
 	{
 		console.log("C2S: " + msg);
+	});
+	
+	socket.on('sendMessageToUser', function(messageData)
+	{
+		console.log("Got something!");
+		
+		/*var id = messageData.id;
+		var sender = messageData.sender; //{email: fq, uid: fefew}
+		var receiver = messageData.receiver;//email
+		var message = messageData.message;
+		
+		////send message to database
+		var receiverSockets = userSocketMap[receiver];///their email
+		Objects.keys(receiverSockets).forEach(function(key)
+		{
+			console.log(key);
+		});*/
 	});
 
 	setInterval(function()

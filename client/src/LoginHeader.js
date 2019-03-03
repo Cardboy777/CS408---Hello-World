@@ -59,7 +59,13 @@ class LoginHeader extends Component {
 		e.preventDefault();
 		if (this.state.validUsername == true && this.state.validEmail == true && this.state.validPassword == true)
 		{
-			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(dat)
+			{
+				var newUser = {};
+				newUser.uid = dat.user.uid;
+				newUser.email = dat.user.email;
+				window.localStorage.setItem("user", JSON.stringify(newUser));
+			}).catch(function(error) {
 				// Handle Errors here.
 				var errorCode = error.code;
 				var errorMessage = error.message;
@@ -159,10 +165,10 @@ class LoginHeader extends Component {
             <div id="login">
                 <form className="form-inline">
                     <label htmlFor="uname"><b>Email:</b></label>
-                    <input id="loginEmail" className="form-control mr-sm-2" type="text" onKeyUp={this.updateLoginEmail} placeholder="Enter Login Email" name="uname" required/>
+                    <input id="loginEmail" className="form-control mr-sm-2" type="text" onKeyUp={this.updateLoginEmail}  onBlur={this.updateLoginEmail} placeholder="Enter Login Email" name="uname" required/>
 
                     <label htmlFor="psw"><b>Password:</b></label>
-                    <input id="loginPassword" className="form-control mr-sm-2" type="password" onKeyUp={this.updateLoginPassword} placeholder="Enter Password" name="psw" required/>
+                    <input id="loginPassword" className="form-control mr-sm-2" type="password" onKeyUp={this.updateLoginPassword} onBlur={this.updateLoginPassword} placeholder="Enter Password" name="psw" required/>
 
                     <button className="btn btn-primary" type="submit" onClick={this.login}>Login</button>
 					<label className="loginError" id="loginError"></label>
