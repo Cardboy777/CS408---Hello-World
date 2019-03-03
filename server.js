@@ -304,7 +304,7 @@ function findMatches(userName){
     var users = values[1];
     temp = mainUser["data"]["potentialMatches"];
 
-    if(temp.length > 0){
+    if(temp && temp.length > 0){
       console.log(temp);
       return temp;
     }
@@ -337,7 +337,7 @@ function findMatches(userName){
           "userID": users[i]["id"],
           "data": users[i]["data"]
         };
-        if(thisScore["data"]["gender"] == mainUser["data"]["attractGender"] && thisScore["data"]["attractGender"] == mainUser["data"]["gender"]){
+        if((thisScore["data"]["gender"] == mainUser["data"]["attractGender"] || mainUser["data"]["attractGender"] == "Both") && (thisScore["data"]["attractGender"] == "Both" || thisScore["data"]["attractGender"] == mainUser["data"]["gender"])){
           if(valid){
             scores.push(thisScore);
           }
@@ -374,7 +374,7 @@ function findMatches(userName){
             "userID": users[random]["id"],
             "data": users[random]["data"]
           };
-          if(thisScore["data"]["gender"] == mainUser["data"]["attractGender"] && thisScore["data"]["attractGender"] == mainUser["data"]["gender"]){
+          if((thisScore["data"]["gender"] == mainUser["data"]["attractGender"] || mainUser["data"]["attractGender"] == "Both") && (thisScore["data"]["attractGender"] == "Both" || thisScore["data"]["attractGender"] == mainUser["data"]["gender"])){
             if(valid){
                 scores.push(thisScore);
             }
@@ -426,9 +426,11 @@ function findMatches(userName){
     }
     var db = admin.firestore();
     var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+    console.log("HERE3");
     var setMatched = matchRef.update({
       potentialMatches: admin.firestore.FieldValue.arrayUnion(finalMatches)
     });
+    console.log("HERE4");
     var setPrevMatched = matchRef.update({
       prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(matchesIDS)
     });
@@ -464,14 +466,20 @@ router.get("/getMorePotentialMatches", (req, res) => {
   //Returns an array of users that contains the current list of potential matches for a user (does NOT return NEW matches, just the list of already generated matches)
   //NEEDS REAL IMPLEMENTATION, RETURNING DUMMY DATA FOR THE MOMENT
   router.get("/getListOfPotentialMatches", (req, res) => {
-    const users = [
+    //const users = getPotentialMatches(5);
+    result = findMatches("indydcarr");
+    result.then(function(ret){
+      console.log(ret);
+      res.json(ret);
+    });
+    /**const users = [
           {uid: 12345, name: "John Smith", description: "I like long walks on the beach", fav_lang: "Java", match_percent: 92},
           {uid: 12341234, name: "John Doe", description: "I like People named David", fav_lang: "Ruby on Rails", match_percent: 73},
           {uid: 234432432, name: "Jane Does", description: "I'm an engineer", fav_lang: "MatLab", match_percent:60},
           {uid: 324363, name: "Yo Low", description: "I will try anything", fav_lang: "HTML", match_percent:45},
           {uid: 35234, name: "Cardboy777", description: "I like card games", fav_lang: "Visual Basic", match_percent:8}
         ];
-        res.json(users);
+        res.json(users);**/
     });
 
 //Recieves json with 2 user objects. The two users should be removed from each other's list of potential users
