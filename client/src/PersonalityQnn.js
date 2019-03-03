@@ -92,7 +92,7 @@ class PersonalityQuestionnaire extends Component {
            // let cuid=user.uid;
             } else {
               // No user is signed in.
-             // window.alert("Not getting cid");
+              window.alert("Not getting cid");
             }
           });
        // window.alert(cuid);
@@ -175,7 +175,7 @@ class PersonalityQuestionnaire extends Component {
                     console.log("Error getting document:", error);
                   });
                   window.alert(this2.state.complete)
-                  if(this2.state.complete===true){
+                  if(this2.state.complete==="true"){
                     window.alert(true);
                     this2.setState({
                         button1Name:"Save"
