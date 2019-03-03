@@ -11,6 +11,7 @@ import Page404 from './Page404';
 import firebase from './firebase';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
+import loading from './img/loading.gif';
 
 const linkPQ = "http://localhost:3000/user/questionnaire";
 const linkCQ = "http://localhost:3000/user/cquestionnaire";
@@ -181,7 +182,11 @@ class App extends Component {
                 <Redirect to='/'/>
             </Switch>
           </BrowserRouter> :
-          <p>Loading...</p>
+          <div id="loading">
+            <img src={loading}/>
+            <h2>Loading...</h2>
+          </div>
+          
         }
       </div>
     );
