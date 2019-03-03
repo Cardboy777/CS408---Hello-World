@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
 import './css/CodingQnn.css';
-import PersonalityQuestionnaire from './PersonalityQnn.js';
+//import PersonalityQuestionnaire from './PersonalityQnn.js';
 //var firebase=require("firebase");
 //var database = firebase.database();
 //username
@@ -39,21 +39,12 @@ class CodingQuestionnaire extends Component {
             timestampsInSnapshots: true
         }); 
         //let cuid;
-        let user = firebase.auth().currentUser;
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              // User is signed in.
-          //    cuid=user.uid;
-            } else {
-              // No user is signed in.
-            }
-          });
        // window.alert(cuid);
        // console.log(cuid);
         if(!this.handleValidation()){
             return;
         }
-        const questionnaireRef=db.collection("usersPQ").doc(user.uid).update({
+        /*const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).update({
 			CQComplete: true,
             canswer1: this.state.ca1,
             canswer2: this.state.ca2,
@@ -65,7 +56,7 @@ class CodingQuestionnaire extends Component {
             canswer8: this.state.ca8,
             canswer9: this.state.ca9,
             canswer10: this.state.ca10
-        });
+        });*/
         /* this.setState({
             ca1:"",
             ca2:"",

@@ -1,0 +1,10 @@
+#matchesPage div.panels-container{
+    padding: 1em 4em 1em 4em;
+}
+#matchesPage div.panel{
+    padding: 1em;
+}
+#matchesPage button#fetchMoreMatches{
+    margin-top : 2em;
+    margin-left: 6em;
+}

@@ -37,13 +37,14 @@ class LoginHeader extends Component {
 
     login(e){
 		e.preventDefault();
-		console.log("Email: " + this.state.email + "   Password: "+ this.state.password);
+		//console.log("Email: " + this.state.email + "   Password: "+ this.state.password);
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(dat)
 		{
 			var newUser = {};
 			newUser.uid = dat.user.uid;
 			newUser.email = dat.user.email;
 			window.localStorage.setItem("user", JSON.stringify(newUser));
+			window.location.reload();
 			
 			//alert("New data: " + JSON.stringify(newUser));
 		}).catch(function(error) {
@@ -57,7 +58,7 @@ class LoginHeader extends Component {
     }
     signUp(e){
 		e.preventDefault();
-		if (this.state.validUsername == true && this.state.validEmail == true && this.state.validPassword == true)
+		if (this.state.validUsername === true && this.state.validEmail === true && this.state.validPassword === true)
 		{
 			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(data){
 				window.alert(JSON.stringify(data.user.uid));
@@ -112,10 +113,17 @@ class LoginHeader extends Component {
 					console.error("Error writing document: ", error);
 				});
 			}
+			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(dat)
+			{
+				var newUser = {};
+				newUser.uid = dat.user.uid;
+				newUser.email = dat.user.email;
+				window.localStorage.setItem("user", JSON.stringify(newUser));
 			}).catch(function(error) {
 				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
+				let errorCode = error.code;
+				let errorMessage = error.message;
+				console.log("Error: " + errorCode + "\n" + errorMessage);
 			});
 		
 		}
@@ -213,10 +221,10 @@ class LoginHeader extends Component {
             <div id="login">
                 <form className="form-inline">
                     <label htmlFor="uname"><b>Email:</b></label>
-                    <input id="loginEmail" className="form-control mr-sm-2" type="text" onKeyUp={this.updateLoginEmail} placeholder="Enter Login Email" name="uname" required/>
+                    <input id="loginEmail" className="form-control mr-sm-2" type="text" onKeyUp={this.updateLoginEmail}  onBlur={this.updateLoginEmail} placeholder="Enter Login Email" name="uname" required/>
 
                     <label htmlFor="psw"><b>Password:</b></label>
-                    <input id="loginPassword" className="form-control mr-sm-2" type="password" onKeyUp={this.updateLoginPassword} placeholder="Enter Password" name="psw" required/>
+                    <input id="loginPassword" className="form-control mr-sm-2" type="password" onKeyUp={this.updateLoginPassword} onBlur={this.updateLoginPassword} placeholder="Enter Password" name="psw" required/>
 
                     <button className="btn btn-primary" type="submit" onClick={this.login}>Login</button>
 					<label className="loginError" id="loginError"></label>

@@ -9,17 +9,19 @@ class Navbar extends Component {
   constructor(){
     super();
     this.signOut= this.signOut.bind(this);
-	this.sendSocketData();
+	  this.sendSocketData();
   }
+
   signOut(e){
     e.preventDefault();
-    firebase.auth().signOut().then(this.forceUpdate()).catch(function(error) {
-      // An error happened.
-	  
-    }).then(function()
-	{
-		window.location.href = "http://localhost:3000/"
-	});;
+    firebase.auth().signOut()
+    .then(
+      () => {
+        localStorage.removeItem('uAuth');
+        localStorage.removeItem('uData');
+        window.location.href="/";
+      }
+    )
   }
   
   sendSocketData()
@@ -32,10 +34,10 @@ class Navbar extends Component {
 	  setTimeout(function()
 	  {
 		  socket.emit("testMessageClientToServer", "GSRG");
-		  var userData = window.localStorage.getItem("user");
-		  if (userData == undefined || userData == null) { return; }
+		  var userData = window.localStorage.getItem("uAuth");
+		  if (userData === undefined || userData == null) { return; }
 		  userData = JSON.parse(userData);
-		  if (userData.email == undefined || userData.uid == undefined) { return; }
+		  if (userData.email === undefined || userData.uid === undefined) { return; }
 		  var newData = {};
 		  newData.email = userData.email;
 		  newData.token = userData.uid;
@@ -62,7 +64,10 @@ class Navbar extends Component {
           </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {this.props.user.uid}
+                { this.props.uData ?
+                this.props.uData.user :
+                "<=== TAKE THE PERSONALITY QUIZ THE BUTTON IS RIGHT OVER THERE"                  
+              }
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <a className="dropdown-item" href="/user/profile">Profile</a>

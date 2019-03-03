@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
 import './css/PersonalityQnn.css';
-import CodingQuestionnaire from './CodingQnn';
+//import CodingQuestionnaire from './CodingQnn';
 //username
 
 class PersonalityQuestionnaire extends Component {
@@ -85,24 +85,15 @@ class PersonalityQuestionnaire extends Component {
             timestampsInSnapshots: true
         });
         //let cuid;
-        let user = firebase.auth().currentUser;
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              // User is signed in.
-           // let cuid=user.uid;
-            } else {
-              // No user is signed in.
-              window.alert("Not getting cid");
-            }
-          });
        // window.alert(cuid);
         //console.log(cuid);
         if (!this.handleValidation()){
             //window.alert("Inside if");
             return;
         } 
-        const questionnaireRef=db.collection("usersPQ").doc(user.uid).update({
-            uid:user.uid,
+
+        /*const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).set({
+            uid: this.props.uAuth,
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,
@@ -127,7 +118,17 @@ class PersonalityQuestionnaire extends Component {
             panswer16: this.state.pa16,
             panswer17: this.state.pa17,
             describe: this.state.description,
-        });
+            canswer1:'',
+            canswer2:'',
+            canswer3:'',
+            canswer4:'',
+            canswer5:'',
+            canswer6:'',
+            canswer7:'',
+            canswer8:'',
+            canswer9:'',
+            canswer10:''
+        });*/
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true; 
               
