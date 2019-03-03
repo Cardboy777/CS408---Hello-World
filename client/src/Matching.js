@@ -14,6 +14,7 @@ class Matching extends Component {
     }
     this.fetchPotentialMatches = this.fetchPotentialMatches.bind(this);
     this.RemoveUsersFromPotentialMatches = this.RemoveUsersFromPotentialMatches.bind(this);
+    this.getMorePotentialMatches = this.getMorePotentialMatches.bind(this);
     this.LikeUser = this.LikeUser.bind(this);
     this.DislikeUser = this.DislikeUser.bind(this);
     this.ViewNextProfile = this.ViewNextProfile.bind(this);
@@ -25,12 +26,32 @@ class Matching extends Component {
 
   //requests more potentail matches from the server
   fetchPotentialMatches(){
-    fetch("/api/getMorePotentialMatches").then()
-      .then(res => res.json())
-      .then(arrayList => this.setState({ user_list: this.state.user_list.concat(arrayList) }));
+    if(this.props.uData){
+      /*
+      fetch("/api/getMorePotentialMatches", {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+        },
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        body: JSON.stringify({ username: this.props.uData.user }), // body data type must match "Content-Type" header
+      })
+        .then(res => res.json())
+        .then(arrayList => {
+          console.log(arrayList);
+          this.setState({ user_list: this.state.user_list.concat(arrayList) })
+        }
+      );*/
+    }
   }
 
-  getMorePotentialMatches(){
+  getMorePotentialMatches(e){
+    e.preventDefault();
     this.fetchPotentialMatches();
     this.forceUpdate();
   }

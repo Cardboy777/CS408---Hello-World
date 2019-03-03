@@ -20,10 +20,11 @@ class App extends Component {
     super();
     this.state={
       uAuth: null,
-      uData: null
+      uData: null,
+      checkedUser: false
     }
     this.handleLoggedinUser = this.handleLoggedinUser.bind(this);
-    this.signedIn = this.signedIn.bind(this);
+    this.isLoggedIn = this.isLoggedIn.bind(this);
   }
 
 	componentDidMount(){
@@ -32,18 +33,28 @@ class App extends Component {
       if (user) {
         this.handleLoggedinUser(user)
       }
+      else{
+        this.setState({
+          checkedUser: true
+        })
+      }
     });
   }
   getUserFromLocalStorage() {
     const uAuth = localStorage.getItem('uAuth');
     const uData = localStorage.getItem('uData');
-    if (!uAuth){
+    if (!uAuth || !uData){
       return;
     }
-    this.setState({ uAuth : uAuth, uData : uData });
+    this.setState(
+      { uAuth: uAuth,
+        uData: uData,
+        checkedUser: true
+      });
   }
-  signedIn(){
-    if(this.state.uAuth){
+
+  isLoggedIn(){
+    if(this.state.checkedUser && this.state.uAuth){
       return true;
     }
     return false;
@@ -51,22 +62,32 @@ class App extends Component {
   
   handleLoggedinUser(user){
     localStorage.setItem('uAuth', user)
-    this.setState({uAuth : user});
-  
     const db = firebase.firestore();
-    const docRef = db.collection("usersPQ").doc(this.state.uAuth.uid);
-    docRef.get()
+    db.collection("usersPQ").doc(user.uid).get()
       .then( (userdoc) => {
         if (userdoc.exists) {
           localStorage.setItem('uData', userdoc.data());
-          this.setState({uData : userdoc.data()});
+          this.setState({
+            uAuth : user,
+            uData : userdoc.data(),
+            checkedUser: true
+          });
         } else {
-          this.setState({uData : null});
+          this.setState({
+            uAuth : user,
+            uData : null,
+            checkedUser: true
+          });
           console.log('No user data available for '+ this.state.uAuth.uid);
         }
       })
       .catch( (error) => {
-          this.setState({uData : null});
+        console.log("Here4-3");
+        this.setState({
+          uAuth : user,
+          uData : null,
+          checkedUser: true
+        });
           console.log("Error getting User Data:\n" + error);
       });
 
@@ -112,38 +133,57 @@ class App extends Component {
 		}, 10000);*/
   }
 
-    render() {
-      console.log("uAuth state: " + this.state.uAuth);
+  render() {
     return (
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Switch>
-        <Route path="/" exact render={() => (
-              <FrontPage {...this.state}/>
-          )} />
-          <Route path="/matches" render={() => (
-            <Matches {...this.state} />
-          )} />
-          <Route path="/matching" render={() => (
-            <Matching {...this.state} />
-          )} />
-          <Route path="/messages" render={() => (
-            <Messages {...this.state} />
-          )} />
-          <Route path="/user/profile" render={() => (
-            <UserProfile {...this.state} />
-          )} />
-          <Route path="/user/account" render={() => (
-            <UserSettings {...this.state} />
-          )} />
-          <Route path="/user/questionnaire" render={() => (
-            <PersonalityQuestionnaire {...this.state} />
-          )} />
-          <Route path="/user/cquestionnaire" render={() => (
-            <CodingQuestionnaire {...this.state} />
-          )} />
-          <Route component= { Page404 }/>
-        </Switch>
-      </BrowserRouter>
+      <div id="App">
+        { this.state.checkedUser ?
+          <BrowserRouter basename={process.env.PUBLIC_URL}>
+            <Switch>
+            <Route path="/" exact render={() => (
+                <FrontPage {...this.state}/>       
+              )} />
+              <Route path="/matches" render={() => (
+                this.state.uAuth ?
+                  <Matches {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/matching" render={() => (
+                this.state.uAuth ?
+                  <Matching {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/messages" render={() => (
+                this.state.uAuth ?
+                  <Messages {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/profile" render={() => (
+                this.state.uAuth ?
+                  <UserProfile {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/account" render={() => (
+                this.state.uAuth ?
+                  <UserSettings {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/questionnaire" render={() => (
+                this.state.uAuth ?
+                  <PersonalityQuestionnaire {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route path="/user/cquestionnaire" render={() => (
+                this.state.uAuth ?
+                  <CodingQuestionnaire {...this.state} /> :
+                  <Redirect to='/'/>
+              )} />
+              <Route component= { Page404 }/> :
+                <Redirect to='/'/>
+            </Switch>
+          </BrowserRouter> :
+          <p>Loading...</p>
+        }
+      </div>
     );
   }
 }

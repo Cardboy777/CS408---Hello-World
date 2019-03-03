@@ -66,7 +66,7 @@ class Navbar extends Component {
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 { this.props.uData ?
                 this.props.uData.user :
-                "<=== TAKE THE PERSONALITY QUIZ THE BUTTON IS RIGHT THERE"                  
+                "<=== TAKE THE PERSONALITY QUIZ THE BUTTON IS RIGHT OVER THERE"                  
               }
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
