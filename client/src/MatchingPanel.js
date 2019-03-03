@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/MatchingPanel.css';
 import default_img from './img/default_profile.png';
-import firebase from './firebase';
-
 class MatchingPanel extends Component {
   constructor(){
     super();

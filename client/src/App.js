@@ -13,9 +13,6 @@ import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
 import loading from './img/loading.gif';
 
-const linkPQ = "http://localhost:3000/user/questionnaire";
-const linkCQ = "http://localhost:3000/user/cquestionnaire";
-
 class App extends Component {
   constructor(){
     super();
@@ -183,7 +180,7 @@ class App extends Component {
             </Switch>
           </BrowserRouter> :
           <div id="loading">
-            <img src={loading}/>
+            <img src={loading} alt="Loading"/>
             <h2>Loading...</h2>
           </div>
           

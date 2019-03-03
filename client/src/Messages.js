@@ -33,7 +33,7 @@ class Messages extends Component {
 		var userEmail = currentUser.email;
 		var userKey = currentUser.uid;
 		
-		var messageText = document.getElementById("messageTextBox").value;
+		//var messageText = document.getElementById("messageTextBox").value;
 		var messageObject = {};
 		messageObject.sender = {"email":userEmail, "uid":userKey};
 		messageObject.receiver = "paultest@test.com";

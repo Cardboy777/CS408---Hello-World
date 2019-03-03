@@ -35,9 +35,9 @@ class Navbar extends Component {
 	  {
 		  socket.emit("testMessageClientToServer", "GSRG");
 		  var userData = window.localStorage.getItem("uAuth");
-		  if (userData == undefined || userData == null) { return; }
+		  if (userData === undefined || userData == null) { return; }
 		  userData = JSON.parse(userData);
-		  if (userData.email == undefined || userData.uid == undefined) { return; }
+		  if (userData.email === undefined || userData.uid === undefined) { return; }
 		  var newData = {};
 		  newData.email = userData.email;
 		  newData.token = userData.uid;

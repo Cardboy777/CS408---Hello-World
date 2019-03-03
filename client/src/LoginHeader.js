@@ -58,7 +58,7 @@ class LoginHeader extends Component {
     }
     signUp(e){
 		e.preventDefault();
-		if (this.state.validUsername == true && this.state.validEmail == true && this.state.validPassword == true)
+		if (this.state.validUsername === true && this.state.validEmail === true && this.state.validPassword === true)
 		{
 			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(dat)
 			{
@@ -68,8 +68,9 @@ class LoginHeader extends Component {
 				window.localStorage.setItem("user", JSON.stringify(newUser));
 			}).catch(function(error) {
 				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
+				let errorCode = error.code;
+				let errorMessage = error.message;
+				console.log("Error: " + errorCode + "\n" + errorMessage);
 			});
 		}
 		//let transitionTo = Router.transitionTo('/PersonalityQuestionnaire')
