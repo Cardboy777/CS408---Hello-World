@@ -8,60 +8,46 @@ class Matching extends Component {
   constructor(){
     super();
     this.state = {
-      currentUser: null,
-      userdata: null,
       message : null,
       user_list: [],
       user_list_index: 0
     }
-    this.getMorePotentialMatches = this.getMorePotentialMatches.bind(this);
-    this.fetchListOfPotentialMatches = this.fetchListOfPotentialMatches.bind(this);
+    this.fetchPotentialMatches = this.fetchPotentialMatches.bind(this);
     this.RemoveUsersFromPotentialMatches = this.RemoveUsersFromPotentialMatches.bind(this);
     this.LikeUser = this.LikeUser.bind(this);
     this.DislikeUser = this.DislikeUser.bind(this);
     this.ViewNextProfile = this.ViewNextProfile.bind(this);
-    
-		this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
   }
 
   componentDidMount(){
-    this.fetchMorePotentialMatches();
+    this.fetchPotentialMatches();
   }
 
   //requests more potentail matches from the server
-  fetchMorePotentialMatches(){
+  fetchPotentialMatches(){
     fetch("/api/getMorePotentialMatches").then()
       .then(res => res.json())
       .then(arrayList => this.setState({ user_list: this.state.user_list.concat(arrayList) }));
   }
 
   getMorePotentialMatches(){
-    this.fetchMorePotentialMatches();
+    this.fetchPotentialMatches();
     this.forceUpdate();
   }
 
   RemoveUsersFromPotentialMatches(matchedUser){
-    /*fetch("/api/RemoveUsersFromPotentialMatches",{
-      method: 'POST',
-      body: JSON.stringify({
-        user1: matchedUser,
-        user2: this.state.user
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(res => res.json())
-    .then()*/
+
   }
 
   LikeUser(likedUser){
-    fetch("/api/likeUser",{
+    /*fetch("/api/likeUser",{
       method: 'POST',
       body: JSON.stringify({
-        user1: this.state.currentUser.uid,
-        user2: likedUser.uid
+        user1: this.props.uData.user,
+        user2: likedUser.user
       }),
       headers: { 'Content-Type': 'application/json' }
-    }).then(res => res.json());
+    }).then(res => res.json());*/
     this.RemoveUsersFromPotentialMatches(likedUser);
   }
   DislikeUser(dislikedUser){
