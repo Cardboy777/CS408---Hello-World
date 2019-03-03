@@ -60,23 +60,27 @@ function likeUser(userName, likedUserName){
     var inMatches = false;
     var match;
     for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserPot[i]["name"] === likedUserName){
+      if(mainUserPot[i]["data"]["user"] === likedUserName){
         match = mainUserPot[i];
         inMatches = true;
       }
     }
 
     if(!inMatches){
+      console.log("404");
       return "404";
     }
     var liked = false;
     var likedNum;
-    for(var i = 0; i < likedUsersLiked.length; i++){
-      if(likedUsersLiked[i]["name"] === userName){
-        liked = true;
-        likedNum = i;
+    if(likedUsersLiked){
+      for(var i = 0; i < likedUsersLiked.length; i++){
+        if(likedUsersLiked[i]["data"]["user"] === userName){
+          liked = true;
+          likedNum = i;
+        }
       }
     }
+
     var db = admin.firestore();
     if(liked){
       var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
@@ -144,7 +148,7 @@ function dislikeUser(userName, dislikedUserName){
     var inMatches = false;
     var match;
     for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserPot[i]["name"] === dislikedUserName){
+      if(mainUserPot[i]["data"]["user"] === dislikedUserName){
         match = mainUserPot[i];
         inMatches = true;
       }
@@ -155,10 +159,12 @@ function dislikeUser(userName, dislikedUserName){
     }
     var liked = false;
     var likedNum;
-    for(var i = 0; i < dislikedUsersLiked.length; i++){
-      if(dislikedUsersLiked[i]["name"] === userName){
-        liked = true;
-        likedNum = i;
+    if(dislikedUsersLiked){
+      for(var i = 0; i < dislikedUsersLiked.length; i++){
+        if(dislikedUsersLiked[i]["data"]["user"] === userName){
+          liked = true;
+          likedNum = i;
+        }
       }
     }
     var db = admin.firestore();
@@ -231,7 +237,7 @@ function removeMatch(userName, removeUserName){
     var inMatches = false;
     var match;
     for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserMatches[i]["name"] === removeUserName){
+      if(mainUserMatches[i]["data"]["user"] === removeUserName){
         match = mainUserMatches[i];
         inMatches = true;
       }
@@ -242,7 +248,7 @@ function removeMatch(userName, removeUserName){
     }
     var matchedNum
     for(var i = 0; i < dislikedUserMatches.length; i++){
-      if(dislikedUserMatches[i]["name"] === userName){
+      if(dislikedUserMatches[i]["data"]["user"] === userName){
 
         matchedNum = i;
       }
@@ -454,7 +460,6 @@ admin.initializeApp({
 router.post("/getMorePotentialMatches", (req, res) => {
   result = findMatches(req.body.username);
   result.then(function(ret){
-    console.log("HERE6");
     console.log(ret);
     res.json(ret);
   })
