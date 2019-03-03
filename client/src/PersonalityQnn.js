@@ -90,8 +90,8 @@ class PersonalityQuestionnaire extends Component {
             return;
         } 
 
-        /*const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).set({
-            uid: this.props.uAuth,
+        db.collection("usersPQ").doc(this.props.uAuth.uid).set({
+            uid: this.props.uAuth.uid,
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,
@@ -126,7 +126,7 @@ class PersonalityQuestionnaire extends Component {
             canswer8:'',
             canswer9:'',
             canswer10:''
-        });*/
+        });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true; 
               
