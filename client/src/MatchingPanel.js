@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './css/MatchingPanel.css';
 import default_img from './img/default_profile.png';
+import firebase from './firebase';
 
 class MatchingPanel extends Component {
   constructor(){
@@ -13,6 +14,22 @@ class MatchingPanel extends Component {
   Like(){
     console.log("Like "+ this.props.user.name);
     this.props.likeFunct(this.props.user.name);
+	
+	/*const db = firebase.firestore();
+	var userLiked = db.collection("users").doc(this.props.user.uid).get().then(function(userData)
+	{
+		if (userData.exists)
+		{
+			var data = userData.data;
+			var tempLikes = data.likes || [];
+			tempLikes.push({"name":"test", "timeLiked":(new Date().getTime())});
+			var likePerson = db.collection("users").doc(this.props.user.uid).set({
+				likes: tempLikes
+			});
+		}
+	});*/
+	
+	
   }
   Dislike(){
     console.log("Dislike " + this.props.user.name);

@@ -58,7 +58,10 @@ class App extends Component {
 			}
 			else
 			{
-				alert("Data DNE");
+				if (window.location.href != linkPQ)
+				{
+					window.location.href = linkPQ;
+				}
 			}
 		}).error(function(err)
 		{
