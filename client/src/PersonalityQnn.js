@@ -92,8 +92,8 @@ class PersonalityQuestionnaire extends Component {
             return;
         } 
 
-        const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).update({
-            uid: this.props.uAuth,
+        db.collection("usersPQ").doc(this.props.uAuth.uid).set({
+            uid: this.props.uAuth.uid,
             user: this.state.username,
             gender: this.state.gender,
             age: this.state.age,

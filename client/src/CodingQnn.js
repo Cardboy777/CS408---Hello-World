@@ -44,7 +44,7 @@ class CodingQuestionnaire extends Component {
         if(!this.handleValidation()){
             return;
         }
-        /*const questionnaireRef=db.collection("usersPQ").doc(this.props.uAuth.uid).update({
+        db.collection("usersPQ").doc(this.props.uAuth.uid).update({
 			CQComplete: true,
             canswer1: this.state.ca1,
             canswer2: this.state.ca2,
@@ -56,7 +56,7 @@ class CodingQuestionnaire extends Component {
             canswer8: this.state.ca8,
             canswer9: this.state.ca9,
             canswer10: this.state.ca10
-        });*/
+        });
         /* this.setState({
             ca1:"",
             ca2:"",
