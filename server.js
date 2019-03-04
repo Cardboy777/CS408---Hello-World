@@ -59,10 +59,12 @@ function likeUser(userName, likedUserName){
     var likedUsersLiked = likedUser["data"]["likedUsers"];
     var inMatches = false;
     var match;
-    for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserPot[i]["data"]["user"] === likedUserName){
-        match = mainUserPot[i];
-        inMatches = true;
+    if(mainUserPot){
+      for(var i = 0; i < mainUserPot.length; i++){
+        if(mainUserPot[i]["data"]["user"] === likedUserName){
+          match = mainUserPot[i];
+          inMatches = true;
+        }
       }
     }
 
@@ -147,12 +149,15 @@ function dislikeUser(userName, dislikedUserName){
     var dislikedUsersLiked = dislikedUser["data"]["likedUsers"];
     var inMatches = false;
     var match;
-    for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserPot[i]["data"]["user"] === dislikedUserName){
-        match = mainUserPot[i];
-        inMatches = true;
+    if(mainUserPot){
+      for(var i = 0; i < mainUserPot.length; i++){
+        if(mainUserPot[i]["data"]["user"] === dislikedUserName){
+          match = mainUserPot[i];
+          inMatches = true;
+        }
       }
     }
+
 
     if(!inMatches){
       return "404";
@@ -236,10 +241,12 @@ function removeMatch(userName, removeUserName){
     var dislikedUserMatches = dislikedUser["data"]["matchedUsers"];
     var inMatches = false;
     var match;
-    for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserMatches[i]["data"]["user"] === removeUserName){
-        match = mainUserMatches[i];
-        inMatches = true;
+    if(mainUserMatches){
+      for(var i = 0; i < mainUserMatches.length; i++){
+        if(mainUserMatches[i]["data"]["user"] === removeUserName){
+          match = mainUserMatches[i];
+          inMatches = true;
+        }
       }
     }
 
