@@ -151,6 +151,30 @@ class App extends Component {
 				lastOnlineTime: new Date().getTime(),
 			});
 		}, 10000);*/
+		
+		db.collection("usersByEmail").doc(user.email).get().then(function(userData)
+		{
+			if (userData.exists)
+			{
+				var data = userData.data();
+				db.collection("usersByEmail").doc(user.email).update({
+					lastOnlineTime: new Date().getTime(),
+				});
+			}
+			else
+			{
+				db.collection("usersByEmail").doc(user.email).set({
+					lastOnlineTime: new Date().getTime(),
+				});
+			}
+		});
+		
+		var aa = setInterval(function()
+		{
+			db.collection("usersByEmail").doc(user.email).update({
+				lastOnlineTime: new Date().getTime(),
+			});
+		}, 10000);
   }
 
   render() {

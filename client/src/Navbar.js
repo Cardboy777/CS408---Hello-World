@@ -5,6 +5,8 @@ import './css/Navbar.css';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:8080');
 
+let unreadMessageCount = 0;
+
 class Navbar extends Component {
   constructor(){
     super();
@@ -24,15 +26,40 @@ class Navbar extends Component {
   
   sendSocketData()
   {
-	  socket.on('incomingMessage', function(data)
+	  var uMC = window.localStorage.getItem("unreadMessageCount");
+	  if (uMC == undefined) { uMC = "0"; }
+	  unreadMessageCount = parseInt(uMC);
+	  
+	  var tempInterval = setInterval(function()
 	  {
-		 console.log(JSON.stringify(data)); 
-	  });
+		  if (document.getElementById("unreadMessageCount") != undefined)
+		  {
+			  if (unreadMessageCount > 0)
+			  {
+				  document.getElementById("unreadMessageCount").innerHTML = unreadMessageCount;
+			  }
+			  else
+			  {
+				  document.getElementById("unreadMessageCount").innerHTML = "";
+			  }
+			  window.clearInterval(tempInterval);
+		  }
+	  }, 100);
+	  
+		socket.on('incomingMessage', function(data)
+		{
+			if (window.location.href != "http://localhost:3000/messages")
+			{
+				unreadMessageCount++;
+				window.localStorage.setItem("unreadMessageCount", (unreadMessageCount + ""));
+				document.getElementById("unreadMessageCount").innerHTML = unreadMessageCount;
+			}
+		});
 	  
 	  setTimeout(function()
 	  {
-		  socket.emit("testMessageClientToServer", "GSRG");
-		  var userData = window.localStorage.getItem("uAuth");
+		  //socket.emit("testMessageClientToServer", "GSRG");
+		  var userData = window.localStorage.getItem("user");
 		  if (userData === undefined || userData == null) { return; }
 		  userData = JSON.parse(userData);
 		  if (userData.email === undefined || userData.uid === undefined) { return; }
@@ -58,7 +85,7 @@ class Navbar extends Component {
             <a className="nav-link" href="/matches">View Your Matches</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/messages">Messages</a>
+            <a className="nav-link" href="/messages">Messages <span id="unreadMessageCount" className="badge badge-light"></span></a>
           </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
