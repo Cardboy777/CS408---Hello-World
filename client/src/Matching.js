@@ -8,7 +8,6 @@ class Matching extends Component {
   constructor(){
     super();
     this.state = {
-      message : null,
       user_list: null,
       user_list_index: 0
     }
@@ -21,13 +20,6 @@ class Matching extends Component {
 
   componentDidMount(){
     this.fetchPotentialMatches();
-  }
-  componentWillReceiveProps(props) {
-    const { refresh, id } = this.props;
-    if (props.refresh !== refresh) {
-      this.fetchShoes(id)
-        .then(this.refreshShoeList)
-    }
   }
 
   //requests more potentail matches from the server
