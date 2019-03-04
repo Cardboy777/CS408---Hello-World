@@ -17,9 +17,7 @@ class Navbar extends Component {
     firebase.auth().signOut()
     .then(
       () => {
-        localStorage.removeItem('uAuth');
-        localStorage.removeItem('uData');
-        window.location.href="/";
+        //logout successfull
       }
     )
   }

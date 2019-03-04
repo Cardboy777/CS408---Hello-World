@@ -467,7 +467,6 @@ admin.initializeApp({
 router.post("/getMorePotentialMatches", (req, res) => {
   result = findMatches(req.body.username);
   result.then(function(ret){
-    console.log(ret);
     res.json(ret);
   })
 });
@@ -475,7 +474,6 @@ router.post("/getMorePotentialMatches", (req, res) => {
 router.post("/getMatches", (req, res) => {
   result = getMatches(req.body.username);
   result.then(function(ret){
-    console.log(ret);
     res.json(ret);
   })
 });
@@ -485,7 +483,7 @@ router.post("/likeUser", (req, res) => {
   console.log(req.body.userName + " Liked " + req.body.likedUserName);
   result = likeUser(req.body.userName, req.body.likedUserName);
   result.then(function(ret){
-    res.json("Success");
+    res.json(ret);
   })
 });
 
@@ -493,7 +491,7 @@ router.post("/dislikeUser", (req, res) => {
   console.log(req.body.userName + " Disiked " + req.body.dislikedUserName);
   result = dislikeUser(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
-    res.json("Success");
+    res.json(ret);
   })
 });
 
@@ -501,7 +499,7 @@ router.post("/unlikeUser", (req, res) => {
   console.log(req.body.userName + " Unliked " + req.body.unlikedUserName);
   result = removeMatch(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
-    res.json("Success");
+    res.json(ret);
   })
 });
 
