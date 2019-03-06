@@ -13,7 +13,6 @@ class Messages extends Component {
 	
 	checkForMessages()
 	{
-		window.localStorage.setItem("unreadMessageCount", "0");
 		socket.on('sendMessageToUserResponse', function(resp)
 		{
 			window.alert(resp);

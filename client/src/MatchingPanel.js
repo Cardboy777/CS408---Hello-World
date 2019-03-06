@@ -22,7 +22,7 @@ class MatchingPanel extends Component {
     return (
       <div className="MatchingPanel">
         <img src={default_img} alt={this.props.userData.user}></img>
-        <p className="compat-percent">{this.props.match_percent}% Match</p>
+        <p className="compat-percent">{this.props.userData.match_percent}%</p>
         <p className="name">{this.props.userData.user}</p>
         <p>{this.props.userData.describe}</p>
         <h5>Favorite Programming Language:</h5>
