@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
-
-class editPQuestionnaire extends Component {
+import './css/EditPersonalityQnn.css';
+class EditPQuestionnaire extends Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -69,18 +69,36 @@ class editPQuestionnaire extends Component {
     componentDidMount(){
         const that=this;
         const db=firebase.firestore;
-
         firebase.auth().onAuthStateChanged((user)=>{
-            window.alert(this.props.name);
-            const docRef = db.collection("usersPQ").doc(user.uid);
+            window.alert("Inside Modal: "+user.uid);
+            const docRef = db.collection("usersPQ").doc(this.props.uAuth.uid);
             docRef.get().then(function(doc) {
                 that.setState({
-                name: doc.data().user,
-                gender: doc.data().gender,
-                age:  doc.data().age,
-                description: doc.data().describe,
-                attractgender: doc.data().attractGender,        
+                    username:doc.data().user,
+                    gender:doc.data().gender,
+                    age:doc.data().age,
+                    location:doc.data().location,
+                    attrgender:doc.data().attractGender,
+                    pa1:doc.data().panswer1,
+                    pa2:doc.data().panswer2,
+                    pa3:doc.data().panswer3,
+                    pa4:doc.data().panswer4,
+                    pa5:doc.data().panswer5,
+                    pa6:doc.data().panswer6,
+                    pa7:doc.data().panswer7,
+                    pa8:doc.data().panswer8,
+                    pa9:doc.data().panswer9,
+                    pa10:doc.data().panswer10,
+                    pa11:doc.data().panswer11,
+                    pa12:doc.data().panswer12,
+                    pa13:doc.data().panswer13,
+                    pa14:doc.data().panswer14,
+                    pa15:doc.data().panswer15,
+                    pa16:doc.data().panswer16,
+                    pa17:doc.data().panswer17,   
+                    describe:doc.data().describe     
                 });
+                window.alert("pa"+that.pa1);
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             });
@@ -128,19 +146,9 @@ class editPQuestionnaire extends Component {
     render() { 
         return ( 
             <div>
-                <button>Button for Update</button>
-                
-            </div>
-         );
-    }
-}
- 
-export default editPQuestionnaire;
-/**
- * 
- * <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editPM">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#editPQM">
                 Edit Personality Questionnaire</button>
-                <div class="modal fade" id="editPM" tabindex="-1" role="dialog" aria-labelledby="editPMLabel" aria-hidden="true">
+                <div class="modal fade" id="editPQM" tabindex="-1" role="dialog" aria-labelledby="editPQMLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -150,6 +158,8 @@ export default editPQuestionnaire;
                         </button>
                     </div>
                     <div class="modal-body">
+
+                    <form onSubmit={this.handleUpdate}> 
                     <div class="form-group col-md-12">
                         <h4>About You...</h4>
                         <label> Please enter your username:
@@ -287,15 +297,18 @@ export default editPQuestionnaire;
                             <textarea class="form-control" id="description" name="description" onChange={this.handleChange} value={this.state.description}/>
                         </label>
                         <br/>
-                        <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
-
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger"data-dismiss="modal">Save changes</button>
                         </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+                    
                     </div>
                     </div>
                 </div>
- */
+            </div>
+         );
+    }
+}
+ 
+export default EditPQuestionnaire;
