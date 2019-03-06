@@ -30,11 +30,13 @@ class App extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.handleLoggedinUser(user)
+        window.alert("User exists"+user.uid);
       }
       else{
         this.setState({
           checkedUser: true
         })
+        window.alert("User not logged in! ");
       }
     });
   }

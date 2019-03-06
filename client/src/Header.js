@@ -12,7 +12,7 @@ class Header extends Component {
 				<span className="navbar-toggler-icon"></span>
 			</button>
 			<div className="collapse navbar-collapse" id="navbarSupportedContent">
-				{ this.props.uAuth ? 
+				{ this.props.uAuth  ? 
 					<Navbar {...this.props} /> :
 					<LoginHeader/> 
 				}
@@ -20,7 +20,10 @@ class Header extends Component {
 		</nav>
 	);
     
-  }
+	}
+	componentDidMount(){
+		window.alert(this.props.uAuth);
+	}
 }
 export default Header;
 

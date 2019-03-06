@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase.js';
 
-class editPersonalityQuestionnaire extends Component {
+class editPQuestionnaire extends Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -31,9 +31,6 @@ class editPersonalityQuestionnaire extends Component {
          }
          this.handleUpdate=this.handleUpdate.bind(this);
          this.handleChange=this.handleChange.bind(this);
-    }
-    componentDidMount() {
-        window.alert(this.user.uid)
     }
     handleChange(e){
         this.setState({
@@ -67,6 +64,28 @@ class editPersonalityQuestionnaire extends Component {
         else if(this.state.pa17===""){ window.alert("Invalid Question Input"); return false;}
         else if(this.state.description===""){ window.alert("Invalid Description Input"); return false;}
         else{ /*window.alert("Returns true");*/ return true;}
+    }
+
+    componentDidMount(){
+        const that=this;
+        const db=firebase.firestore;
+
+        firebase.auth().onAuthStateChanged((user)=>{
+            window.alert(this.props.name);
+            const docRef = db.collection("usersPQ").doc(user.uid);
+            docRef.get().then(function(doc) {
+                that.setState({
+                name: doc.data().user,
+                gender: doc.data().gender,
+                age:  doc.data().age,
+                description: doc.data().describe,
+                attractgender: doc.data().attractGender,        
+                });
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        });
+
     }
     handleUpdate = e =>{
         e.preventDefault();
@@ -109,8 +128,17 @@ class editPersonalityQuestionnaire extends Component {
     render() { 
         return ( 
             <div>
-                <h>Button</h>
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editPM">
+                <h1>Buttons</h1>
+                
+            </div>
+         );
+    }
+}
+ 
+export default editPQuestionnaire;
+/**
+ * 
+ * <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editPM">
                 Edit Personality Questionnaire</button>
                 <div class="modal fade" id="editPM" tabindex="-1" role="dialog" aria-labelledby="editPMLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -270,9 +298,4 @@ class editPersonalityQuestionnaire extends Component {
                     </div>
                     </div>
                 </div>
-            </div>
-         );
-    }
-}
- 
-export default editPersonalityQuestionnaire;
+ */

@@ -40,7 +40,6 @@ class PersonalityQuestionnaire extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.checkSubmit = this.checkSubmit.bind(this);
-        this.handeUpdate=this.handleUpdate.bind(this);
     }
    
     
@@ -139,60 +138,7 @@ class PersonalityQuestionnaire extends Component {
        //this.setState.nextToggle=true; 
               
     };
-/*    handeUpdate = e=>{
-        e.preventDefault();
-        const db =firebase.firestore();
-        db.settings({
-            timestampsInSnapshots: true
-        });
-        //let cuid;
-       // window.alert(cuid);
-        //console.log(cuid);
-        if (!this.handleValidation()){
-            //window.alert("Inside if");
-            return;
-        } 
 
-        db.collection("usersPQ").doc(this.props.uAuth.uid).update({
-            uid: this.props.uAuth.uid,
-            user: this.state.username,
-            gender: this.state.gender,
-            age: this.state.age,
-            location: this.state.location,
-			PQComplete: true,
-            attractGender: this.state.attrgender,
-            panswer1: this.state.pa1,
-            panswer2: this.state.pa2,
-            panswer3: this.state.pa3,
-            panswer4: this.state.pa4,
-            panswer5: this.state.pa5,
-            panswer6: this.state.pa6,
-            panswer7: this.state.pa7,
-            panswer8: this.state.pa8,
-            panswer9: this.state.pa9,
-            panswer10: this.state.pa10,
-            panswer11: this.state.pa11,
-            panswer12: this.state.pa12,
-            panswer13: this.state.pa13,
-            panswer14: this.state.pa14,
-            panswer15: this.state.pa15,
-            panswer16: this.state.pa16,
-            panswer17: this.state.pa17,
-            describe: this.state.description,
-            canswer1:'',
-            canswer2:'',
-            canswer3:'',
-            canswer4:'',
-            canswer5:'',
-            canswer6:'',
-            canswer7:'',
-            canswer8:'',
-            canswer9:'',
-            canswer10:'',
-        });
-        window.alert("Survey Saved. Please fill out the next one"); 
-    }
-*/
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value

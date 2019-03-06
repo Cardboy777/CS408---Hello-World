@@ -4,10 +4,11 @@ import ProfilePicture from './ProfilePicture';
 import firebase from './firebase';
 import Picture from './Picture';
 import './css/UserProfile.css';
+import editPQuestionnaire from'./editPersonalityQnn';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import editPersonalityQuestionnaire from './editPersonalityQnn';
+//import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+//import editPersonalityQuestionnaire from './editPersonalityQnn';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -27,7 +28,9 @@ class UserProfile extends Component {
   componentDidMount(){
     const db =firebase.firestore();
     let that =this;
+   
     firebase.auth().onAuthStateChanged((user)=>{
+       window.alert(user.uid);
       const docRef = db.collection("usersPQ").doc(user.uid);
       docRef.get().then(function(doc) {
         that.setState({
@@ -65,7 +68,7 @@ class UserProfile extends Component {
         <br/>
           <div id="buttonBlock">
             <button>Does Nothing</button>
-            <editPersonalityQuestionnaire {...this.state}/>
+            <editPQuestionnaire name="poop"/>
          </div> 
       </div>    
     );
