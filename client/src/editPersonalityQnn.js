@@ -109,7 +109,8 @@ class editPersonalityQuestionnaire extends Component {
     render() { 
         return ( 
             <div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPM">
+                <h>Button</h>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editPM">
                 Edit Personality Questionnaire</button>
                 <div class="modal fade" id="editPM" tabindex="-1" role="dialog" aria-labelledby="editPMLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
