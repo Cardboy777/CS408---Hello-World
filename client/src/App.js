@@ -30,6 +30,7 @@ class App extends Component {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           this.handleLoggedinUser(user)
+          window.alert("user logged in");
         }
         else{
           //No user should be logged in

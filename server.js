@@ -319,7 +319,7 @@ function findMatches(userName){
     var finalMatches = [];
     var mainUser = values[0];
     var users = values[1];
-    temp = mainUser["data"]["potentialMatches"];
+    temp = mainUser["data"]["matchedUsers"];
 
     if(temp && temp.length > 0){
       console.log(temp);
@@ -538,7 +538,6 @@ io.on('connection', function(socket)
 		}
 		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
 	});
-
 	socket.on('giveSocketData', function(data)
 	{
 		if (data.email) { user.email = data.email; }
@@ -559,7 +558,7 @@ io.on('connection', function(socket)
 		console.log("Full user array: " + JSON.stringify(users));
 		console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
-
+	
 	socket.on('testMessageClientToServer', function(msg)
 	{
 		console.log("C2S: " + msg);
