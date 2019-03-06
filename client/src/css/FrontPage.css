@@ -31,19 +31,19 @@
     padding: 0.2em 1em 2em 1em;
 }
 
-#frontpageDiv #title{
+#frontpageDiv #frontpageContainer #title{
     background-color: #080808;
 }
-#frontpageDiv a:link{
+#frontpageDiv #frontpageContainer a:link{
     color: #afafaf;
 }
-#frontpageDiv a:visited{
+#frontpageDiv #frontpageContainer a:visited{
     color: #afafaf;
 }
-#frontpageDiv a:hover{
+#frontpageDiv #frontpageContainer a:hover{
     color: #919191;
     text-decoration: none;
 }
-#frontpageDiv a:active{
+#frontpageDiv #frontpageContainer a:active{
     color: #919191;
 }
