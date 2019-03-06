@@ -139,7 +139,7 @@ class PersonalityQuestionnaire extends Component {
        //this.setState.nextToggle=true;
 
     };
-    handeUpdate = e=>{
+/*    handeUpdate = e=>{
         e.preventDefault();
         const db =firebase.firestore();
         db.settings({
@@ -192,14 +192,14 @@ class PersonalityQuestionnaire extends Component {
         });
         window.alert("Survey Saved. Please fill out the next one"); 
     }
-
+*/
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value
         });
     }
 
-    componentDidMount(){
+/*    componentDidMount(){
         let this2=this;
         const db=firebase.firestore();
         window.alert("in component did mount");
@@ -262,7 +262,7 @@ class PersonalityQuestionnaire extends Component {
 
         });
     }
-
+*/
 
     
 

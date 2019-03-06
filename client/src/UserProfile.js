@@ -7,6 +7,7 @@ import './css/UserProfile.css';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import editPersonalityQuestionnaire from './editPersonalityQnn';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -62,8 +63,9 @@ class UserProfile extends Component {
           </div>
         </div> 
         <br/>
-        <div id="buttonBlock">
-        <button class="btn btn-outline-light" onClick={this.gotoQuestionnaires}>Edit your Questionnaires</button>
+          <div id="buttonBlock">
+            <button>Does Nothing</button>
+            <editPersonalityQuestionnaire {...this.state}/>
          </div> 
       </div>    
     );
