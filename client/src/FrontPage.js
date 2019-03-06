@@ -3,13 +3,6 @@ import './css/FrontPage.css'
 import Header from './Header';
 
 class FrontPage extends Component {
-  constructor(){
-    super();
-    this.state = {
-      message : null
-    }
-  }
-
   render() {
     return (
       <div id="frontpageDiv">
