@@ -11,7 +11,6 @@ import Page404 from './Page404';
 import firebase from './firebase';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
-import loading from './img/loading.gif';
 
 class App extends Component {
   constructor(){
@@ -19,24 +18,36 @@ class App extends Component {
     this.state={
       uAuth: null,
       uData: null,
-      checkedUser: false
+      isAuthenticating: true
     }
     this.handleLoggedinUser = this.handleLoggedinUser.bind(this);
     this.isLoggedIn = this.isLoggedIn.bind(this);
   }
 
-	componentDidMount(){
+  Authentification(){
     this.getUserFromLocalStorage()
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.handleLoggedinUser(user)
-      }
-      else{
-        this.setState({
-          checkedUser: true
-        })
-      }
-    });
+    if(this.state.isAuthenticating){
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.handleLoggedinUser(user)
+        }
+        else{
+          //No user should be logged in
+          localStorage.removeItem('uAuth');
+          localStorage.removeItem('uData');
+          this.setState({
+            uAuth: null,
+            uData: null,
+            isAuthenticating: false
+          })
+        }
+      });
+    }
+   
+  }
+
+	componentDidMount(){
+    this.Authentification();
   }
   getUserFromLocalStorage() {
     const uAuth = localStorage.getItem('uAuth');
@@ -46,45 +57,56 @@ class App extends Component {
     }
     this.setState(
       { uAuth: uAuth,
-        uData: uData,
-        checkedUser: true
+        uData: uData
       });
   }
 
   isLoggedIn(){
-    if(this.state.checkedUser && this.state.uAuth){
+    if(!this.state.isAuthenticating && this.state.uAuth){
+      return true;
+    }
+    return false;
+  }
+
+  needToTakeQuestionnaires(){
+    if(!this.isLoggedIn()){
+      return false;
+    }
+    if(!this.state.uData){
+      return true;
+    }
+    if(!this.state.uData.CQComplete || !this.state.uData.PQComplete){
       return true;
     }
     return false;
   }
   
   handleLoggedinUser(user){
-    localStorage.setItem('uAuth', user)
     const db = firebase.firestore();
     db.collection("usersPQ").doc(user.uid).get()
       .then( (userdoc) => {
         if (userdoc.exists) {
+          localStorage.setItem('uAuth', user);
           localStorage.setItem('uData', userdoc.data());
           this.setState({
             uAuth : user,
             uData : userdoc.data(),
-            checkedUser: true
+            isAuthenticating: false
           });
         } else {
           this.setState({
             uAuth : user,
             uData : null,
-            checkedUser: true
+            isAuthenticating: false
           });
           console.log('No user data available for '+ this.state.uAuth.uid);
         }
       })
       .catch( (error) => {
-        console.log("Here4-3");
         this.setState({
           uAuth : user,
           uData : null,
-          checkedUser: true
+          isAuthenticating: false
         });
           console.log("Error getting User Data:\n" + error);
       });
@@ -129,61 +151,98 @@ class App extends Component {
 				lastOnlineTime: new Date().getTime(),
 			});
 		}, 10000);*/
+		
+		db.collection("usersByEmail").doc(user.email).get().then(function(userData)
+		{
+			if (userData.exists)
+			{
+				var data = userData.data();
+				db.collection("usersByEmail").doc(user.email).update({
+					lastOnlineTime: new Date().getTime(),
+				});
+			}
+			else
+			{
+				db.collection("usersByEmail").doc(user.email).set({
+					lastOnlineTime: new Date().getTime(),
+				});
+			}
+		});
+		
+		var aa = setInterval(function()
+		{
+			db.collection("usersByEmail").doc(user.email).update({
+				lastOnlineTime: new Date().getTime(),
+			});
+		}, 10000);
   }
 
   render() {
+    //console.log("uAuth: " + this.state.uAuth + "\tuData: " + this.state.uData + "\tAuthenticting: " + this.state.isAuthenticating);
     return (
       <div id="App">
-        { this.state.checkedUser ?
-          <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <Switch>
-            <Route path="/" exact render={() => (
-                <FrontPage {...this.state}/>       
-              )} />
-              <Route path="/matches" render={() => (
-                this.state.uAuth ?
-                  <Matches {...this.state} /> :
+        { !this.state.isAuthenticating ?
+           this.needToTakeQuestionnaires() ?
+              <BrowserRouter basename={process.env.PUBLIC_URL}>
+              <Switch>
+                <Route path="/user/questionnaire" render={() => (
+                  <PersonalityQuestionnaire {...this.state} />
+                )} />
+                <Route path="/user/cquestionnaire" render={() => (
+                  <CodingQuestionnaire {...this.state} />
+                )} />
+                <Route render={() => (
+                  this.state.uData && this.state.uData.PQComplete ?
+                  <Redirect to='/user/cquestionnaire'/> :
+                  <Redirect to='/user/questionnaire'/>
+                )} />
+              </Switch>
+            </BrowserRouter> : 
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
+              <Switch>
+              <Route path="/" exact render={() => (
+                  <FrontPage {...this.state}/>       
+                )} />
+                <Route path="/matches" render={() => (
+                  this.isLoggedIn() ?
+                    <Matches {...this.state} /> :
+                    <Redirect to='/'/>
+                )} />
+                <Route path="/matching" render={() => (
+                  this.isLoggedIn() ?
+                    <Matching {...this.state} /> :
+                    <Redirect to='/'/>
+                )} />
+                <Route path="/messages" render={() => (
+                  this.isLoggedIn() ?
+                    <Messages {...this.state} /> :
+                    <Redirect to='/'/>
+                )} />
+                <Route path="/user/profile" render={() => (
+                  this.isLoggedIn() ?
+                    <UserProfile {...this.state} /> :
+                    <Redirect to='/'/>
+                )} />
+                <Route path="/user/account" render={() => (
+                  this.isLoggedIn() ?
+                    <UserSettings {...this.state} /> :
+                    <Redirect to='/'/>
+                )} />
+                <Route path="/user/questionnaire" render={() => (
+                  this.isLoggedIn() ?
+                    <PersonalityQuestionnaire {...this.state} /> :
+                    <Redirect to='/'/>
+                )} />
+                <Route path="/user/cquestionnaire" render={() => (
+                  this.isLoggedIn() ?
+                    <CodingQuestionnaire {...this.state} /> :
+                    <Redirect to='/'/>
+                )} />
+                <Route component= { Page404 }/> :
                   <Redirect to='/'/>
-              )} />
-              <Route path="/matching" render={() => (
-                this.state.uAuth ?
-                  <Matching {...this.state} /> :
-                  <Redirect to='/'/>
-              )} />
-              <Route path="/messages" render={() => (
-                this.state.uAuth ?
-                  <Messages {...this.state} /> :
-                  <Redirect to='/'/>
-              )} />
-              <Route path="/user/profile" render={() => (
-                this.state.uAuth ?
-                  <UserProfile {...this.state} /> :
-                  <Redirect to='/'/>
-              )} />
-              <Route path="/user/account" render={() => (
-                this.state.uAuth ?
-                  <UserSettings {...this.state} /> :
-                  <Redirect to='/'/>
-              )} />
-              <Route path="/user/questionnaire" render={() => (
-                this.state.uAuth ?
-                  <PersonalityQuestionnaire {...this.state} /> :
-                  <Redirect to='/'/>
-              )} />
-              <Route path="/user/cquestionnaire" render={() => (
-                this.state.uAuth ?
-                  <CodingQuestionnaire {...this.state} /> :
-                  <Redirect to='/'/>
-              )} />
-              <Route component= { Page404 }/> :
-                <Redirect to='/'/>
-            </Switch>
-          </BrowserRouter> :
-          <div id="loading">
-            <img src={loading} alt="Loading"/>
-            <h2>Loading...</h2>
-          </div>
-          
+              </Switch>
+            </BrowserRouter> :
+            <React.Fragment></React.Fragment>
         }
       </div>
     );

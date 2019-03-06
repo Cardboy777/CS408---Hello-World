@@ -59,24 +59,30 @@ function likeUser(userName, likedUserName){
     var likedUsersLiked = likedUser["data"]["likedUsers"];
     var inMatches = false;
     var match;
-    for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserPot[i]["name"] === likedUserName){
-        match = mainUserPot[i];
-        inMatches = true;
+    if(mainUserPot){
+      for(var i = 0; i < mainUserPot.length; i++){
+        if(mainUserPot[i]["data"]["user"] === likedUserName){
+          match = mainUserPot[i];
+          inMatches = true;
+        }
       }
     }
 
     if(!inMatches){
+      console.log("404");
       return "404";
     }
     var liked = false;
     var likedNum;
-    for(var i = 0; i < likedUsersLiked.length; i++){
-      if(likedUsersLiked[i]["name"] === userName){
-        liked = true;
-        likedNum = i;
+    if(likedUsersLiked){
+      for(var i = 0; i < likedUsersLiked.length; i++){
+        if(likedUsersLiked[i]["data"]["user"] === userName){
+          liked = true;
+          likedNum = i;
+        }
       }
     }
+
     var db = admin.firestore();
     if(liked){
       var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
@@ -143,22 +149,27 @@ function dislikeUser(userName, dislikedUserName){
     var dislikedUsersLiked = dislikedUser["data"]["likedUsers"];
     var inMatches = false;
     var match;
-    for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserPot[i]["name"] === dislikedUserName){
-        match = mainUserPot[i];
-        inMatches = true;
+    if(mainUserPot){
+      for(var i = 0; i < mainUserPot.length; i++){
+        if(mainUserPot[i]["data"]["user"] === dislikedUserName){
+          match = mainUserPot[i];
+          inMatches = true;
+        }
       }
     }
+
 
     if(!inMatches){
       return "404";
     }
     var liked = false;
     var likedNum;
-    for(var i = 0; i < dislikedUsersLiked.length; i++){
-      if(dislikedUsersLiked[i]["name"] === userName){
-        liked = true;
-        likedNum = i;
+    if(dislikedUsersLiked){
+      for(var i = 0; i < dislikedUsersLiked.length; i++){
+        if(dislikedUsersLiked[i]["data"]["user"] === userName){
+          liked = true;
+          likedNum = i;
+        }
       }
     }
     var db = admin.firestore();
@@ -230,10 +241,12 @@ function removeMatch(userName, removeUserName){
     var dislikedUserMatches = dislikedUser["data"]["matchedUsers"];
     var inMatches = false;
     var match;
-    for(var i = 0; i < mainUserPot.length; i++){
-      if(mainUserMatches[i]["name"] === removeUserName){
-        match = mainUserMatches[i];
-        inMatches = true;
+    if(mainUserMatches){
+      for(var i = 0; i < mainUserMatches.length; i++){
+        if(mainUserMatches[i]["data"]["user"] === removeUserName){
+          match = mainUserMatches[i];
+          inMatches = true;
+        }
       }
     }
 
@@ -242,7 +255,7 @@ function removeMatch(userName, removeUserName){
     }
     var matchedNum
     for(var i = 0; i < dislikedUserMatches.length; i++){
-      if(dislikedUserMatches[i]["name"] === userName){
+      if(dislikedUserMatches[i]["data"]["user"] === userName){
 
         matchedNum = i;
       }
@@ -400,9 +413,9 @@ function findMatches(userName){
       for(j = 0; j < scores.length; j++){
         if(scores[j]["score"] > highMatch["score"]){
           highMatch = {
-            "data" : scores[i]["data"],
-            "match_percent" : Math.floor(scores[i]["score"]*100/27),
-            "uid" : scores[i]["userID"],
+            "data" : scores[j]["data"],
+            "match_percent" : Math.floor(scores[j]["score"]*100/27),
+            "uid" : scores[j]["userID"],
           };
           matchNumber = j;
         }
@@ -411,33 +424,33 @@ function findMatches(userName){
       finalMatches.push(highMatch);
 
     }
-    var matchesIDS = [];
-    for(i = 0; i < finalMatches.length; i++){
-      main = {
-        "data" : mainUser["data"],
-        "match_percent" : finalMatches[i]["match_percent"],
-        "uid" : mainUser["id"],
+    if(finalMatches.length > 0){
+      var matchesIDS = [];
+      for(i = 0; i < finalMatches.length; i++){
+        main = {
+          "data" : mainUser["data"],
+          "match_percent" : finalMatches[i]["match_percent"],
+          "uid" : mainUser["id"],
+        }
+        var db = admin.firestore();
+        var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
+        var setMatched = matchRef.update({
+          potentialMatches: admin.firestore.FieldValue.arrayUnion(main)
+        });
+        var setPrevMatched = matchRef.update({
+          prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(mainUser["id"])
+        });
+        matchesIDS.push(finalMatches[i]["uid"]);
       }
       var db = admin.firestore();
-      var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
-      var setMatched = matchRef.set({
-        matchedUsers: [main]
-      }, {merge: true});
-      var setPrevMatched = matchRef.set({
-        prevMatchedUsers: [mainUser["id"]]
-      }, {merge: true});
-      matchesIDS.push(finalMatches[i]["uid"]);
+      var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+      var setMatched = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayUnion.apply(null, finalMatches)
+      });
+      var setPrevMatched = matchRef.update({
+        prevMatchedUsers: admin.firestore.FieldValue.arrayUnion.apply(null, matchesIDS)
+      });
     }
-    var db = admin.firestore();
-    var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
-    console.log("HERE3");
-    var setMatched = matchRef.update({
-      potentialMatches: admin.firestore.FieldValue.arrayUnion(finalMatches)
-    });
-    console.log("HERE4");
-    var setPrevMatched = matchRef.update({
-      prevMatchedUsers: admin.firestore.FieldValue.arrayUnion(matchesIDS)
-    });
     return finalMatches;
 
   });
@@ -454,7 +467,6 @@ admin.initializeApp({
 router.post("/getMorePotentialMatches", (req, res) => {
   result = findMatches(req.body.username);
   result.then(function(ret){
-    console.log(ret);
     res.json(ret);
   })
 });
@@ -462,7 +474,6 @@ router.post("/getMorePotentialMatches", (req, res) => {
 router.post("/getMatches", (req, res) => {
   result = getMatches(req.body.username);
   result.then(function(ret){
-    console.log(ret);
     res.json(ret);
   })
 });
@@ -472,7 +483,7 @@ router.post("/likeUser", (req, res) => {
   console.log(req.body.userName + " Liked " + req.body.likedUserName);
   result = likeUser(req.body.userName, req.body.likedUserName);
   result.then(function(ret){
-    res.json("Success");
+    res.json(ret);
   })
 });
 
@@ -480,7 +491,7 @@ router.post("/dislikeUser", (req, res) => {
   console.log(req.body.userName + " Disiked " + req.body.dislikedUserName);
   result = dislikeUser(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
-    res.json("Success");
+    res.json(ret);
   })
 });
 
@@ -488,7 +499,7 @@ router.post("/unlikeUser", (req, res) => {
   console.log(req.body.userName + " Unliked " + req.body.unlikedUserName);
   result = removeMatch(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
-    res.json("Success");
+    res.json(ret);
   })
 });
 
@@ -511,9 +522,15 @@ io.on('connection', function(socket)
 	console.log('a user connected');
 	socket.id = Math.random();
 	
+	users[socket.id] = {};
+	var user = users[socket.id];
+	user.email = "";
+	user.token = "";
+	user.username = "";
+	
 	socket.on('disconnect', function()
 	{
-		var str = user.token || user.email;
+		var str = user.email || user.token;
 		if (str != undefined && userSocketMap[str])
 		{
 			userSocketMap[str][socket.id] = undefined;
@@ -521,13 +538,6 @@ io.on('connection', function(socket)
 		}
 		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
 	});
-	
-	users[socket.id] = {};
-	var user = users[socket.id];
-	user.email = "";
-	user.token = "";
-	user.username = "";
-	
 	socket.on('giveSocketData', function(data)
 	{
 		if (data.email) { user.email = data.email; }
@@ -544,9 +554,9 @@ io.on('connection', function(socket)
 			userSocketMap[str] = {};
 			userSocketMap[str][socket.id] = true;
 		}
-		console.log("Socket data.");
-		//console.log("Full user array: " + JSON.stringify(users));
-		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
+		//console.log("Socket data.");
+		console.log("Full user array: " + JSON.stringify(users));
+		console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
 	
 	socket.on('testMessageClientToServer', function(msg)
@@ -578,11 +588,6 @@ io.on('connection', function(socket)
 			socket.emit('incomingMessage', {"from":"hotguy69@gmail.com", "msg":"hey babe"});
 		}, Math.floor(1000 + Math.random() * 14000));
 	}, 15000);
-	
-	setTimeout(function()
-	{
-		socket.emit('testFunc', "TESTING");
-	}, 2000);
 });
 
 module.exports = router;
