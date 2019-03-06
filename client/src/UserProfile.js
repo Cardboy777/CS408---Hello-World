@@ -20,10 +20,7 @@ class UserProfile extends Component {
       description:'',
       attractGender:''
     }
-    this.gotoQuestionnaires=this.gotoQuestionnaires.bind(this);
-  }
-  gotoQuestionnaires(){
-    window.location.href='/user/questionnaire';
+    
   }
   componentDidMount(){
     const db =firebase.firestore();
@@ -48,7 +45,7 @@ class UserProfile extends Component {
   render() {
     return (
       <div id="UserProfilePage">
-        <Header/><br/>
+        <Header {...this.props}/><br/>
         <div id="profileNameAndPicture">
           <h1 id="pname">{this.state.name}</h1>
            <div id="infoPage"> 
@@ -67,8 +64,8 @@ class UserProfile extends Component {
         </div> 
         <br/>
           <div id="buttonBlock">
-            <button>Does Nothing</button>
-            <editPQuestionnaire name="poop"/>
+            <button>buttonfor editting the Questionnaire</button>
+            <editPQuestionnaire/>
          </div> 
       </div>    
     );

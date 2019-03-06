@@ -128,7 +128,7 @@ class editPQuestionnaire extends Component {
     render() { 
         return ( 
             <div>
-                <h1>Buttons</h1>
+                <button>Button for Update</button>
                 
             </div>
          );

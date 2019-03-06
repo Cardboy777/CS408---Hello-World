@@ -22,7 +22,7 @@ class Header extends Component {
     
 	}
 	componentDidMount(){
-		window.alert(this.props.uAuth);
+		window.alert("Props: "+this.props.uAuth);
 	}
 }
 export default Header;

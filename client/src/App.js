@@ -26,24 +26,11 @@ class App extends Component {
 
   Authentification(){
     this.getUserFromLocalStorage()
-<<<<<<< HEAD
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.handleLoggedinUser(user)
-        window.alert("User exists"+user.uid);
-      }
-      else{
-        this.setState({
-          checkedUser: true
-        })
-        window.alert("User not logged in! ");
-      }
-    });
-=======
     if(this.state.isAuthenticating){
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           this.handleLoggedinUser(user)
+          window.alert("user logged in");
         }
         else{
           //No user should be logged in
@@ -62,7 +49,6 @@ class App extends Component {
 
 	componentDidMount(){
     this.Authentification();
->>>>>>> parent of 0329dfe4... Revert "Merge branch 'master' into laura-branch2"
   }
   getUserFromLocalStorage() {
     const uAuth = localStorage.getItem('uAuth');

@@ -145,7 +145,7 @@ class PersonalityQuestionnaire extends Component {
         });
     }
 
-/*    componentDidMount(){
+    /*componentDidMount(){
         let this2=this;
         const db=firebase.firestore();
         window.alert("in component did mount");
@@ -184,39 +184,18 @@ class PersonalityQuestionnaire extends Component {
                     console.log("Error getting document:", error);
                    
                   });
-                  window.alert(this2.state.complete)
-                  if(this2.state.complete===true){
-                    window.alert(true);
-                    this2.setState({
-                        button1Name:"Save",
-                        functionName:"handleUpdate"
-                    });
-                  }else{
-                    this2.setState({
-                        button1Name:"Submit",
-                        functionName:"handleSubmit"
-                    }); 
-                    var db=firebase.firestore;
-                    db.collection("usersPhotos").doc(user.uid).set({
-                        avatarFile:"b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png",
-                        picture1File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
-                        picture2File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
-                        picture3File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg"
-                    });
-                  }
             }
 
         });
     }
 */
-
     
 
     //should add the value to all the options of select
     render() {
         return (
             <div>
-            <form onSubmit={this.functionName} id="pform">
+            <form onSubmit={this.handleSubmit} id="pform">
                 <div class="jumbotron jumbotron-fluid" >
                     <div class="container">
                         <h2 class="display-4"id="jumboText">Personality Questionnaire</h2>
