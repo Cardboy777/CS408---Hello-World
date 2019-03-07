@@ -97,8 +97,10 @@ class EditPQuestionnaire extends Component {
                     pa16:doc.data().panswer16,
                     pa17:doc.data().panswer17,   
                     describe:doc.data().describe     
+                }).catch(function(err){
+                    window.alert(err);
                 });
-                window.alert("pa"+that.pa1);
+                console.log("pa"+that.pa1);
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             });
@@ -107,7 +109,7 @@ class EditPQuestionnaire extends Component {
     }
     handleUpdate = e =>{
         //e.preventDefault();
-        window.alert("Handle update");
+        //window.alert("Handle update");
         const db =firebase.firestore();
         db.settings({
             timestampsInSnapshots: true
@@ -299,7 +301,7 @@ class EditPQuestionnaire extends Component {
                         </label>
                         <br/>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger" onClick={this.handleUpdate}>Save changes</button>
+                            <button type="submit" class="btn btn-danger">Save changes</button>
                         </div>
                         </form>
                     </div>
