@@ -53,8 +53,8 @@ class UserProfile extends Component {
           </div>
           <ProfilePicture/>
           <div id="userInterestPhotos">
-          <Picture name="pictureFile1"/>
-          <Picture name="pictureFile2"/>
+          <div> <Picture name="pictureFile1"/></div>
+          <div><Picture name="pictureFile2"/></div>
           <Picture name="pictureFile3"/>
           <br/>
           </div>
