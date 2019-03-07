@@ -71,7 +71,7 @@ class EditPQuestionnaire extends Component {
         const db=firebase.firestore;
         firebase.auth().onAuthStateChanged((user)=>{
             window.alert("Inside Modal: "+user.uid);
-            const docRef = db.collection("usersPQ").doc(this.props.uAuth.uid);
+            const docRef = db.collection("usersPQ").doc(String(this.props.uAuth.uid));
             docRef.get().then(function(doc) {
                 that.setState({
                     username:doc.data().user,
@@ -106,7 +106,8 @@ class EditPQuestionnaire extends Component {
 
     }
     handleUpdate = e =>{
-        e.preventDefault();
+        //e.preventDefault();
+        window.alert("Handle update");
         const db =firebase.firestore();
         db.settings({
             timestampsInSnapshots: true
@@ -114,7 +115,7 @@ class EditPQuestionnaire extends Component {
         if(!this.handleValidation()){
             return;
         }
-        db.collection("usersPQ").doc(this.props.uAuth.uid).update({
+        db.collection("usersPQ").doc(String(this.props.uAuth.uid)).update({
             uid: this.props.uAuth.uid,
             user: this.state.username,
             gender: this.state.gender,
@@ -298,7 +299,7 @@ class EditPQuestionnaire extends Component {
                         </label>
                         <br/>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger"data-dismiss="modal">Save changes</button>
+                            <button type="submit" class="btn btn-danger" onClick={this.handleUpdate}>Save changes</button>
                         </div>
                         </form>
                     </div>
