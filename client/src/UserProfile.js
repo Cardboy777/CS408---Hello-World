@@ -4,7 +4,7 @@ import ProfilePicture from './ProfilePicture';
 import firebase from './firebase';
 import Picture from './Picture';
 import './css/UserProfile.css';
-import EditPQuestionnaire from './EditPersonalityQnn';
+import EditPQuestionnaire from './editPersonalityQnn';
 import EditCQuestionnaire from './EditCodingQnn';
 
 class UserProfile extends Component {
