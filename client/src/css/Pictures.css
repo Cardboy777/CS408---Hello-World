@@ -1,0 +1,17 @@
+#carouselExampleControls{
+    float: left;
+    margin-left: 50px;
+    margin-top: 50px;
+    width: 450px;
+    height: 250px;
+    border-style:dashed; 
+}
+#ppmodal{
+    color: black;
+    margin-left: 50px;
+}
+#uploadLogo{
+    color: white;
+    width: 25px;
+    height:25px;
+}

@@ -26,3 +26,5 @@ node_modules/concurrently/package.json
 node_modules/p-limit/package.json
 node_modules/p-limit/readme.md
 package-lock.json
+*.json
+*.json

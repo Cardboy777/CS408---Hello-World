@@ -319,7 +319,7 @@ function findMatches(userName){
     var finalMatches = [];
     var mainUser = values[0];
     var users = values[1];
-    temp = mainUser["data"]["potentialMatches"];
+    temp = mainUser["data"]["matchedUsers"];
 
     if(temp && temp.length > 0){
       console.log(temp);
@@ -540,10 +540,16 @@ io.on('connection', function(socket)
 {
 	console.log('a user connected');
 	socket.id = Math.random();
-
+	
+	users[socket.id] = {};
+	var user = users[socket.id];
+	user.email = "";
+	user.token = "";
+	user.username = "";
+	
 	socket.on('disconnect', function()
 	{
-		var str = user.token || user.email;
+		var str = user.email || user.token;
 		if (str != undefined && userSocketMap[str])
 		{
 			userSocketMap[str][socket.id] = undefined;
@@ -551,13 +557,6 @@ io.on('connection', function(socket)
 		}
 		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
 	});
-
-	users[socket.id] = {};
-	var user = users[socket.id];
-	user.email = "";
-	user.token = "";
-	user.username = "";
-
 	socket.on('giveSocketData', function(data)
 	{
 		if (data.email) { user.email = data.email; }
@@ -574,11 +573,11 @@ io.on('connection', function(socket)
 			userSocketMap[str] = {};
 			userSocketMap[str][socket.id] = true;
 		}
-		console.log("Socket data.");
-		//console.log("Full user array: " + JSON.stringify(users));
-		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
+		//console.log("Socket data.");
+		console.log("Full user array: " + JSON.stringify(users));
+		console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
-
+	
 	socket.on('testMessageClientToServer', function(msg)
 	{
 		console.log("C2S: " + msg);
@@ -608,11 +607,6 @@ io.on('connection', function(socket)
 			socket.emit('incomingMessage', {"from":"hotguy69@gmail.com", "msg":"hey babe"});
 		}, Math.floor(1000 + Math.random() * 14000));
 	}, 15000);
-
-	setTimeout(function()
-	{
-		socket.emit('testFunc', "TESTING");
-	}, 2000);
 });
 
 module.exports = router;

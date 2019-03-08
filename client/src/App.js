@@ -30,6 +30,7 @@ class App extends Component {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           this.handleLoggedinUser(user)
+          //window.alert("user logged in");
         }
         else{
           //No user should be logged in
@@ -151,13 +152,53 @@ class App extends Component {
 				lastOnlineTime: new Date().getTime(),
 			});
 		}, 10000);*/
+		
+		db.collection("usersByEmail").doc(user.email).get().then(function(userData)
+		{
+			if (userData.exists)
+			{
+				var data = userData.data();
+				db.collection("usersByEmail").doc(user.email).update({
+					lastOnlineTime: new Date().getTime(),
+				});
+			}
+			else
+			{
+				db.collection("usersByEmail").doc(user.email).set({
+					lastOnlineTime: new Date().getTime(),
+				});
+			}
+		});
+		
+		var aa = setInterval(function()
+		{
+			db.collection("usersByEmail").doc(user.email).update({
+				lastOnlineTime: new Date().getTime(),
+			});
+		}, 10000);
   }
 
   render() {
-    console.log("uAuth: " + this.state.uAuth + "\tuData: " + this.state.uData + "\tAuthenticting: " + this.state.isAuthenticating);
+    //console.log("uAuth: " + this.state.uAuth + "\tuData: " + this.state.uData + "\tAuthenticting: " + this.state.isAuthenticating);
     return (
       <div id="App">
         { !this.state.isAuthenticating ?
+           this.needToTakeQuestionnaires() ?
+              <BrowserRouter basename={process.env.PUBLIC_URL}>
+              <Switch>
+                <Route path="/user/questionnaire" render={() => (
+                  <PersonalityQuestionnaire {...this.state} />
+                )} />
+                <Route path="/user/cquestionnaire" render={() => (
+                  <CodingQuestionnaire {...this.state} />
+                )} />
+                <Route render={() => (
+                  this.state.uData && this.state.uData.PQComplete ?
+                  <Redirect to='/user/cquestionnaire'/> :
+                  <Redirect to='/user/questionnaire'/>
+                )} />
+              </Switch>
+            </BrowserRouter> : 
             <BrowserRouter basename={process.env.PUBLIC_URL}>
               <Switch>
               <Route path="/" exact render={() => (

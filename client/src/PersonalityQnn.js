@@ -32,7 +32,10 @@ class PersonalityQuestionnaire extends Component {
             pa16:"",
             pa17:"",
             description:"",
-            nextToggle:false
+            nextToggle:false,
+            complete:false,
+            button1Name:"Submit",
+            functionName:"handleSubmit"
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -125,20 +128,68 @@ class PersonalityQuestionnaire extends Component {
             canswer7:'',
             canswer8:'',
             canswer9:'',
-            canswer10:''
+            canswer10:'',
+            avatarFile:"b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png",
+            picture1File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+            picture2File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+            picture3File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg"
         });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true;
 
     };
+
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value
         });
     }
 
+    /*componentDidMount(){
+        let this2=this;
+        const db=firebase.firestore();
+        window.alert("in component did mount");
+        firebase.auth().onAuthStateChanged((user)=>{
+            if(user){
+                const docRef = db.collection("usersPQ").doc(user.uid);
+                docRef.get().then(function(doc) {
+                    this2.setState({
+                        username: doc.data().user,
+                        gender: doc.data().gender,
+                        age:  doc.data().age,
+                        description: doc.data().describe,
+                        attrgender: doc.data().attractGender, 
+                        location:doc.data().location,
+                        pa1:doc.data().panswer1,
+                        pa2:doc.data().panswer2,
+                        pa3:doc.data().panswer3,
+                        pa4:doc.data().panswer4,
+                        pa5:doc.data().panswer5,
+                        pa6:doc.data().panswer6,
+                        pa7:doc.data().panswer7,
+                        pa8:doc.data().panswer8,
+                        pa9:doc.data().panswer9,
+                        pa10:doc.data().panswer10,
+                        pa11:doc.data().panswer11,
+                        pa12:doc.data().panswer12,
+                        pa13:doc.data().panswer13,
+                        pa14:doc.data().panswer14,
+                        pa15:doc.data().panswer15,
+                        pa16:doc.data().panswer16,
+                        pa17:doc.data().panswer17,
+                        complete:doc.data().PQComplete
+                    });
+                  }).catch(function(error) {
+                      //window.alert("UserPhotos");
+                    console.log("Error getting document:", error);
+                   
+                  });
+            }
 
-
+        });
+    }
+*/
+    
 
     //should add the value to all the options of select
     render() {
@@ -170,6 +221,7 @@ class PersonalityQuestionnaire extends Component {
                 </label>
             </div>
             <div class="form-group col-md-12">
+
                 <label>Are you interested in?
                     <select class="form-control" id="attrgender" name="attrgender" onChange={this.handleChange} value={this.state.attrgender}>
                         <option selected></option><option>Male</option><option>Female</option><option>Both</option>
@@ -235,7 +287,7 @@ class PersonalityQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
-                <label>Do you prefer variety to routine?
+                <label>Do you like variety or routine?
                     <select class="form-control" id="pa10" name="pa10" onChange={this.handleChange} value={this.state.pa10}>
                         <option selected></option><option>Variety</option><option>Routine</option>
                     </select>

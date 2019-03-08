@@ -1,0 +1,16 @@
+#uploadLogo{
+    color: white;
+    width: 25px;
+    height:25px;
+}
+#pmodal{
+    color: black;
+    margin-left: 50px;
+}
+.modal.fade.bd-example-modal{
+    color:black;
+    margin-left:50px; 
+}
+#PictureBox{
+    margin-left: 50px;
+}

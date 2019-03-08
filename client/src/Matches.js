@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import './css/Matches.css'
-import Header from './Header';
 import MatchesPanel from './MatchesPanel';
+import Header from './Header';
+import Loading from './Loading';
 
 class Matches extends Component {
   constructor(){
     super();
     this.state = {
-      message : null,
-      user_list: [],
+      user_list: null,
       user_list_index: 0
     }
     this.fetchMatches = this.fetchMatches.bind(this);
     this.RemoveUserFromList = this.RemoveUserFromList.bind(this);
     this.getMoreMatches = this.getMoreMatches.bind(this);
     this.UnlikeUser = this.UnlikeUser.bind(this);
+    this.ReportUser = this.ReportUser.bind(this);
   }
 
   componentDidMount(){
@@ -23,28 +24,26 @@ class Matches extends Component {
 
   //requests more potentail matches from the server
   fetchMatches(){
-    if(this.props.uData.user !== undefined){
-      fetch("/api/getMatches", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, cors, *same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-            "Content-Type": "application/json",
-            // "Content-Type": "application/x-www-form-urlencoded",
-        },
-        redirect: "follow", // manual, *follow, error
-        referrer: "no-referrer", // no-referrer, *client
-        body: JSON.stringify({ username: this.props.uData.user }), // body data type must match "Content-Type" header
-      })
-      .then(res => res.json())
-      .then(arrayList => {
-        console.log(arrayList);
-        this.setState({ user_list: this.state.user_list.concat(arrayList) })
-      }).catch((message) =>{
-        console.log("Could not Retrieve Matches");
-      });
-    }
+    fetch("/api/getMatches", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+          "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify({ username: this.props.uData.user }), // body data type must match "Content-Type" header
+    })
+    .then(res => res.json())
+    .then(arrayList => {
+      this.setState({ user_list: arrayList})
+    }).catch((message) =>{
+      console.log("Could not Retrieve Matches");
+      this.setState({ user_list: "EMPTY"})
+    });
   }
 
   getMoreMatches(e){
@@ -65,7 +64,7 @@ class Matches extends Component {
 
   findUserIndex(username){
     for( let i in this.state.user_list){
-      if(i.user === username){
+      if(i.data.user === username){
         return this.state.userName.indexOf(i);
       }
     }
@@ -93,35 +92,62 @@ class Matches extends Component {
         }), // body data type must match "Content-Type" header
       })
       .then(res => res.json())
-      .then(response => {
-        if(response === "Success"){
-          this.RemoveUserFromList(unlikedUser);
-        }
+      .then(arrayList => {
+        this.setState({ user_list: arrayList})
+        this.forceUpdate()
       }).catch((message) =>{
         console.log("Could not Unlike user " + unlikedUser);
       });
     }
   }
+  ReportUser(ReportedUser, ReportedUserName, message){
+    fetch("/api/emailReportedUser", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+          "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify({
+        userName: this.props.uData.user,
+        reportedUser: ReportedUserName,
+        reportedUid: ReportedUser,
+        reason: message
+      }), // body data type must match "Content-Type" header
+    })
+    .then(res => res.json())
+    .catch((message) =>{
+      console.log("Could not Report user " + ReportedUserName);
+    });
 
   render() {
     return (
       <div id="matchesPage">
         <Header {...this.props} />
-        <div className="panels-container">
-          <div className="row">
-            {this.state.user_list.map((i) =>
-                <div key={i.user} className="panel col-md-6">
-                  <MatchesPanel userData={i} unlikeFunct={this.UnlikeUser}/>
-                </div>
-              )
+        { !this.state.user_list ?
+          <Loading/> :
+          <div className="panels-container">
+            {this.state.user_list !== "EMPTY" ?
+              <div className="row">
+                {this.state.user_list.map((i) =>
+                    <div key={i.data.user} className="panel col-md-6">
+                    <MatchesPanel match_percent={i.match_percent} userData={i.data} unlikeFunct={this.UnlikeUser} reportFunct={this.ReportUser}/>
+                  </div>
+                  )
+                }
+              </div> :
+              <div>
+                <h1>You have No Matches :(</h1>
+                <p>You should go find some on the 'Find a Match Page'</p>
+              </div>
             }
-          </div>
-          { this.state.user_list.length < 1 ?
-            <button id='fetchMoreMatches' className='btn btn-primary' onClick={this.getMoreMatches}>Load More Matches</button> :
-            <br/>
+            </div>
           }
         </div>
-      </div>
     );
   }
 }

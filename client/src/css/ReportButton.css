@@ -1,0 +1,13 @@
+.reportButtonComponent .other-entry textarea{
+    padding: 0 0.5em 0 0.5em;
+    margin: 0;
+    width: 100%;
+}
+.reportButtonComponent .other-entry, label{
+    margin:0;
+    width: 100%;
+}
+
+.reportButtonComponent span.report-form-error{
+    color: red;
+}

@@ -8,7 +8,6 @@ class Matching extends Component {
   constructor(){
     super();
     this.state = {
-      message : null,
       user_list: null,
       user_list_index: 0
     }
@@ -16,18 +15,12 @@ class Matching extends Component {
     this.LikeUser = this.LikeUser.bind(this);
     this.DislikeUser = this.DislikeUser.bind(this);
     this.SkipUser = this.SkipUser.bind(this);
+    this.ReportUser = this.ReportUser.bind(this);
     this.ViewNextProfile = this.ViewNextProfile.bind(this);
   }
 
   componentDidMount(){
     this.fetchPotentialMatches();
-  }
-  componentWillReceiveProps(props) {
-    const { refresh, id } = this.props;
-    if (props.refresh !== refresh) {
-      this.fetchShoes(id)
-        .then(this.refreshShoeList)
-    }
   }
 
   //requests more potentail matches from the server
@@ -123,6 +116,10 @@ class Matching extends Component {
     console.log(this.props.uData.user + " Skipped " + skippedUser)
   }
 
+  ReportUser(ReportedUser){
+    console.log(this.props.uData.user + " Reported " + ReportedUser);
+  }
+
   ViewNextProfile(){
     this.setState({user_list_index : this.user_list_index + 1});
     this.forceUpdate();
@@ -138,7 +135,7 @@ class Matching extends Component {
             <div className="row">
               {this.state.user_list.map((i) =>
                   <div key={i.data.user} className="panel col-md-6">
-                    <MatchingPanel match_percent={i.match_percent} userData={i.data} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser}/>
+                    <MatchingPanel match_percent={i.match_percent} userData={i.data} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser} reportFunct={this.ReportUser}/>
                   </div>
                 )
               }

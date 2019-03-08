@@ -71,7 +71,7 @@
 /* Center the image and position the close button */
 #LoginHeader .imgcontainer {
   text-align: center;
-  margin: 24px 0 12px 0;
+  margin: 12px 0 12px 0;
   position: relative;
 }
 
@@ -196,4 +196,9 @@
   text-decoration: none;
   color: red;
   padding-left: 1em;
+}
+
+#LoginHeader #signupForm h3{
+  color: black;
+  margin: 0.5em 0 0 0.5em;
 }

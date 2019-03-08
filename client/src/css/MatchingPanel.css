@@ -4,11 +4,6 @@ div.MatchingPanel {
     border-radius: 1em;
     color: black;
 }
-div.MatchingPanel img{
-    width: 25%;
-    border: 2px solid darkgrey;
-    border-radius: 0.5em;
-}
 
 div.MatchingPanel button{
     margin-right: 1em;
@@ -17,11 +12,7 @@ div.MatchingPanel button{
 div.MatchingPanel button.skip{
     width: 15%;
 }
-div.MatchingPanel h5{
-    padding-top: 1em;
-}
-
-div.MatchingPanel h.compat-percent{
-    text-align: right;
-    font-size: 2em;
+div.MatchingPanel button.report{
+    align-content: right;
+    width: 10%;
 }
