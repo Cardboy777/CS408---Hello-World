@@ -58,7 +58,7 @@ class LoginHeader extends Component {
     }
     signUp(e){
 		e.preventDefault();
-		if (this.state.validUsername === true && this.state.validEmail === true && this.state.validPassword === true)
+		if (/*this.state.validUsername === true && */this.state.validEmail === true && this.state.validPassword === true)
 		{
 			/*firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(data){
 				window.alert(JSON.stringify(data.user.uid));
@@ -135,19 +135,6 @@ class LoginHeader extends Component {
     toggleLoginState(e){
         e.preventDefault();
         this.setState({loginToggle : !(this.state.loginToggle)});
-		if (this.state.loginToggle === false)
-		{
-			setTimeout(function()
-			{
-				var holder = document.getElementById("frontpageDiv");
-				var signupForm = document.getElementById("signupForm");
-				if (holder !== undefined && signupForm !== undefined)
-				{
-					holder.insertBefore(signupForm, holder.children[1]);
-				}
-			}, 100);
-		}
-        this.forceUpdate();
     }
 	checkUsername(e){
 		e.preventDefault();
@@ -242,11 +229,8 @@ class LoginHeader extends Component {
 					<div className="imgcontainer">
 						<span onClick={this.toggleLoginState} className="close" title="Close Signup">&times;</span>
 					</div>
+					<h3>Register New Account</h3>
 					<div className="container">
-						<label className="black-text" htmlFor="username"><b>Username</b></label>
-						<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onKeyUp={this.checkUsername} onFocus={this.checkUsername} onBlur={this.checkUsername} required/>
-						<label className="inputError" id="signupUsernameError">Error:</label>
-						
 						<label className="black-text" htmlFor="email"><b>Email</b></label>
 						<input id="emailBox" type="text" placeholder="Enter Email" name="email" onKeyUp={this.checkEmail} onFocus={this.checkEmail} onBlur={this.checkEmail} required/>
 						<label className="inputError" id="signupEmailError">Error:</label>
@@ -254,6 +238,12 @@ class LoginHeader extends Component {
 						<label className="black-text" htmlFor="password"><b>Password</b></label>
 						<input id="passwordBox" type="password" placeholder="Enter Password" name="password" onKeyUp={this.checkPassword} onFocus={this.checkPassword} onBlur={this.checkPassword} required/>
 						<label className="inputError" id="signupPasswordError">Error:</label>
+
+						{/*
+						<label className="black-text" htmlFor="username"><b>Username</b></label>
+						<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onKeyUp={this.checkUsername} onFocus={this.checkUsername} onBlur={this.checkUsername} required/>
+						<label className="inputError" id="signupUsernameError">Error:</label>
+						*/}
 						
 						<button className="signup" type="button" onClick={this.signUp}>Sign Up</button>
 					</div>

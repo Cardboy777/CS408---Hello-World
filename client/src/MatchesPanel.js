@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './css/MatchesPanel.css';
-import default_img from './img/default_profile.png';
+import MiniProfile from './MiniProfile';
 class MatchesPanel extends Component {
   constructor(){
     super();
@@ -16,12 +16,7 @@ class MatchesPanel extends Component {
   render() {
     return (
       <div className="MatchesPanel">
-        <img src={default_img} alt={this.props.userData.user}></img>
-        <p className="compat-percent">{this.props.userData.match_percent}%</p>
-        <p className="name">{this.props.userData.user}</p>
-        <p>{this.props.userData.describe}</p>
-        <h5>Favorite Programming Language:</h5>
-        <p>{this.props.userData.canswer2}</p>
+        <MiniProfile userData={this.props.userData} match_percent ={this.props.match_percent}/>
         <button type="button" onClick={this.MessageUser} className="btn btn-outline-primary">Message</button>
         <button type="button" onClick={this.Unlike} className="btn btn-outline-danger">Unlike</button>
       </div>

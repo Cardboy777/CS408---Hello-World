@@ -76,16 +76,16 @@ class Navbar extends Component {
       <div id="navbar">
         <ul className="navbar-nav mr-auto">
         <li className="nav-item">
-            <a className="nav-link" href="/user/questionnaire">Questionnaire <i class="fa fa-wpforms"></i></a>
+            <a className="nav-link" href="/user/questionnaire">Questionnaire <i className="fa fa-wpforms"></i></a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/matching">Find Matches <i class="fa fa-search"></i></a>
+            <a className="nav-link" href="/matching">Find Matches <i className="fa fa-search"></i></a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/matches">Matches <i class="fa fa-heart"></i></a>
+            <a className="nav-link" href="/matches">Matches <i className="fa fa-heart"></i></a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/messages">Messages <i class="fa fa-comments"></i><span id="unreadMessageCount" className="badge badge-light"></span></a>
+            <a className="nav-link" href="/messages">Messages <i className="fa fa-comments"></i> <span id="unreadMessageCount" className="badge badge-light"></span></a>
           </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -95,10 +95,10 @@ class Navbar extends Component {
               }
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a className="dropdown-item" href="/user/profile">Profile <i class="fa fa-user"></i></a>
-              <a className="dropdown-item" href="/user/account">Account Settings <i class="fa fa-cog"></i></a>
+              <a className="dropdown-item" href="/user/profile">Profile <i className="fa fa-user"></i></a>
+              <a className="dropdown-item" href="/user/account">Account Settings <i className="fa fa-cog"></i></a>
               <div className="dropdown-divider"></div>
-              <button id="loginLogoutButton" className="btn btn-link dropdown-item" onClick={this.signOut}>Logout <i class="fa fa-sign-out"></i></button>
+              <button id="loginLogoutButton" className="btn btn-link dropdown-item" onClick={this.signOut}>Logout <i className="fa fa-sign-out"></i></button>
             </div>
           </li>
         </ul>
