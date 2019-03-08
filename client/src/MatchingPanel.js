@@ -22,8 +22,8 @@ class MatchingPanel extends Component {
     e.preventDefault();
     this.props.skipFunct(this.props.userData.user);
   }
-  Report(){
-    this.props.reportFunct(this.props.userData.user);
+  Report(message){
+    this.props.reportFunct(this.props.userData.uid, this.props.userData.user, message);
   }
 
   render() {

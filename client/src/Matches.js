@@ -15,6 +15,7 @@ class Matches extends Component {
     this.RemoveUserFromList = this.RemoveUserFromList.bind(this);
     this.getMoreMatches = this.getMoreMatches.bind(this);
     this.UnlikeUser = this.UnlikeUser.bind(this);
+    this.ReportUser = this.ReportUser.bind(this);
   }
 
   componentDidMount(){
@@ -99,6 +100,29 @@ class Matches extends Component {
       });
     }
   }
+  ReportUser(ReportedUser, ReportedUserName, message){
+    fetch("/api/emailReportedUser", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+          "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify({
+        userName: this.props.uData.user,
+        reportedUser: ReportedUserName,
+        reportedUid: ReportedUser,
+        reason: message
+      }), // body data type must match "Content-Type" header
+    })
+    .then(res => res.json())
+    .catch((message) =>{
+      console.log("Could not Report user " + ReportedUserName);
+    });
 
   render() {
     return (
@@ -111,7 +135,7 @@ class Matches extends Component {
               <div className="row">
                 {this.state.user_list.map((i) =>
                     <div key={i.data.user} className="panel col-md-6">
-                    <MatchesPanel match_percent={i.match_percent} userData={i.data} unlikeFunct={this.UnlikeUser}/>
+                    <MatchesPanel match_percent={i.match_percent} userData={i.data} unlikeFunct={this.UnlikeUser} reportFunct={this.ReportUser}/>
                   </div>
                   )
                 }
