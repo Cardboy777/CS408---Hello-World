@@ -3,11 +3,14 @@ import './css/Matching.css';
 import MatchingPanel from './MatchingPanel';
 import Header from './Header';
 import Loading from './Loading';
+import firebase from './firebase';
+import ListLoadingError from './ListLoadingError';
 
 class Matching extends Component {
   constructor(){
     super();
     this.state = {
+      loading_state: 0,
       user_list: null,
       user_list_index: 0
     }
@@ -40,9 +43,12 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
-        this.setState({ user_list: arrayList})
+        console.log(arrayList);
+        this.getUserListData(arrayList);
       }).catch((message) =>{
-        console.log("Could not Retrieve Potential Matches");
+        this.setState({
+          loading_state: 2
+        })
       });
   }
 
@@ -78,8 +84,7 @@ class Matching extends Component {
       .then(res => res.json())
       .then(arrayList => {
         console.log(arrayList);
-        this.setState({ user_list: arrayList})
-        this.forceUpdate()
+        this.getUserListData(arrayList);
       }).catch((message) =>{
         console.log("Could not Like user " + likedUser);
       });
@@ -105,8 +110,8 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
-        this.setState({ user_list: arrayList})
-        this.forceUpdate()
+        console.log(arrayList);
+        this.getUserListData(arrayList);
       }).catch((message) =>{
         console.log("Could not Dislike user " + dislikedUser);
       });
@@ -116,31 +121,95 @@ class Matching extends Component {
     console.log(this.props.uData.user + " Skipped " + skippedUser)
   }
 
-  ReportUser(ReportedUser){
-    console.log(this.props.uData.user + " Reported " + ReportedUser);
-  }
+  ReportUser(ReportedUser, ReportedUserName, message){
+    fetch("/api/emailReportedUser", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+          "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify({
+        userName: this.props.uData.user,
+        reportedUser: ReportedUserName,
+        reportedUid: ReportedUser,
+        reason: message
+      }), // body data type must match "Content-Type" header
+    })
+    .then(res => res.json())
+    .then(arrayList => {
+      console.log(arrayList);
+      this.getUserListData(arrayList);
+    }).catch((message) =>{
+      console.log("Could not Report user " + ReportedUserName);
+    });
+  };
 
   ViewNextProfile(){
     this.setState({user_list_index : this.user_list_index + 1});
     this.forceUpdate();
+  };
+
+  getUserListData(arraylist){
+    let promises=[];
+    const db = firebase.firestore();
+    for(let k in arraylist){
+      promises.push(()=>{
+        return (
+          db.collection("usersPQ").doc(k.uid).get()
+          .then( (userdoc) => {
+            if (userdoc.exists) {
+              return {
+                data: userdoc.data(),
+                match_percent: k.match_percent
+              }
+            } else {
+              return null
+            }
+          })
+          .catch( (error) => {
+            console.log("No userdata for match: " + k.uid);
+            return null
+          })
+        )
+      })
+    }
+    //wait for all promises in array to finish
+    Promise.all(promises).then((newarray) => {
+      this.setState({
+        user_list : newarray,
+        loading_state : 1
+      })
+    })
   }
 
-  render() {
+  render(){
     return (
       <div id="matchingPage">
         <Header {...this.props} />
-        { !this.state.user_list ?
+        { this.state.loading_state === 0 ?
           <Loading/> :
-          <div className="panels-container">
-            <div className="row">
-              {this.state.user_list.map((i) =>
-                  <div key={i.data.user} className="panel col-md-6">
-                    <MatchingPanel match_percent={i.match_percent} userData={i.data} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser} reportFunct={this.ReportUser}/>
-                  </div>
-                )
-              }
-            </div>
-          </div>
+            this.state.loading_state === 1 ?
+              <div className="panels-container">
+                <div className="row">
+                {/*
+                  {this.state.user_list.map((i) =>
+                      <div key={i.data.user} className="panel col-md-6">
+                        <MatchingPanel match_percent={i.match_percent} userData={i.data} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser} reportFunct={this.ReportUser}/>
+                      </div>
+                    )
+                  }
+                */}
+                </div>
+              </div>
+              :
+              <ListLoadingError>
+                We couldn't load any potential matches. Try reloading the page.
+              </ListLoadingError>
         }
       </div>
     );

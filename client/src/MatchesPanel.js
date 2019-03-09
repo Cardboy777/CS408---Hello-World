@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './css/MatchesPanel.css';
 import MiniProfile from './MiniProfile';
+import ReportButton from './ReportButton';
 class MatchesPanel extends Component {
   constructor(){
     super();
