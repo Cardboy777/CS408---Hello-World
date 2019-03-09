@@ -520,6 +520,13 @@ router.post("/likeUser", (req, res) => {
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
     result2.then(function(ret){
+      if(ret){
+        for(var x = 0; x < ret.length; x++){
+          if(ret[x]["user"] === req.body.likedUserName){
+            ret.splice(x,1);
+          }
+        }
+      }
       res.json(ret);
     })
   })
@@ -531,6 +538,13 @@ router.post("/dislikeUser", (req, res) => {
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
     result2.then(function(ret){
+      if(ret){
+        for(var x = 0; x < ret.length; x++){
+          if(ret[x]["user"] === req.body.dislikedUserName){
+            ret.splice(x,1);
+          }
+        }
+      }
       res.json(ret);
     })
   })
@@ -540,6 +554,14 @@ router.post("/unlikeUser", (req, res) => {
   console.log(req.body.userName + " Unliked " + req.body.unlikedUserName);
   result = removeMatch(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
+    if(ret){
+      for(var x = 0; x < ret.length; x++){
+        if(ret[x]["user"] === req.body.unlikedUserName){
+          ret.splice(x,1);
+        }
+      }
+    }
+
     res.json(ret);
   });
 });
@@ -642,10 +664,10 @@ io.on('connection', function(socket)
 	user.token = "";
 	user.username = "";
 	user.socket = socket;
-	
+
 	userList[socket.id] = user;
-	
-	
+
+
 	console.log(userList);
 
 	socket.on('disconnect', function()
@@ -653,9 +675,9 @@ io.on('connection', function(socket)
 		var str = user.email || user.token;
 		if (str != undefined && userSocketMap[str])
 		{
-			if (userSocketMap[str][socket.id]) 
-			{ 
-				delete userSocketMap[str][socket.id]; 
+			if (userSocketMap[str][socket.id])
+			{
+				delete userSocketMap[str][socket.id];
 			}
 			userSocketMap[str][socket.id] = undefined;
 			if (userSocketMap[str].length < 1) { delete[userSocketMap[str]]; userSocketMap[str] = undefined; }
