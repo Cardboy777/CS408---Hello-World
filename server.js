@@ -350,6 +350,14 @@ function findMatches(userName){
       for(i = 0; i < users.length;i++){
         var score = 0;
         var valid = true;
+        var mainUserPrev = mainUser["prevMatchedUsers"];
+        if(mainUserPrev){
+          for(var k = 0; k < mainUserPrev.length; k++){
+            if(mainUserPrev[k] === users[i]["id"]){
+              valid = false;
+            }
+          }
+        }
         for(j = 1; j < 18; j++){
           var str = "panswer"+j;
           if(users[i]["data"][str] == null || users[i]["data"][str] == ''){
