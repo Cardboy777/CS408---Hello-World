@@ -3,11 +3,14 @@ import './css/Matches.css'
 import MatchesPanel from './MatchesPanel';
 import Header from './Header';
 import Loading from './Loading';
+import ListLoadingError from './ListLoadingError';
+import firebase from './firebase';
 
 class Matches extends Component {
   constructor(){
     super();
     this.state = {
+      loading_state: 0,
       user_list: null,
       user_list_index: 0
     }
@@ -39,10 +42,12 @@ class Matches extends Component {
     })
     .then(res => res.json())
     .then(arrayList => {
-      this.setState({ user_list: arrayList})
+      console.log(arrayList);
+      this.getUserListData(arrayList);
     }).catch((message) =>{
-      console.log("Could not Retrieve Matches");
-      this.setState({ user_list: "EMPTY"})
+      this.setState({
+        loading_state: 2
+      })
     });
   }
 
@@ -93,8 +98,8 @@ class Matches extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
-        this.setState({ user_list: arrayList})
-        this.forceUpdate()
+        console.log(arrayList);
+        this.getUserListData(arrayList);
       }).catch((message) =>{
         console.log("Could not Unlike user " + unlikedUser);
       });
@@ -123,31 +128,66 @@ class Matches extends Component {
     .catch((message) =>{
       console.log("Could not Report user " + ReportedUserName);
     });
+  }
+
+  getUserListData(arraylist){
+    let promises=[];
+    const db = firebase.firestore();
+    for(let k in arraylist){
+      promises.push(()=>{
+        return (
+          db.collection("usersPQ").doc(k.uid).get()
+          .then( (userdoc) => {
+            if (userdoc.exists) {
+              return {
+                data: userdoc.data(),
+                match_percent: k.match_percent
+              }
+            } else {
+              return null
+            }
+          })
+          .catch( (error) => {
+            console.log("No userdata for match: " + k.uid);
+            return null
+          })
+        )
+      })
+    }
+    //wait for all promises in array to finish
+    Promise.all(promises).then((newarray) => {
+      this.setState({
+        user_list : newarray,
+        loading_state : 1
+      })
+    })
+  }
 
   render() {
     return (
       <div id="matchesPage">
         <Header {...this.props} />
-        { !this.state.user_list ?
+        { this.state.loading_state === 0 ?
           <Loading/> :
-          <div className="panels-container">
-            {this.state.user_list !== "EMPTY" ?
-              <div className="row">
-                {this.state.user_list.map((i) =>
-                    <div key={i.data.user} className="panel col-md-6">
-                    <MatchesPanel match_percent={i.match_percent} userData={i.data} unlikeFunct={this.UnlikeUser} reportFunct={this.ReportUser}/>
-                  </div>
-                  )
-                }
-              </div> :
-              <div>
-                <h1>You have No Matches :(</h1>
-                <p>You should go find some on the 'Find a Match Page'</p>
+            this.state.loading_state === 1 ?
+              <div className="panels-container">
+                <div className="row">
+                {/*
+                  {this.state.user_list.map((i) =>
+                      <div key={i.data.user} className="panel col-md-6">
+                      <MatchesPanel match_percent={i.match_percent} userData={i.data} unlikeFunct={this.UnlikeUser} reportFunct={this.ReportUser}/>
+                    </div>
+                    )
+                  }
+                */}
+                </div>
               </div>
-            }
-            </div>
-          }
-        </div>
+              :
+              <ListLoadingError>
+                We couldn't find any matches for you. Try Visiting the '<a href='/matching'>Find Matches</a>' page and Liking some users.
+              </ListLoadingError>
+        }
+      </div>
     );
   }
 }

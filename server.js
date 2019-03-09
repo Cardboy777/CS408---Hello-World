@@ -446,6 +446,7 @@ function findMatches(userName){
           "uid" : mainUser["id"],
         }
         var db = admin.firestore();
+        console.log(finalMatches[i])
         var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
         var setMatched = matchRef.update({
           potentialMatches: admin.firestore.FieldValue.arrayUnion(main)
@@ -497,9 +498,9 @@ router.post("/likeUser", (req, res) => {
   result = likeUser(req.body.userName, req.body.likedUserName);
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
-    result2.then(function(ret)){
+    result2.then(function(ret){
       res.json(ret);
-    }
+    })
   })
 });
 
@@ -508,9 +509,9 @@ router.post("/dislikeUser", (req, res) => {
   result = dislikeUser(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
-    result2.then(function(ret)){
+    result2.then(function(ret){
       res.json(ret);
-    }
+    })
   })
 });
 
@@ -522,6 +523,13 @@ router.post("/unlikeUser", (req, res) => {
   })
 });
 
+router.post("/emailReportedUser", (req, res) => {
+
+
+
+
+    res.json("Message");
+});
 app.use(express.static('public'));
 
 // append /api for our http requests
@@ -538,7 +546,7 @@ server.listen(port, function()
 
 io.on('connection', function(socket)
 {
-	console.log('a user connected');
+	//console.log('a user connected');
 	socket.id = Math.random();
 	
 	users[socket.id] = {};
@@ -546,6 +554,7 @@ io.on('connection', function(socket)
 	user.email = "";
 	user.token = "";
 	user.username = "";
+	user.socket = socket;
 	
 	socket.on('disconnect', function()
 	{
@@ -574,8 +583,8 @@ io.on('connection', function(socket)
 			userSocketMap[str][socket.id] = true;
 		}
 		//console.log("Socket data.");
-		console.log("Full user array: " + JSON.stringify(users));
-		console.log("Full user socket map: " + JSON.stringify(userSocketMap));
+		//console.log("Full user array: " + JSON.stringify(users));
+		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
 	
 	socket.on('testMessageClientToServer', function(msg)
@@ -586,18 +595,20 @@ io.on('connection', function(socket)
 	socket.on('sendMessageToUser', function(messageData)
 	{
 		console.log("Got something!");
+		console.log("message data: " + JSON.stringify(messageData));
 
-		/*var id = messageData.id;
+		var id = messageData.id;
 		var sender = messageData.sender; //{email: fq, uid: fefew}
 		var receiver = messageData.receiver;//email
 		var message = messageData.message;
-
+		
 		////send message to database
 		var receiverSockets = userSocketMap[receiver];///their email
-		Objects.keys(receiverSockets).forEach(function(key)
+		
+		for (var key in receiverSockets)
 		{
-			console.log(key);
-		});*/
+			users[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
+		}
 	});
 
 	setInterval(function()

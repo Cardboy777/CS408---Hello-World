@@ -27,12 +27,12 @@ class Navbar extends Component {
   sendSocketData()
   {
 	  var uMC = window.localStorage.getItem("unreadMessageCount");
-	  if (uMC == undefined) { uMC = "0"; }
+	  if (uMC === undefined) { uMC = "0"; }
 	  unreadMessageCount = parseInt(uMC);
 	  
 	  var tempInterval = setInterval(function()
 	  {
-		  if (document.getElementById("unreadMessageCount") != undefined)
+		  if (document.getElementById("unreadMessageCount") !== undefined)
 		  {
 			  if (unreadMessageCount > 0)
 			  {
@@ -48,7 +48,11 @@ class Navbar extends Component {
 	  
 		socket.on('incomingMessage', function(data)
 		{
-			if (window.location.href != "http://localhost:3000/messages")
+<<<<<<< HEAD
+			if (window.location.href !== "http://localhost:3000/messages")
+=======
+			if (window.location.href != "http://localhost:3000/messages" && document.getElementById("unreadMessageCount") != undefined)
+>>>>>>> 47e017b49001afda41e2973c692e03bbf217639d
 			{
 				unreadMessageCount++;
 				window.localStorage.setItem("unreadMessageCount", (unreadMessageCount + ""));
