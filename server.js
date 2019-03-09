@@ -1,5 +1,7 @@
 const request = require('request');
-const express = require('express');
+const express = require('express'),
+  path = require('path'),
+  nodeMailer = require('nodemailer');
 const router = express.Router();
 const http = require('http');
 const app = express();
@@ -9,12 +11,14 @@ var io = require('socket.io')(server);
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 var port = process.env.PORT || 8080;
+app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var users = {};
+var userList = {};
 var userSocketMap = {};
+
 function reportUser(userName){
   var user;
   var db = admin.firestore();
@@ -338,7 +342,7 @@ function findMatches(userName){
     temp = mainUser["data"]["matchedUsers"];
 
     if(temp && temp.length > 0){
-      console.log(temp);
+      //console.log(temp);
       return temp;
     }
     var scores = []
@@ -462,9 +466,9 @@ function findMatches(userName){
           "uid" : mainUser["id"],
         }
         var db = admin.firestore();
-        console.log(finalMatches[i])
+        //console.log(finalMatches[i])
         var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
-        console.log(finalMatches[i]["uid"]);
+        //console.log(finalMatches[i]["uid"]);
         var setMatched = matchRef.update({
           potentialMatches: admin.firestore.FieldValue.arrayUnion(main)
         });
@@ -541,12 +545,79 @@ router.post("/unlikeUser", (req, res) => {
 });
 
 router.post("/emailReportedUser", (req, res) => {
+  let msg = '<p>You have been reported for the following:</p><b>' + req.body.reason +
+  '</b><p>This report has been filed on our servers for review.</p>' +
+  '<p>Please be careful of the data you keep on your profile. We want HƐ>LO WORLD to be a site where anyone can enjoy the thrills of bonding over programming.</p>' +
+  '<p>Happy Programming,</p>' +
+  '<p>-The HƐ>LO WORLD Team (and David)</p>'
+
+  let result = admin.auth().getUser(req.body.reportedUid)
+  .then( (uAuth) =>{
+    let transporter = nodeMailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+          user: 'helloworlddatingsite@gmail.com',
+          pass: 'HelloWorld1'
+      }
+    });
+    let mailOptions = {
+      from: '"HƐ>LO WORLD" <helloworlddatingsite@gmail.com>', // sender address
+      to: uAuth.email, // list of receivers
+      subject: "Your HƐ>LO WORLD profile has been Reported", // Subject line
+      text: msg, // plain text body
+      html: '<div>' + msg + '</div>' // html body
+    };
+    transporter.sendMail(mailOptions);
+    result = dislikeUser(req.body.userName, req.body.reportedUser);
+    result.then(function(retu){
+      result2 = findMatches(req.body.userName);
+      result2.then(function(ret){
+        res.json(ret);
+      })
+    })
+  }).catch(message =>{
+    res.json(message);
+  })
+})
+
+router.post("/emailReportedMatchedUser", (req, res) => {
+  let msg = '<p>You have been reported for the following:</p><b>' + req.body.reason +
+  '</b><p>This report has been filed on our servers for review.</p>' +
+  '<p>Please be careful of the data you keep on your profile. We want HƐ>LO WORLD to be a site where anyone can enjoy the thrills of bonding over programming.</p>' +
+  '<p>Happy Programming,</p>' +
+  '<p>-The HƐ>LO WORLD Team (and David)</p>'
+
+  let result = admin.auth().getUser(req.body.reportedUid)
+  .then( (uAuth) =>{
+    let transporter = nodeMailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+          user: 'helloworlddatingsite@gmail.com',
+          pass: 'HelloWorld1'
+      }
+    });
+    let mailOptions = {
+      from: '"HƐ>LO WORLD" <helloworlddatingsite@gmail.com>', // sender address
+      to: uAuth.email, // list of receivers
+      subject: "Your HƐ>LO WORLD profile has been Reported", // Subject line
+      text: msg, // plain text body
+      html: '<div>' + msg + '</div>' // html body
+    };
+    transporter.sendMail(mailOptions);
+    result = removeMatch(req.body.userName, req.body.dislikedUserName);
+    result.then(function(ret){
+      res.json(ret);
+    });
+  }).catch(message =>{
+    res.json(message);
+  })
+})
 
 
-
-
-    res.json("Message");
-});
 app.use(express.static('public'));
 
 // append /api for our http requests
@@ -566,22 +637,30 @@ io.on('connection', function(socket)
 	//console.log('a user connected');
 	socket.id = Math.random();
 
-	users[socket.id] = {};
-	var user = users[socket.id];
+	var user = {};
 	user.email = "";
 	user.token = "";
 	user.username = "";
 	user.socket = socket;
+	
+	userList[socket.id] = user;
+	
+	
+	console.log(userList);
 
 	socket.on('disconnect', function()
 	{
 		var str = user.email || user.token;
 		if (str != undefined && userSocketMap[str])
 		{
+			if (userSocketMap[str][socket.id]) 
+			{ 
+				delete userSocketMap[str][socket.id]; 
+			}
 			userSocketMap[str][socket.id] = undefined;
 			if (userSocketMap[str].length < 1) { delete[userSocketMap[str]]; userSocketMap[str] = undefined; }
 		}
-		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
+		if (userList[socket.id] != undefined) { delete[userList[socket.id]]; userList[socket.id] = undefined; }
 	});
 	socket.on('giveSocketData', function(data)
 	{
@@ -608,13 +687,13 @@ io.on('connection', function(socket)
 
 	socket.on('testMessageClientToServer', function(msg)
 	{
-		console.log("C2S: " + msg);
+		//console.log("C2S: " + msg);
 	});
 
 	socket.on('sendMessageToUser', function(messageData)
 	{
-		console.log("Got something!");
-		console.log("message data: " + JSON.stringify(messageData));
+		//console.log("Got something!");
+		//console.log("message data: " + JSON.stringify(messageData));
 
 		var id = messageData.id;
 		var sender = messageData.sender; //{email: fq, uid: fefew}
@@ -626,7 +705,7 @@ io.on('connection', function(socket)
 
 		for (var key in receiverSockets)
 		{
-			users[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
+			userList[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
 		}
 	});
 
@@ -634,7 +713,12 @@ io.on('connection', function(socket)
 	{
 		setTimeout(function()
 		{
-			socket.emit('incomingMessage', {"from":"hotguy69@gmail.com", "msg":"hey babe"});
+			var messageData = {
+				"from":"cowboyman123@gmail.com",
+				"message":"sup",
+				"id":Math.random()
+			}
+			socket.emit('incomingMessage', messageData);
 		}, Math.floor(1000 + Math.random() * 14000));
 	}, 15000);
 });

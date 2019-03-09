@@ -106,7 +106,7 @@ class Matches extends Component {
     }
   }
   ReportUser(ReportedUser, ReportedUserName, message){
-    fetch("/api/emailReportedUser", {
+    fetch("/api/emailReportedMatchedUser", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -124,8 +124,10 @@ class Matches extends Component {
         reason: message
       }), // body data type must match "Content-Type" header
     })
-    .then(res => res.json())
-    .catch((message) =>{
+    .then(arrayList => {
+      this.getUserListData(arrayList)
+      alert('User: ' + ReportedUserName + ' Successfully Reported');
+    }).catch((message) =>{
       console.log("Could not Report user " + ReportedUserName);
     });
   }

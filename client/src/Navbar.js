@@ -11,7 +11,6 @@ class Navbar extends Component {
   constructor(){
     super();
     this.signOut= this.signOut.bind(this);
-	  this.sendSocketData();
   }
 
   signOut(e){
@@ -24,6 +23,11 @@ class Navbar extends Component {
     )
   }
   
+  componentDidMount()
+  {
+	  this.sendSocketData();
+  }
+  
   sendSocketData()
   {
 	  var uMC = window.localStorage.getItem("unreadMessageCount");
@@ -32,7 +36,7 @@ class Navbar extends Component {
 	  
 	  var tempInterval = setInterval(function()
 	  {
-		  if (document.getElementById("unreadMessageCount") !== undefined)
+		  if (document.getElementById("unreadMessageCount") != undefined)
 		  {
 			  if (unreadMessageCount > 0)
 			  {
@@ -48,7 +52,6 @@ class Navbar extends Component {
 	  
 		socket.on('incomingMessage', function(data)
 		{
-
 			if (window.location.href != "http://localhost:3000/messages" && document.getElementById("unreadMessageCount") != undefined)
 			{
 				unreadMessageCount++;
