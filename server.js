@@ -570,12 +570,14 @@ router.post("/emailReportedUser", (req, res) => {
       html: '<div>' + msg + '</div>' // html body
     };
     transporter.sendMail(mailOptions);
-    result = removeMatch(req.body.userName, req.body.dislikedUserName);
-    result.then(function(ret){
-      res.json(ret);
-    });
+    result = dislikeUser(req.body.userName, req.body.reportedUser);
+    result.then(function(retu){
+      result2 = findMatches(req.body.userName);
+      result2.then(function(ret){
+        res.json(ret);
+      })
+    })
   }).catch(message =>{
-    console.log(message);
     res.json(message);
   })
 })
@@ -606,16 +608,11 @@ router.post("/emailReportedMatchedUser", (req, res) => {
       html: '<div>' + msg + '</div>' // html body
     };
     transporter.sendMail(mailOptions);
-    result = dislikeUser(req.body.userName, req.body.reportedUser);
-    result.then(function(retu){
-      result2 = findMatches(req.body.userName);
-      result2.then(function(ret){
-        console.log(ret);
-        res.json(ret);
-      })
-    })
+    result = removeMatch(req.body.userName, req.body.dislikedUserName);
+    result.then(function(ret){
+      res.json(ret);
+    });
   }).catch(message =>{
-    console.log(message);
     res.json(message);
   })
 })
