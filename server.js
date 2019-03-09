@@ -418,7 +418,7 @@ function findMatches(userName){
       }
       var matchNumber = -1;
       for(j = 0; j < scores.length; j++){
-        if(scores[j]["score"] > highMatch["score"]){
+        if(Math.floor(scores[j]["score"]*100/27) > highMatch["match_percent"]){
           highMatch = {
             "data" : scores[j]["data"],
             "match_percent" : Math.floor(scores[j]["score"]*100/27),
@@ -447,6 +447,7 @@ function findMatches(userName){
         }
         var db = admin.firestore();
         var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
+        console.log(finalMatches[i]["uid"]);
         var setMatched = matchRef.update({
           potentialMatches: admin.firestore.FieldValue.arrayUnion(main)
         });
@@ -497,9 +498,9 @@ router.post("/likeUser", (req, res) => {
   result = likeUser(req.body.userName, req.body.likedUserName);
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
-    result2.then(function(ret)){
+    result2.then(function(ret){
       res.json(ret);
-    }
+    })
   })
 });
 
@@ -508,9 +509,9 @@ router.post("/dislikeUser", (req, res) => {
   result = dislikeUser(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
-    result2.then(function(ret)){
+    result2.then(function(ret){
       res.json(ret);
-    }
+    })
   })
 });
 
@@ -540,13 +541,13 @@ io.on('connection', function(socket)
 {
 	console.log('a user connected');
 	socket.id = Math.random();
-	
+
 	users[socket.id] = {};
 	var user = users[socket.id];
 	user.email = "";
 	user.token = "";
 	user.username = "";
-	
+
 	socket.on('disconnect', function()
 	{
 		var str = user.email || user.token;
@@ -577,7 +578,7 @@ io.on('connection', function(socket)
 		console.log("Full user array: " + JSON.stringify(users));
 		console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
-	
+
 	socket.on('testMessageClientToServer', function(msg)
 	{
 		console.log("C2S: " + msg);
