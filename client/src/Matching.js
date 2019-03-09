@@ -43,8 +43,11 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
-        console.log(arrayList);
-        this.getUserListData(arrayList);
+        //console.log(arrayList);
+        this.setState({
+          user_list: arrayList,
+          loading_state: 1
+        })
       }).catch((message) =>{
         this.setState({
           loading_state: 2
@@ -83,8 +86,12 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
+        console.log("New List from Likes:");
         console.log(arrayList);
-        this.getUserListData(arrayList);
+        this.setState({
+          user_list: arrayList,
+          loading_state: 1
+        })
       }).catch((message) =>{
         console.log("Could not Like user " + likedUser);
       });
@@ -110,8 +117,12 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
+        console.log("New List from disikes:");
         console.log(arrayList);
-        this.getUserListData(arrayList);
+        this.setState({
+          user_list: arrayList,
+          loading_state: 1
+        })
       }).catch((message) =>{
         console.log("Could not Dislike user " + dislikedUser);
       });
@@ -122,6 +133,7 @@ class Matching extends Component {
   }
 
   ReportUser(ReportedUser, ReportedUserName, message){
+    console.log(message);
     fetch("/api/emailReportedUser", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, cors, *same-origin
@@ -143,7 +155,11 @@ class Matching extends Component {
     .then(res => res.json())
     .then(arrayList => {
       console.log(arrayList);
-      this.getUserListData(arrayList);
+      this.setState({
+        user_list: arrayList,
+        loading_state: 1
+      })
+      alert('User: ' + ReportedUserName + ' Successfully Reported');
     }).catch((message) =>{
       console.log("Could not Report user " + ReportedUserName);
     });
@@ -154,39 +170,6 @@ class Matching extends Component {
     this.forceUpdate();
   };
 
-  getUserListData(arraylist){
-    let promises=[];
-    const db = firebase.firestore();
-    for(let k in arraylist){
-      promises.push(()=>{
-        return (
-          db.collection("usersPQ").doc(k.uid).get()
-          .then( (userdoc) => {
-            if (userdoc.exists) {
-              return {
-                data: userdoc.data(),
-                match_percent: k.match_percent
-              }
-            } else {
-              return null
-            }
-          })
-          .catch( (error) => {
-            console.log("No userdata for match: " + k.uid);
-            return null
-          })
-        )
-      })
-    }
-    //wait for all promises in array to finish
-    Promise.all(promises).then((newarray) => {
-      this.setState({
-        user_list : newarray,
-        loading_state : 1
-      })
-    })
-  }
-
   render(){
     return (
       <div id="matchingPage">
@@ -196,14 +179,13 @@ class Matching extends Component {
             this.state.loading_state === 1 ?
               <div className="panels-container">
                 <div className="row">
-                {/*
+
                   {this.state.user_list.map((i) =>
-                      <div key={i.data.user} className="panel col-md-6">
+                      <div key={i.data.uid} className="panel col-md-6">
                         <MatchingPanel match_percent={i.match_percent} userData={i.data} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser} reportFunct={this.ReportUser}/>
                       </div>
                     )
                   }
-                */}
                 </div>
               </div>
               :
