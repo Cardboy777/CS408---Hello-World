@@ -42,7 +42,7 @@ class EditCQuestionnaire extends Component {
             canswer9: this.state.ca9,
             canswer10: this.state.ca10
         });
-        window.alert("Changes saved");
+        window.alert("Coding Questionnaire Changes saved");
     }
 
     handleChange(e){
@@ -152,7 +152,7 @@ class EditCQuestionnaire extends Component {
                     </label>
                 </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger" onSubmit={this.handleUpdate}>Save changes</button>
+                <button type="submit" class="btn btn-danger" >Save changes</button>
 
                 </form>
                     </div>

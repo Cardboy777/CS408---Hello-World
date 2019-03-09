@@ -130,9 +130,9 @@ class PersonalityQuestionnaire extends Component {
             canswer9:'',
             canswer10:'',
             avatarFile:"b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png",
-            picture1File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
-            picture2File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
-            picture3File:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg"
+            pictureFile1:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+            pictureFile2:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
+            pictureFile3:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg"
         });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true;

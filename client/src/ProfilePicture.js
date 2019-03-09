@@ -64,6 +64,7 @@ class ProfilePictureUpload extends Component {
     }
     handleUploadSuccess =(filename)=>{
         let this2=this;
+      if( /([^\s]+\.(jpg|png|gif|bmp)$)/.test(filename) ){
         this2.setState({avatar: filename, progress: 100, isUploading: false});
         firebase.storage().ref('images').child(filename).getDownloadURL().then(url => {
             this2.setState({
@@ -79,6 +80,10 @@ class ProfilePictureUpload extends Component {
                 }
             });
         });
+      }
+      else{
+          window.alert("Incorrect File Type");
+      }
     }
  
     render() { 
