@@ -418,7 +418,7 @@ function findMatches(userName){
       }
       var matchNumber = -1;
       for(j = 0; j < scores.length; j++){
-        if(scores[j]["score"] > highMatch["score"]){
+        if(Math.floor(scores[j]["score"]*100/27) > highMatch["match_percent"]){
           highMatch = {
             "data" : scores[j]["data"],
             "match_percent" : Math.floor(scores[j]["score"]*100/27),
@@ -448,6 +448,7 @@ function findMatches(userName){
         var db = admin.firestore();
         console.log(finalMatches[i])
         var matchRef = db.collection('usersPQ').doc(finalMatches[i]["uid"]);
+        console.log(finalMatches[i]["uid"]);
         var setMatched = matchRef.update({
           potentialMatches: admin.firestore.FieldValue.arrayUnion(main)
         });
@@ -500,8 +501,8 @@ router.post("/likeUser", (req, res) => {
     result2 = findMatches(req.body.userName);
     result2.then(function(ret){
       res.json(ret);
-    });
-  });
+    })
+  })
 });
 
 router.post("/dislikeUser", (req, res) => {
@@ -511,8 +512,8 @@ router.post("/dislikeUser", (req, res) => {
     result2 = findMatches(req.body.userName);
     result2.then(function(ret){
       res.json(ret);
-    });
-  });
+    })
+  })
 });
 
 router.post("/unlikeUser", (req, res) => {
@@ -548,14 +549,14 @@ io.on('connection', function(socket)
 {
 	//console.log('a user connected');
 	socket.id = Math.random();
-	
+
 	users[socket.id] = {};
 	var user = users[socket.id];
 	user.email = "";
 	user.token = "";
 	user.username = "";
 	user.socket = socket;
-	
+
 	socket.on('disconnect', function()
 	{
 		var str = user.email || user.token;
@@ -582,13 +583,13 @@ io.on('connection', function(socket)
 			userSocketMap[str] = {};
 			userSocketMap[str][socket.id] = true;
 		}
-		
+
 		//console.log(JSON.stringify(user));
 		//console.log("Socket data.");
 		//console.log("Full user array: " + JSON.stringify(users));
 		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
-	
+
 	socket.on('testMessageClientToServer', function(msg)
 	{
 		console.log("C2S: " + msg);
@@ -603,10 +604,10 @@ io.on('connection', function(socket)
 		var sender = messageData.sender; //{email: fq, uid: fefew}
 		var receiver = messageData.receiver;//email
 		var message = messageData.message;
-		
+
 		////send message to database
 		var receiverSockets = userSocketMap[receiver];///their email
-		
+
 		for (var key in receiverSockets)
 		{
 			users[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
