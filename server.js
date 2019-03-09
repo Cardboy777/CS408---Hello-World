@@ -147,6 +147,7 @@ function dislikeUser(userName, dislikedUserName){
     var dislikedUser = values[1];
     var mainUserPot = mainUser["data"]["potentialMatches"];
     var dislikedUsersLiked = dislikedUser["data"]["likedUsers"];
+    var dislikedUsersPot = dislikedUser["data"]["potentialMatches"]
     var inMatches = false;
     var match;
     if(mainUserPot){
@@ -163,11 +164,20 @@ function dislikeUser(userName, dislikedUserName){
       return "404";
     }
     var liked = false;
+    var pot = false;
     var likedNum;
     if(dislikedUsersLiked){
       for(var i = 0; i < dislikedUsersLiked.length; i++){
         if(dislikedUsersLiked[i]["user"] === userName){
           liked = true;
+          likedNum = i;
+        }
+      }
+    }
+    if(!liked){
+      for(var i = 0; i < dislikedUsersPot.length; i++){
+        if(dislikedUsersPot[i]["user"] === userName){
+          pot = true;
           likedNum = i;
         }
       }
@@ -184,16 +194,21 @@ function dislikeUser(userName, dislikedUserName){
       });
 
     }
-    else{
+    else if(pot){
       var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
       var remPot = matchRef.update({
         potentialMatches: admin.firestore.FieldValue.arrayRemove(match)
       });
       matchRef = db.collection('usersPQ').doc(dislikedUser["id"]);
       var remPot = matchRef.update({
-        potentialMatches: admin.firestore.FieldValue.arrayRemove(dislikedUsersLiked[likedNum])
+        potentialMatches: admin.firestore.FieldValue.arrayRemove(dislikedUsersPot[likedNum])
       });
-
+    }
+    else{
+      var matchRef = db.collection('usersPQ').doc(mainUser["id"]);
+      var remPot = matchRef.update({
+        potentialMatches: admin.firestore.FieldValue.arrayRemove(match)
+      });
     }
     return findMatches(userName);
 
@@ -201,6 +216,7 @@ function dislikeUser(userName, dislikedUserName){
   return finalMatches;
 }
 function getMatches(userName){
+  var db = admin.firestore();
   var mainUserMatches;
   mainUserMatches = db.collection("usersPQ").where("user", "==", userName)
   .get()
