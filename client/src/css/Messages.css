@@ -1,0 +1,163 @@
+body {
+	background-color: white !important;
+}
+
+#leftFrame {
+	position: absolute;
+	width: 15%;
+	height: calc(90% + 2px);
+	left: 0px;
+	background-color: #454545;
+	color: white;
+	text-align: center;
+}
+
+.user-holder {
+	position: relative;
+	width: 100%;
+	height: 50px;
+	background-color: Transparent;
+	border: none;
+	outline: none;
+	background-position: center;
+	transition: background .4s;
+}
+
+.user-holder:hover {
+	cursor: pointer;
+}
+
+.userMessageImage {
+	float: left;
+	height: 80%;
+	margin-top: 5px;
+	width: auto;
+	margin-left: 5px;
+}
+
+.user-message-name {
+	position: relative;
+	line-height: 50px;
+	float: left;
+	margin-left: 10px;
+}
+
+.matched-button {
+	position: relative;
+	width: 100%;
+	height: 50px;
+	background-color: Transparent;
+	border: none;
+	outline: none;
+	background-position: center;
+	transition: background .4s;
+}
+
+.matched-button:hover {
+	 background: #787878 radial-gradient(circle, transparent 1%, #AAAAAA 50%) center/15000%;
+}
+
+.matched-button:active {
+	background-size: 100%;
+	transition: background 0s;
+}
+
+#messageFrame {
+	position: absolute;
+	width: 85%;
+	right: 0px;
+	display:flex;
+	flex-flow:column;
+	justify-content:space-around;
+}
+
+.message-holder {
+	position: relative;
+	width: 100%;
+	padding: 5px;
+}
+
+.message-user-icon {
+	height: 40px;
+	width: auto;
+}
+
+.message-sender-icon {
+	float: left;
+}
+
+.message-self-icon {
+	float: right;
+}
+
+.message {
+	width: 50%;
+	border-radius: 10px;
+	padding: 5px;
+	padding-bottom: 1px;
+	margin-bottom: 0px;
+	text-align: left;
+}
+
+.message-sender {
+	background-color: #DDDDDD;
+	float: left;
+	margin-left: 5px;
+	color: black;
+}
+
+.message-self {
+	background-color: #2579E4;
+	float: right;
+	margin-right: 5px;
+	color: white;
+}
+
+.no-display {
+	display: none;
+}
+
+
+#send-message {
+	position: absolute;
+	width: 85%;
+	height: 15%;
+	bottom: 0px;
+	right: 0px;
+	background-color: #DDDDDD;
+	padding: 5px;
+	display: none;
+}
+
+#messageBox {
+	width: 90%;
+	height: 100%;
+	border-radius: 5px;
+	border: 0px;
+	resize: none;
+}
+
+#messageBox:hover {
+	background-color: #FDFDFD;
+}
+
+#messageBox:focus {
+	background-color: white;
+}
+
+#sendMessage {
+	position: relative;
+	float: right;
+	width: calc(10% - 5px);
+	height: 100%;
+	background-color: rgb(0, 150, 240);
+	border: 0px;
+	outline: 0px;
+	border-radius: 5px;
+	color: white;
+	font-size: 25px;
+}
+
+#sendMessage:hover {
+	background-color: rgb(0, 165, 250);
+}
