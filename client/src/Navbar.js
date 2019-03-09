@@ -32,7 +32,7 @@ class Navbar extends Component {
 	  
 	  var tempInterval = setInterval(function()
 	  {
-		  if (document.getElementById("unreadMessageCount") !== undefined)
+		  if (document.getElementById("unreadMessageCount") != undefined)
 		  {
 			  if (unreadMessageCount > 0)
 			  {
