@@ -122,7 +122,8 @@ class Matches extends Component {
     .then(res => res.json())
     .catch((message) =>{
       console.log("Could not Report user " + ReportedUserName);
-    });
+    })
+  }
 
   render() {
     return (

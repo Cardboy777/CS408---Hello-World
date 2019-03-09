@@ -497,10 +497,10 @@ router.post("/likeUser", (req, res) => {
   result = likeUser(req.body.userName, req.body.likedUserName);
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
-    result2.then(function(ret)){
+    result2.then(function(ret){
       res.json(ret);
-    }
-  })
+    });
+  });
 });
 
 router.post("/dislikeUser", (req, res) => {
@@ -508,10 +508,10 @@ router.post("/dislikeUser", (req, res) => {
   result = dislikeUser(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
     result2 = findMatches(req.body.userName);
-    result2.then(function(ret)){
+    result2.then(function(ret){
       res.json(ret);
-    }
-  })
+    });
+  });
 });
 
 router.post("/unlikeUser", (req, res) => {
@@ -519,7 +519,7 @@ router.post("/unlikeUser", (req, res) => {
   result = removeMatch(req.body.userName, req.body.dislikedUserName);
   result.then(function(ret){
     res.json(ret);
-  })
+  });
 });
 
 app.use(express.static('public'));
@@ -574,9 +574,11 @@ io.on('connection', function(socket)
 			userSocketMap[str] = {};
 			userSocketMap[str][socket.id] = true;
 		}
+		
+		//console.log(JSON.stringify(user));
 		//console.log("Socket data.");
-		console.log("Full user array: " + JSON.stringify(users));
-		console.log("Full user socket map: " + JSON.stringify(userSocketMap));
+		//console.log("Full user array: " + JSON.stringify(users));
+		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
 	});
 	
 	socket.on('testMessageClientToServer', function(msg)
