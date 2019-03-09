@@ -546,6 +546,7 @@ io.on('connection', function(socket)
 	user.email = "";
 	user.token = "";
 	user.username = "";
+	user.socket = socket;
 	
 	socket.on('disconnect', function()
 	{
@@ -586,18 +587,20 @@ io.on('connection', function(socket)
 	socket.on('sendMessageToUser', function(messageData)
 	{
 		console.log("Got something!");
+		console.log("message data: " + JSON.stringify(messageData));
 
-		/*var id = messageData.id;
+		var id = messageData.id;
 		var sender = messageData.sender; //{email: fq, uid: fefew}
 		var receiver = messageData.receiver;//email
 		var message = messageData.message;
-
+		
 		////send message to database
 		var receiverSockets = userSocketMap[receiver];///their email
-		Objects.keys(receiverSockets).forEach(function(key)
+		
+		for (var key in receiverSockets)
 		{
-			console.log(key);
-		});*/
+			users[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
+		}
 	});
 
 	setInterval(function()

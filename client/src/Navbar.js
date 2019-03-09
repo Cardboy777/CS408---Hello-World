@@ -48,7 +48,7 @@ class Navbar extends Component {
 	  
 		socket.on('incomingMessage', function(data)
 		{
-			if (window.location.href != "http://localhost:3000/messages")
+			if (window.location.href != "http://localhost:3000/messages" && document.getElementById("unreadMessageCount") != undefined)
 			{
 				unreadMessageCount++;
 				window.localStorage.setItem("unreadMessageCount", (unreadMessageCount + ""));
