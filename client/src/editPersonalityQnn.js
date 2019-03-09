@@ -68,9 +68,8 @@ class EditPQuestionnaire extends Component {
 
     componentDidMount(){
         const that=this;
-        const db=firebase.firestore;
+        const db=firebase.firestore();
         firebase.auth().onAuthStateChanged((user)=>{
-            window.alert("Inside Modal: "+user.uid);
             const docRef = db.collection("usersPQ").doc(String(this.props.uAuth.uid));
             docRef.get().then(function(doc) {
                 that.setState({

@@ -224,11 +224,13 @@ class App extends Component {
                     <UserProfile {...this.state} /> :
                     <Redirect to='/'/>
                 )} />
+                {/*}
                 <Route path="/user/account" render={() => (
                   this.isLoggedIn() ?
                     <UserSettings {...this.state} /> :
                     <Redirect to='/'/>
                 )} />
+                */}
                 <Route path="/user/questionnaire" render={() => (
                   this.isLoggedIn() ?
                     <PersonalityQuestionnaire {...this.state} /> :

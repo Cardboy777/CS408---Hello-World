@@ -186,6 +186,7 @@ class Matching extends Component {
                       </div>
                     )
                   }
+                  <MatchingPanel match_percent='100' userData={this.props.uData} likeFunct={this.LikeUser} dislikeFunct={this.DislikeUser} skipFunct={this.SkipUser} reportFunct={this.ReportUser}/>
                 </div>
               </div>
               :

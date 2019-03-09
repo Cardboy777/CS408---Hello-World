@@ -1,0 +1,9 @@
+.extra_profile_image_display{
+    align-content: center;
+    max-height: 10em;
+    object-fit: contain;
+}
+.extra_profile_image_display img{
+    max-height: 10em;
+    max-width: 10em;
+}

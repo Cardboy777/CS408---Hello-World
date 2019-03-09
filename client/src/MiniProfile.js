@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './css/MiniProfile.css';
 import ProfileImage from './ProfileImage';
+import ProfileImage1 from './ProfileImage1';
+import ProfileImage2 from './ProfileImage2';
+import ProfileImage3 from './ProfileImage3';
 
 class MiniProfile extends Component {
 
@@ -95,6 +98,17 @@ class MiniProfile extends Component {
                     <div className='col-md-4 profSect'>
                         <h3>Hackathons</h3>
                         <p>{this.props.userData.canswer9}</p>
+                    </div>
+                </div>
+                <div className='row extra-row'>
+                    <div className='col-md-4 profSect'>
+                      <ProfileImage1 uData={this.props.userData}></ProfileImage1>
+                    </div>
+                    <div className='col-md-4 profSect'>
+                        <ProfileImage2 uData={this.props.userData}></ProfileImage2>
+                    </div>
+                    <div className='col-md-4 profSect'>
+                        <ProfileImage3 uData={this.props.userData}></ProfileImage3>
                     </div>
                 </div>
 
