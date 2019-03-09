@@ -13,8 +13,9 @@ var port = process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var users = {};
+var userList = {};
 var userSocketMap = {};
+
 function reportUser(userName){
   var user;
   var db = admin.firestore();
@@ -566,22 +567,30 @@ io.on('connection', function(socket)
 	//console.log('a user connected');
 	socket.id = Math.random();
 
-	users[socket.id] = {};
-	var user = users[socket.id];
+	var user = {};
 	user.email = "";
 	user.token = "";
 	user.username = "";
 	user.socket = socket;
+	
+	userList[socket.id] = user;
+	
+	
+	console.log(userList);
 
 	socket.on('disconnect', function()
 	{
 		var str = user.email || user.token;
 		if (str != undefined && userSocketMap[str])
 		{
+			if (userSocketMap[str][socket.id]) 
+			{ 
+				delete userSocketMap[str][socket.id]; 
+			}
 			userSocketMap[str][socket.id] = undefined;
 			if (userSocketMap[str].length < 1) { delete[userSocketMap[str]]; userSocketMap[str] = undefined; }
 		}
-		if (users[socket.id] != undefined) { delete[users[socket.id]]; users[socket.id] = undefined; }
+		if (userList[socket.id] != undefined) { delete[userList[socket.id]]; userList[socket.id] = undefined; }
 	});
 	socket.on('giveSocketData', function(data)
 	{
@@ -626,7 +635,7 @@ io.on('connection', function(socket)
 
 		for (var key in receiverSockets)
 		{
-			users[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
+			userList[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
 		}
 	});
 
@@ -634,7 +643,12 @@ io.on('connection', function(socket)
 	{
 		setTimeout(function()
 		{
-			socket.emit('incomingMessage', {"from":"hotguy69@gmail.com", "msg":"hey babe"});
+			var messageData = {
+				"from":"cowboyman123@gmail.com",
+				"message":"sup",
+				"id":Math.random()
+			}
+			socket.emit('incomingMessage', messageData);
 		}, Math.floor(1000 + Math.random() * 14000));
 	}, 15000);
 });

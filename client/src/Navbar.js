@@ -11,7 +11,6 @@ class Navbar extends Component {
   constructor(){
     super();
     this.signOut= this.signOut.bind(this);
-	  this.sendSocketData();
   }
 
   signOut(e){
@@ -22,6 +21,11 @@ class Navbar extends Component {
         //logout successfull
       }
     )
+  }
+  
+  componentDidMount()
+  {
+	  this.sendSocketData();
   }
   
   sendSocketData()
@@ -48,7 +52,6 @@ class Navbar extends Component {
 	  
 		socket.on('incomingMessage', function(data)
 		{
-
 			if (window.location.href != "http://localhost:3000/messages" && document.getElementById("unreadMessageCount") != undefined)
 			{
 				unreadMessageCount++;
