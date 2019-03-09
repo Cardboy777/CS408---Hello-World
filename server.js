@@ -286,7 +286,7 @@ function removeMatch(userName, removeUserName){
     var remMatch = matchRef.update({
       matchedUsers: admin.firestore.FieldValue.arrayRemove(dislikedUserMatches[matchedNum])
     });
-    return findMatches(userName);
+    return getMatches(userName);
 
   });
   return finalMatches;
