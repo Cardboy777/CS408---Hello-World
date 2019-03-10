@@ -65,6 +65,9 @@ body {
 #messageFrame {
 	position: absolute;
 	width: 85%;
+	max-height: 75%;
+	overflow: auto;
+	overflow-y: auto;
 	right: 0px;
 	display:flex;
 	flex-flow:column;
