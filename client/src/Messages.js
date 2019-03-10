@@ -2,34 +2,14 @@ import React, { Component } from 'react';
 import Header from './Header';
 import './css/Messages.css'
 import firebase from './firebase';
-import openSocket from 'socket.io-client';
 import Loading from './Loading';
 import ListLoadingError from './ListLoadingError';
+import MessagesUserSidebarPanel from './MessagesUserSidebarPanel';
+import ReactDOM from 'react-dom';
+import SpinningLoader from './SpinningLoader';
+import ShowMessages from './ShowMessages';
 
 const db = firebase.firestore();
-const socket = openSocket('http://localhost:8080');
-
-var people = ["David", "Richardo", "404"];
-var conversationHistory = {
-	"David":{
-		"NumMessages":3,
-		"Messages":[
-			{"sender":"David", "message":"Hi"},
-			{"sender":"Me", "message":"Hello"},
-			{"sender":"David", "message":"ok"}
-		]
-	},
-	"Richardo":{
-		"NumMessages":5,
-		"Messages":[
-			{"sender":"Richardo", "message":"Hola, como se llama?"},
-			{"sender":"Me", "message":"Hola, mayamo Pablo"},
-			{"sender":"Richardo", "message":"Hola, me llamo Richardo"},
-			{"sender":"Me", "message":"Por favor?"},
-			{"sender":"Richardo", "message":"do you even speak spanish"}
-		]
-	}
-}
 
 class Messages extends Component {
 	constructor(){
@@ -40,11 +20,8 @@ class Messages extends Component {
 				user_list_index: 0
 			}
 		this.fetchMatches = this.fetchMatches.bind(this);
-
-		this.sendMessage = this.sendMessage.bind(this);
 		this.showChatReact = this.showChatReact.bind(this);
 		this.showChat = this.showChat.bind(this);
-		this.checkForMessages();
 		//this.loadMatches();
 	}
 
@@ -127,37 +104,16 @@ class Messages extends Component {
     })
   }
 	
-
-	checkForMessages()
+	showChat(obj, user)
 	{
-		window.localStorage.setItem("unreadMessageCount", "0");
-		socket.on('sendMessageToUserResponse', function(resp)
-		{
-			window.alert(resp);
-		});
-		
-		socket.on('receiveMessage', function(msg)
-		{
-			window.alert("Receiving: " + JSON.stringify(msg));
-		});
-		
-		socket.on('incomingMessage', function(data)
-		{
-			console.log(JSON.stringify(data));
-			//add to message history json
-			//display if it's open
-			//otherwise do an animation for that person
-		});
-		
-		socket.emit('testMessageClientToServer', "FWFGWFWE");
-	}
-	
-	showChat(obj)
-	{
+		console.log(user)
+		let sendMessageDiv = document.getElementById("show-messages");
+		ReactDOM.render(<ShowMessages {...this.props} user={user} />, sendMessageDiv);
+		/*
 		var messageFrame = document.getElementById("messageFrame");
 		var senderMessage = document.getElementById("sampleSenderMessage");
 		var selfMessage = document.getElementById("sampleSelfMessage");
-		var sendMessageDiv = document.getElementById("send-message");
+		
 		var messageBox = document.getElementById("messageBox");
 		var messageButton = document.getElementById("sendMessage");
 		
@@ -191,49 +147,14 @@ class Messages extends Component {
 				clon.className = clon.className.replace("no-display", "");
 				messageFrame.appendChild(clon);
 			}
-		}
+		}*/
 	}
 	
-	showChatReact(ev)
+	showChatReact(ev, user)
 	{
 		ev.preventDefault();
 		//window.alert("HERE");
-		this.showChat(ev.currentTarget.id);
-	}
-	
-	sendMessage(e)
-	{
-		e.preventDefault();
-		var messageFrame = document.getElementById("messageFrame");
-		var senderMessage = document.getElementById("sampleSenderMessage");
-		var selfMessage = document.getElementById("sampleSelfMessage");
-		var sendMessageDiv = document.getElementById("send-message");
-		var messageBox = document.getElementById("messageBox");
-		var messageButton = document.getElementById("sendMessage");
-		
-		if (messageBox.value.length < 1) { window.alert("You must type a message in the box."); return; }
-		if (messageBox.value.split("\n").length > 12) { window.alert("You cannot have more than 12 lines of text per message."); return; }
-		var clon = selfMessage.cloneNode(true);
-		///set to my picture
-		clon.id = "";
-		clon.children[1].children[0].innerHTML = messageBox.value.split("\n").join("<br>");
-		clon.className = clon.className.replace("no-display", "");
-		messageFrame.appendChild(clon);
-		messageBox.value = "";
-		
-		var currentUser = JSON.parse(window.localStorage.getItem("user"));
-		var userEmail = currentUser.email;
-		var userKey = currentUser.uid;
-		
-		//var messageText = document.getElementById("messageTextBox").value;
-		var messageObject = {};
-		messageObject.sender = {"email":userEmail, "uid":userKey};
-		messageObject.receiver = "paultest@test.com";
-		messageObject.id = Math.random();
-		messageObject.message = "TEST";
-		
-		socket.emit("sendMessageToUser", messageObject); //messageObject);
-
+		this.showChat(ev.currentTarget.id, user);
 	}
 	
   render() {
@@ -248,16 +169,10 @@ class Messages extends Component {
 								<div id="leftFrame">
 									<p>Matches</p>
 									{this.state.user_list.map((i) =>
-                    <div className="user-holder matched-button" onClick={this.showChatReact}>
-											<img src="favicon.ico" className="userMessageImage"></img>
-											<div className="user-message-name">{i.data.user}</div>
-										</div>
+                    <MessagesUserSidebarPanel match={i} showChat={(e)=>{this.showChatReact(e, i)}}/>
                   )}
 								</div>
-								<div id="send-message">
-									<textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
-									<button id="sendMessage" onClick={this.sendMessage}>Send</button>
-								</div>
+								<div id="show-messages"></div>
 							</div>
 							:
 							<div>
