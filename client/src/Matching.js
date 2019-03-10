@@ -43,14 +43,8 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
-        if(arrayList.length === 0){
-          this.setState({
-            loading_state: 3
-          })
-        }
-        else{
-          this.getUserListData(arrayList);
-        }
+         this.getUserListData(arrayList);
+   
       }).catch((message) =>{
         this.setState({
           loading_state: 2
@@ -64,7 +58,7 @@ class Matching extends Component {
         return this.state.userName.indexOf(i);
       }
     }
-    console.log("User not in matching list")
+    //console.log("User not in matching list")
     return null
   }
 
@@ -91,7 +85,7 @@ class Matching extends Component {
       .then(arrayList => {
         this.getUserListData(arrayList);
       }).catch((message) =>{
-        console.log("Could not Like user " + likedUser);
+        //console.log("Could not Like user " + likedUser);
       });
     }
   }
@@ -117,12 +111,12 @@ class Matching extends Component {
       .then(arrayList => {
         this.getUserListData(arrayList);
       }).catch((message) =>{
-        console.log("Could not Dislike user " + dislikedUser);
+        //console.log("Could not Dislike user " + dislikedUser);
       });
     }
   }
   SkipUser(skippedUser){
-    console.log(this.props.uData.user + " Skipped " + skippedUser)
+    //console.log(this.props.uData.user + " Skipped " + skippedUser)
   }
 
   ReportUser(ReportedUser, ReportedUserName, message){
@@ -149,7 +143,7 @@ class Matching extends Component {
       this.getUserListData(arrayList);
       alert('User: ' + ReportedUserName + ' Successfully Reported');
     }).catch((message) =>{
-      console.log("Could not Report user " + ReportedUserName);
+      //console.log("Could not Report user " + ReportedUserName);
     });
   };
 
@@ -159,7 +153,7 @@ class Matching extends Component {
   };
 
   getUserListData(arraylist){
-    console.log(arraylist)
+    //console.log(arraylist)
     let promises=[];
     const db = firebase.firestore();
     for(let k in arraylist){
@@ -168,13 +162,13 @@ class Matching extends Component {
           if (userdoc.exists) {
             return userdoc.data();
           } else {
-            console.log('No user data available for ')
-            console.log(arraylist[k]);
+            //console.log('No user data available for ')
+            //console.log(arraylist[k]);
           }
         })
         .catch( (error) => {
-          console.log('Error gettign doc from DB for ')
-            console.log(arraylist[k]);
+          //console.log('Error gettign doc from DB for ')
+          //console.log(arraylist[k]);
         })
       promises.push(result)
     }
@@ -191,12 +185,19 @@ class Matching extends Component {
           })
         }
       }
-      console.log("Final List:")
-      console.log(arry)
-      this.setState({
-        user_list : arry,
-        loading_state : 1
-      })
+      //console.log("Final List:")
+      //console.log(arry)
+      if(arry.length === 0){
+        this.setState({
+          loading_state: 3
+        })
+      }
+      else{
+        this.setState({
+          user_list : arry,
+          loading_state : 1
+        })
+      }
     })
   }
 

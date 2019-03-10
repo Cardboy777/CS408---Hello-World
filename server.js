@@ -234,6 +234,7 @@ function removeMatch(userName, removeUserName){
   var mainUser;
   var dislikedUser;
   var db = admin.firestore();
+
   mainUser = db.collection("usersPQ").where("user", "==", userName)
   .get()
   .then(function(querySnapshot) {
@@ -242,7 +243,6 @@ function removeMatch(userName, removeUserName){
       "data": querySnapshot.docs[0].data()
     }
   });
-
   dislikedUser = db.collection("usersPQ").where("user", "==", removeUserName)
   .get()
   .then(function(querySnapshot) {
@@ -560,7 +560,7 @@ router.post("/dislikeUser", (req, res) => {
 
 router.post("/unlikeUser", (req, res) => {
   console.log(req.body.userName + " Unliked " + req.body.unlikedUserName);
-  result = removeMatch(req.body.userName, req.body.dislikedUserName);
+  result = removeMatch(req.body.userName, req.body.unlikedUserName);
   result.then(function(ret){
     if(ret){
       for(var x = 0; x < ret.length; x++){
@@ -619,6 +619,7 @@ router.post("/emailReportedMatchedUser", (req, res) => {
   '<p>Happy Programming,</p>' +
   '<p>-The HƐ>LO WORLD Team (and David)</p>'
 
+  //console.log(req.body.reportedUid)
   let result = admin.auth().getUser(req.body.reportedUid)
   .then( (uAuth) =>{
     let transporter = nodeMailer.createTransport({
@@ -638,12 +639,19 @@ router.post("/emailReportedMatchedUser", (req, res) => {
       html: '<div>' + msg + '</div>' // html body
     };
     transporter.sendMail(mailOptions);
-    result = removeMatch(req.body.userName, req.body.dislikedUserName);
+    //console.log(req.body.userName, req.body.reportedUser)
+    result = removeMatch(req.body.userName, req.body.reportedUser);
     result.then(function(ret){
+      if(ret){
+        for(var x = 0; x < ret.length; x++){
+          if(ret[x]["user"] == req.body.reportedUser){
+            ret.splice(x,1);
+          }
+        }
+      }
+      //console.log(ret)
       res.json(ret);
-    });
-  }).catch(message =>{
-    res.json(message);
+    })
   })
 })
 

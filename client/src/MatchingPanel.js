@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './css/MatchingPanel.css';
 import MiniProfile from './MiniProfile';
 import ReportButton from './ReportButton';
+import ReactDOM from 'react-dom';
+import SpinningLoader from './SpinningLoader';
 class MatchingPanel extends Component {
   constructor(){
     super();
@@ -12,18 +14,25 @@ class MatchingPanel extends Component {
   }
   Like(e){
     e.preventDefault();
+    this.addLoadingEffect(e.target)
     this.props.likeFunct(this.props.userData.user);
   }
   Dislike(e){
     e.preventDefault();
+    this.addLoadingEffect(e.target)
     this.props.dislikeFunct(this.props.userData.user); 
   }
   Skip(e){
     e.preventDefault();
+    this.addLoadingEffect(e.target)
     this.props.skipFunct(this.props.userData.user);
   }
   Report(message){
     this.props.reportFunct(this.props.userData.uid, this.props.userData.user, message);
+  }
+
+  addLoadingEffect(elementNode){
+    ReactDOM.render(<SpinningLoader/>, elementNode);
   }
 
   render() {

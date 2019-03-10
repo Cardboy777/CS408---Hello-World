@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import SpinningLoader from './SpinningLoader';
 import './css/ReportButton.css';
 class ReportButton extends Component {
   constructor(){
@@ -8,6 +10,7 @@ class ReportButton extends Component {
     };
     this.SubmitReport = this.SubmitReport.bind(this);
     this.handleRadioChange = this.handleRadioChange.bind(this);
+    this.removeLoadingEffect = this.removeLoadingEffect.bind(this);
   }
 
   SubmitReport(e){
@@ -43,11 +46,18 @@ class ReportButton extends Component {
       document.getElementById(this.props.userData.user + '-other-entry').disabled = true;
     }
   }
+  addLoadingEffect(e){
+    ReactDOM.render(<SpinningLoader/>, e.target);
+  }
+  removeLoadingEffect(e){
+    let elem = document.getElementById(this.props.userData.user + '-report-button');
+    ReactDOM.render(<React.Fragment>Report</React.Fragment>, elem);
+  }
 
   render() {
     return (
     <span className='reportButtonComponent'>
-        <button type="button" className="report btn btn-outline-secondary" data-toggle="modal" data-target={'#' + this.props.userData.user + '-report'}>
+        <button type="button" id={this.props.userData.user + '-report-button'} className="report btn btn-outline-secondary" data-toggle="modal" onClick={this.addLoadingEffect} data-target={'#' + this.props.userData.user + '-report'}>
             Report
         </button>
         <div className="modal fade" id={this.props.userData.user + '-report'} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -55,7 +65,7 @@ class ReportButton extends Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLongTitle">Report User: <b>{this.props.userData.user}</b></h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" className="close" onClick={this.removeLoadingEffect} data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -101,7 +111,7 @@ class ReportButton extends Component {
                   </form>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" className="btn btn-secondary" onClick={this.removeLoadingEffect} data-dismiss="modal">Cancel</button>
                 <button type="button" onClick={this.SubmitReport} data-dismiss="modal" className="submit btn btn-primary">Submit</button>
               </div>
             </div>

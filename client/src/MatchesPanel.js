@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './css/MatchesPanel.css';
 import MiniProfile from './MiniProfile';
 import ReportButton from './ReportButton';
+import ReactDOM from 'react-dom';
+import SpinningLoader from './SpinningLoader';
 class MatchesPanel extends Component {
   constructor(){
     super();
@@ -9,14 +11,18 @@ class MatchesPanel extends Component {
     this.Report = this.Report.bind(this);
     this.MessageUser = this.MessageUser.bind(this);
   }
-  Unlike(){
+  Unlike(e){
     this.props.unlikeFunct(this.props.userData.user);
+    this.addLoadingEffect(e.target)
   }
   Report(message){
     this.props.reportFunct(this.props.userData.uid, this.props.userData.user, message);
   }
   MessageUser(){
     console.log("User wants to send Message to " + this.props.userData.user);
+  }
+  addLoadingEffect(elementNode){
+    ReactDOM.render(<SpinningLoader/>, elementNode);
   }
   render() {
     return (
