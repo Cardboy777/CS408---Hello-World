@@ -1,168 +1,232 @@
-body {
-	#background-color: white !important;
+.root {
+  text-align: center;
+  flex-direction: column;
+  display: flex;
 }
 
-#leftFrame {
-	position: absolute;
-	width: 15%;
-	height: calc(90% + 2px);
-	left: 0px;
-	background-color: #454545;
-	color: white;
-	text-align: center;
+.header {
+  font-weight: bold;
+  font-size: 20px;
+  color: #203152;
+  background-color: #f5a623;
+  padding: 20px;
+  box-shadow: 0px 4px 4px #808888;
+  flex-direction: row;
 }
 
-.user-holder {
-	position: relative;
-	width: 100%;
-	height: 50px;
-	background-color: Transparent;
-	border: none;
-	outline: none;
-	background-position: center;
-	transition: background .4s;
+.body {
+  display: flex;
+  flex-direction: 'row';
+  padding-top: 5px;
 }
 
-.user-holder:hover {
-	cursor: pointer;
+.viewLoading {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.userMessageImage {
-	float: left;
-	height: 80%;
-	margin-top: 5px;
-	width: auto;
-	margin-left: 5px;
+.icLogout {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 0;
+  margin-right: 30px;
+  cursor: pointer;
 }
 
-.user-message-name {
-	position: relative;
-	line-height: 50px;
-	float: left;
-	margin-left: 10px;
+.icLogout:active {
+  opacity: 0.5;
 }
 
-.matched-button {
-	position: relative;
-	width: 100%;
-	height: 50px;
-	background-color: Transparent;
-	border: none;
-	outline: none;
-	background-position: center;
-	transition: background .4s;
+.icProfile {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 0;
+  margin-right: 80px;
+  cursor: pointer;
 }
 
-.matched-button:hover {
-	 background: #787878 radial-gradient(circle, transparent 1%, #AAAAAA 50%) center/15000%;
+.icProfile:active {
+  opacity: 0.5;
 }
 
-.matched-button:active {
-	background-size: 100%;
-	transition: background 0s;
+/* Dialog confirm */
+.viewCoverScreen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#messageFrame {
-	position: absolute;
-	width: 85%;
-	max-height: 75%;
-	overflow: auto;
-	overflow-y: auto;
-	right: 0px;
-	display:flex;
-	flex-flow:column;
-	justify-content:space-around;
+.titleDialogConfirmLogout {
+  color: white;
+  background-color: #f5a623;
+  font-weight: bold;
+  padding: 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  width: 300px;
+  font-size: 18px;
 }
 
-.message-holder {
-	position: relative;
-	width: 100%;
-	padding: 5px;
+.viewWrapButtonDialogConfirmLogout {
+  flex-direction: row;
+  height: 100px;
+  width: 300px;
+  background-color: white;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
-.message-user-icon {
-	height: 40px;
-	width: auto;
+.btnYes {
+  width: 100px;
+  font-weight: bold;
+  margin-right: 20px;
+  padding: 5px;
+  background-color: #203152;
+  border: 0px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.message-sender-icon {
-	float: left;
+.btnYes:active {
+  opacity: 0.5;
 }
 
-.message-self-icon {
-	float: right;
+.btnYes:focus {
+  outline: 0;
 }
 
-.message {
-	width: 50%;
-	border-radius: 10px;
-	padding: 5px;
-	padding-bottom: 1px;
-	margin-bottom: 0px;
-	text-align: left;
+.btnNo {
+  width: 100px;
+  font-weight: bold;
+  margin-left: 20px;
+  padding: 5px;
+  background-color: #dd4b39;
+  border: 0px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.message-sender {
-	background-color: #DDDDDD;
-	float: left;
-	margin-left: 5px;
-	color: black;
-	word-break: break-all;
+.btnNo:active {
+  opacity: 0.5;
 }
 
-.message-self {
-	background-color: #2579E4;
-	float: right;
-	margin-right: 5px;
-	color: white;
-	word-break: break-all;
+.btnNo:focus {
+  outline: 0;
 }
 
-.no-display {
-	display: none;
+/* List user */
+.viewListUser {
+  overflow-y: scroll;
+  max-height: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height:100%;
+  width: 20%;
+  position: fixed;
 }
 
-
-#send-message {
-	position: absolute;
-	width: 85%;
-	height: 15%;
-	bottom: 0px;
-	right: 0px;
-	background-color: #DDDDDD;
-	padding: 5px;
-	display: none;
+.viewListUser::-webkit-scrollbar-track {
+  padding: 2px 0;
+  background-color: #e8e8e8;
 }
 
-#messageBox {
-	width: 90%;
-	height: 100%;
-	border-radius: 5px;
-	border: 0px;
-	resize: none;
+.viewListUser::-webkit-scrollbar {
+  width: 6px;
 }
 
-#messageBox:hover {
-	background-color: #FDFDFD;
+.viewListUser::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #203152;
 }
 
-#messageBox:focus {
-	background-color: white;
+.viewWrapItem {
+  border: none;
+  display: flex;
+  flex-direction: 'row';
+  background-color: #ffffff;
+  width: 330px;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
-#sendMessage {
-	position: relative;
-	float: right;
-	width: calc(10% - 5px);
-	height: 100%;
-	background-color: rgb(0, 150, 240);
-	border: 0px;
-	outline: 0px;
-	border-radius: 5px;
-	color: white;
-	font-size: 25px;
+.viewWrapItem:active {
+  opacity: 0.5;
 }
 
-#sendMessage:hover {
-	background-color: rgb(0, 165, 250);
+.viewWrapItem:focus {
+  outline: 0;
+}
+
+.viewWrapItemFocused {
+  border: none;
+  display: flex;
+  flex-direction: 'row';
+  background-color: #e8e8e8;
+  width: 330px;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewWrapItemFocused:active {
+  opacity: 0.5;
+}
+
+.viewWrapItemFocused:focus {
+  outline: 0;
+}
+
+.viewAvatarItem {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  object-fit: cover;
+}
+
+.viewWrapContentItem {
+  flex-direction: column;
+  display: flex;
+  flex: 1;
+  margin-left: 15px;
+  color: #203152;
+  word-wrap: break-word;
+}
+
+.textItem {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 240px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.viewBoard {
+  display: flex;
+  flex: 1;
+  max-height: 100%;
+  margin-left: 20%;
 }
