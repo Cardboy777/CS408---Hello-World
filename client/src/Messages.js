@@ -9,7 +9,7 @@ const socket = openSocket('http://localhost:8080');
 
 
 
-var people = ["David", "Richardo", "404"];
+var people = ["David", "Richardo", "No Message History"];
 var conversationHistory = {
 	"David":{
 		"NumMessages":3,
@@ -207,7 +207,6 @@ class Messages extends Component {
 		clon.children[1].children[0].innerHTML = messageBox.value.split("\n").join("<br>");
 		clon.className = clon.className.replace("no-display", "");
 		messageFrame.appendChild(clon);
-		messageBox.value = "";
 		
 		var currentUser = JSON.parse(window.localStorage.getItem("user"));
 		var userEmail = currentUser.email;
@@ -216,12 +215,13 @@ class Messages extends Component {
 		//var messageText = document.getElementById("messageTextBox").value;
 		var messageObject = {};
 		messageObject.sender = {"email":userEmail, "uid":userKey};
-		messageObject.receiver = "paultest@test.com";
+		messageObject.receiver = "paultest@test.com";///needs to be the person they click on
 		messageObject.id = Math.random();
-		messageObject.message = "TEST";
+		messageObject.message = messageBox.value.split("\n").join("<br>");
 		
 		socket.emit("sendMessageToUser", messageObject); //messageObject);
 		
+		messageBox.value = "";
 	}
 	
 	loadMatches() 
