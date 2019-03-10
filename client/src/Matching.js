@@ -43,7 +43,15 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
-        this.getUserListData(arrayList);
+        console.log(arrayList);
+        if(arrayList.length === 0){
+          this.setState({
+            loading_state: 3
+          })
+        }
+        else{
+          this.getUserListData(arrayList);
+        }
       }).catch((message) =>{
         this.setState({
           loading_state: 2
@@ -206,9 +214,14 @@ class Matching extends Component {
                   </div>
               </div>
               :
-              <ListLoadingError>
-                We couldn't load any potential matches. Try reloading the page.
-              </ListLoadingError>
+              this.state.loading_state === 2 ?
+                <ListLoadingError>
+                  <p>We couldn't load any potential matches. Try reloading the page.</p>
+                </ListLoadingError>
+                :
+                <ListLoadingError>
+                  <p>You've gone through our whole database of users!</p> <p>Good job(?)</p> <p>Hello World is still growing its userbase so hold tight for new people to discover us. Check again later for new users.</p>
+                </ListLoadingError>
         }
       </div>
     );
