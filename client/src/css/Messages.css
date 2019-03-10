@@ -115,7 +115,10 @@ body {
 	float: right;
 	margin-right: 5px;
 	color: white;
+	max-width: 50%;
+	width: auto;
 	word-break: break-all;
+	text-align: right;
 }
 
 .no-display {
