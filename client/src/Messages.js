@@ -3,6 +3,8 @@ import Header from './Header';
 import './css/Messages.css'
 import firebase from './firebase';
 import openSocket from 'socket.io-client';
+import Loading from './Loading';
+import ListLoadingError from './ListLoadingError';
 
 const db = firebase.firestore();
 const socket = openSocket('http://localhost:8080');
@@ -31,100 +33,101 @@ var conversationHistory = {
 
 class Messages extends Component {
 	constructor(){
-        super();
+		super();
 		this.state = {
-			matches: ["David", "Richardo"],
-			loading_state: 0,
-			user_list: null,
-			user_list_index: 0
-		}
+				loading_state: 0,
+				user_list: null,
+				user_list_index: 0
+			}
 		this.fetchMatches = this.fetchMatches.bind(this);
-		
-		
+
 		this.sendMessage = this.sendMessage.bind(this);
 		this.showChatReact = this.showChatReact.bind(this);
 		this.showChat = this.showChat.bind(this);
 		this.checkForMessages();
 		//this.loadMatches();
 	}
+
+	componentDidMount(){
+    this.fetchMatches();
+  }
 	
-	fetchMatches(){
-		fetch("/api/getMatches", {
-		  method: "POST", // *GET, POST, PUT, DELETE, etc.
-		  mode: "cors", // no-cors, cors, *same-origin
-		  cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-		  credentials: "same-origin", // include, *same-origin, omit
-		  headers: {
-			  "Content-Type": "application/json",
-			  // "Content-Type": "application/x-www-form-urlencoded",
-		  },
-		  redirect: "follow", // manual, *follow, error
-		  referrer: "no-referrer", // no-referrer, *client
-		  body: JSON.stringify({ username: this.props.uData.user }), // body data type must match "Content-Type" header
-		})
-		.then(res => res.json())
-		.then(arrayList => {
-		  console.log(arrayList);
-		  this.getUserListData(arrayList);
-		}).catch((message) =>{
-		  this.setState({
-			loading_state: 2
-		  })
-		});
+	//requests more potentail matches from the server
+  fetchMatches(){
+    fetch("/api/getMatches", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+          "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify({ username: this.props.uData.user }), // body data type must match "Content-Type" header
+    })
+    .then(res => res.json())
+    .then(arrayList => {
+      //console.log(arrayList);
+      this.getUserListData(arrayList);
+    }).catch((message) =>{
+      this.setState({
+        loading_state: 2
+      })
+    });
 	}
-	
-	componentDidMount()
-	{
-		//this.loadMatches();
-		this.fetchMatches();
-	}
-	
-	getUserListData(arraylist){
+
+  getUserListData(arraylist){
+    //console.log(arraylist)
     let promises=[];
     const db = firebase.firestore();
     for(let k in arraylist){
-      promises.push(()=>{
-        return (
-          db.collection("usersPQ").doc(k.uid).get()
-          .then( (userdoc) => {
-            if (userdoc.exists) {
-              return {
-                data: userdoc.data(),
-                match_percent: k.match_percent
-              }
-            } else {
-              return null
-            }
-          })
-          .catch( (error) => {
-            console.log("No userdata for match: " + k.uid);
-            return null
-          })
-        )
-      })
+      let result = db.collection("usersPQ").doc(arraylist[k].uid).get()
+        .then( (userdoc) => {
+          if (userdoc.exists) {
+            return userdoc.data();
+          } else {
+            //console.log('No user data available for ')
+           // console.log(arraylist[k]);
+          }
+        })
+        .catch( (error) => {
+          //console.log('Error gettign doc from DB for ')
+           //console.log(arraylist[k]);
+        })
+      promises.push(result)
     }
     //wait for all promises in array to finish
     Promise.all(promises).then((newarray) => {
-      this.setState({
-        user_list : newarray,
-        loading_state : 1
-      })
+      let arry = []
+      for (let i in arraylist){
+        if(newarray[i] !== undefined){
+          arry.push({
+            uid: arraylist[i].uid,
+            match_percent: arraylist[i].match_percent,
+            user: arraylist[i].user,
+            data: newarray[i]
+          })
+        }
+      }
+      console.log("Final List:")
+      console.log(arry)
+      if(arry.length === 0){
+        this.setState({
+          loading_state: 2
+        })
+      }
+      else{
+        this.setState({
+          user_list : arry,
+          loading_state : 1
+        })
+      }
     })
   }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	checkForMessages()
 	{
 		window.localStorage.setItem("unreadMessageCount", "0");
@@ -265,34 +268,38 @@ class Messages extends Component {
 	  }
 	  
     return (
-      <div>
-        <Header {...this.props}/>
-		<div id="leftFrame">
-			<p>Messages</p>
-			{temp}
-			<div id="userHolder0" className="user-holder matched-button no-display">
-				<img src="favicon.ico" className="userMessageImage"></img>
-				<div className="user-message-name">David</div>
-			</div>
-		</div>
-		<div id="messageFrame">
-			<div className="message-holder no-display" id="sampleSenderMessage">
-				<img src="favicon.ico" className="message-user-icon message-sender-icon"></img>
-				<div className="message message-sender">
-					<div>----Other Person Sent This----</div>
-				</div>
-			</div>
-			<div className="message-holder no-display" id="sampleSelfMessage">
-				<img src="favicon.ico" className="message-user-icon message-self-icon"></img>
-				<div className="message message-self">
-					<div>----I sent this----</div>
-				</div>
-			</div>
-		</div>
-		<div id="send-message">
-			<textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
-			<button id="sendMessage" onClick={this.sendMessage}>Send</button>
-		</div>
+      <div id='MessagesPage'>
+        <Header {...this.props} />
+        { this.state.loading_state === 0 ?
+          <Loading/> :
+						this.state.loading_state === 1 ?
+							<div>
+								<div id="leftFrame">
+									<p>Matches</p>
+									{temp}
+
+									{this.state.user_list.map((i) =>
+                    <div className="user-holder matched-button no-display">
+											<img src="favicon.ico" className="userMessageImage"></img>
+											<div className="user-message-name">{i.data.user}</div>
+										</div>
+                  )}
+								</div>
+								<div id="send-message">
+									<textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
+									<button id="sendMessage" onClick={this.sendMessage}>Send</button>
+								</div>
+							</div>
+							:
+							<div>
+								<div id="leftFrame">
+									<p>Matches</p>
+								</div>
+									<ListLoadingError>
+										<p>You can't send any messages because you don't have any matches.</p> <p>Find some matches by going to the '<a href='/matching'>Find Matches</a>' page and Liking some users.</p>
+									</ListLoadingError>
+							</div>
+				}
       </div>
     );
   }
