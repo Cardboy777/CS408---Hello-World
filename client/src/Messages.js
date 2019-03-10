@@ -233,40 +233,11 @@ class Messages extends Component {
 		messageObject.message = "TEST";
 		
 		socket.emit("sendMessageToUser", messageObject); //messageObject);
-		
-	}
-	
-	loadMatches() 
-	{
-		
-		
-		var matchNames = ["David", "Richardo"]; //go by usernames for real?
-		var leftFrame = document.getElementById("leftFrame");
-		var obj = document.getElementById("userHolder0");
-		for (var i = 0; i < matchNames.length; i++)
-		{
-			var clon = obj.cloneNode(true);
-			clon.className = clon.className.replace("no-display", "");
-			clon.id = "userHolder" + (i + 1);
-			clon.children[1].innerHTML = matchNames[i];
-			//clon.onclick = this.showChat(clon.id);
-			/////set user picture
-			leftFrame.appendChild(clon);
-			
-		}
+
 	}
 	
   render() {
-	  let temp = [];
-	  for (var i = 0; i < people.length; i++)
-	  {
-		  var tempId = "userHolder" + (i + 1);
-		  temp.push(<div id={tempId} className="user-holder matched-button" onClick={this.showChatReact}>
-				<img src="favicon.ico" className="userMessageImage"></img>
-				<div className="user-message-name">{people[i]}</div>
-			</div>);
-	  }
-	  
+
     return (
       <div id='MessagesPage'>
         <Header {...this.props} />
@@ -276,10 +247,8 @@ class Messages extends Component {
 							<div>
 								<div id="leftFrame">
 									<p>Matches</p>
-									{temp}
-
 									{this.state.user_list.map((i) =>
-                    <div className="user-holder matched-button no-display">
+                    <div className="user-holder matched-button" onClick={this.showChatReact}>
 											<img src="favicon.ico" className="userMessageImage"></img>
 											<div className="user-message-name">{i.data.user}</div>
 										</div>
