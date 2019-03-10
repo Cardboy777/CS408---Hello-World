@@ -43,7 +43,6 @@ class Matching extends Component {
       })
       .then(res => res.json())
       .then(arrayList => {
-        console.log(arrayList);
         if(arrayList.length === 0){
           this.setState({
             loading_state: 3
@@ -160,7 +159,7 @@ class Matching extends Component {
   };
 
   getUserListData(arraylist){
-    //console.log(arraylist)
+    console.log(arraylist)
     let promises=[];
     const db = firebase.firestore();
     for(let k in arraylist){
@@ -169,26 +168,31 @@ class Matching extends Component {
           if (userdoc.exists) {
             return userdoc.data();
           } else {
-            console.log('No user data available for '+ arraylist[k]);
+            console.log('No user data available for ')
+            console.log(arraylist[k]);
           }
         })
         .catch( (error) => {
-          console.log('Error Geting Doc from DB for ' + arraylist[k] );
+          console.log('Error gettign doc from DB for ')
+            console.log(arraylist[k]);
         })
       promises.push(result)
     }
     //wait for all promises in array to finish
     Promise.all(promises).then((newarray) => {
       let arry = []
-      for (let k in arraylist){
-        arry.push({
-          uid: arraylist[k].uid,
-          match_percent: arraylist[k].match_percent,
-          user: arraylist[k].user,
-          data: newarray[k]
-        })
+      for (let i in arraylist){
+        if(newarray[i] !== undefined){
+          arry.push({
+            uid: arraylist[i].uid,
+            match_percent: arraylist[i].match_percent,
+            user: arraylist[i].user,
+            data: newarray[i]
+          })
+        }
       }
-      //console.log(arry)
+      console.log("Final List:")
+      console.log(arry)
       this.setState({
         user_list : arry,
         loading_state : 1

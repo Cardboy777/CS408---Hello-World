@@ -209,10 +209,10 @@ class LoginHeader extends Component {
             modal=
             <div id="login">
                 <form className="form-inline">
-                    <label htmlFor="uname"><b>Email:</b></label>
+                    <label className="sr-only" htmlFor="uname "><b>Email:</b></label>
                     <input id="loginEmail" className="form-control mr-sm-2" type="text" onKeyUp={this.updateLoginEmail}  onBlur={this.updateLoginEmail} placeholder="Enter Login Email" name="uname" required/>
 
-                    <label htmlFor="psw"><b>Password:</b></label>
+                    <label className="sr-only" htmlFor="psw"><b>Password:</b></label>
                     <input id="loginPassword" className="form-control mr-sm-2" type="password" onKeyUp={this.updateLoginPassword} onBlur={this.updateLoginPassword} placeholder="Enter Password" name="psw" required/>
 
                     <button className="btn btn-primary" type="submit" onClick={this.login}>Login</button>

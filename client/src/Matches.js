@@ -133,33 +133,42 @@ class Matches extends Component {
   }
 
   getUserListData(arraylist){
+    console.log(arraylist)
     let promises=[];
     const db = firebase.firestore();
     for(let k in arraylist){
-      promises.push(()=>{
-        return (
-          db.collection("usersPQ").doc(k.uid).get()
-          .then( (userdoc) => {
-            if (userdoc.exists) {
-              return {
-                data: userdoc.data(),
-                match_percent: k.match_percent
-              }
-            } else {
-              return null
-            }
-          })
-          .catch( (error) => {
-            console.log("No userdata for match: " + k.uid);
-            return null
-          })
-        )
-      })
+      let result = db.collection("usersPQ").doc(arraylist[k].uid).get()
+        .then( (userdoc) => {
+          if (userdoc.exists) {
+            return userdoc.data();
+          } else {
+            console.log('No user data available for ')
+            console.log(arraylist[k]);
+          }
+        })
+        .catch( (error) => {
+          console.log('Error gettign doc from DB for ')
+            console.log(arraylist[k]);
+        })
+      promises.push(result)
     }
     //wait for all promises in array to finish
     Promise.all(promises).then((newarray) => {
+      let arry = []
+      for (let i in arraylist){
+        if(newarray[i] !== undefined){
+          arry.push({
+            uid: arraylist[i].uid,
+            match_percent: arraylist[i].match_percent,
+            user: arraylist[i].user,
+            data: newarray[i]
+          })
+        }
+      }
+      console.log("Final List:")
+      console.log(arry)
       this.setState({
-        user_list : newarray,
+        user_list : arry,
         loading_state : 1
       })
     })
@@ -174,14 +183,12 @@ class Matches extends Component {
             this.state.loading_state === 1 ?
               <div className="panels-container">
                 <div className="row">
-                {/*
                   {this.state.user_list.map((i) =>
                       <div key={i.data.user} className="panel col-md-6">
                       <MatchesPanel match_percent={i.match_percent} userData={i.data} unlikeFunct={this.UnlikeUser} reportFunct={this.ReportUser}/>
                     </div>
                     )
                   }
-                */}
                 </div>
               </div>
               :
