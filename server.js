@@ -65,7 +65,7 @@ function likeUser(userName, likedUserName){
     var match;
     if(mainUserPot){
       for(var i = 0; i < mainUserPot.length; i++){
-        if(mainUserPot[i]["user"] === likedUserName){
+        if(mainUserPot[i]["user"] == likedUserName){
           match = mainUserPot[i];
           inMatches = true;
         }
@@ -80,7 +80,7 @@ function likeUser(userName, likedUserName){
     var likedNum;
     if(likedUsersLiked){
       for(var i = 0; i < likedUsersLiked.length; i++){
-        if(likedUsersLiked[i]["user"] === userName){
+        if(likedUsersLiked[i]["user"] == userName){
           liked = true;
           likedNum = i;
         }
@@ -156,7 +156,7 @@ function dislikeUser(userName, dislikedUserName){
     var match;
     if(mainUserPot){
       for(var i = 0; i < mainUserPot.length; i++){
-        if(mainUserPot[i]["user"] === dislikedUserName){
+        if(mainUserPot[i]["user"] == dislikedUserName){
           match = mainUserPot[i];
           inMatches = true;
         }
@@ -172,7 +172,7 @@ function dislikeUser(userName, dislikedUserName){
     var likedNum;
     if(dislikedUsersLiked){
       for(var i = 0; i < dislikedUsersLiked.length; i++){
-        if(dislikedUsersLiked[i]["user"] === userName){
+        if(dislikedUsersLiked[i]["user"] == userName){
           liked = true;
           likedNum = i;
         }
@@ -180,7 +180,7 @@ function dislikeUser(userName, dislikedUserName){
     }
     if(!liked){
       for(var i = 0; i < dislikedUsersPot.length; i++){
-        if(dislikedUsersPot[i]["user"] === userName){
+        if(dislikedUsersPot[i]["user"] == userName){
           pot = true;
           likedNum = i;
         }
@@ -263,7 +263,7 @@ function removeMatch(userName, removeUserName){
     var match;
     if(mainUserMatches){
       for(var i = 0; i < mainUserMatches.length; i++){
-        if(mainUserMatches[i]["user"] === removeUserName){
+        if(mainUserMatches[i]["user"] == removeUserName){
           match = mainUserMatches[i];
           inMatches = true;
         }
@@ -275,7 +275,7 @@ function removeMatch(userName, removeUserName){
     }
     var matchedNum
     for(var i = 0; i < dislikedUserMatches.length; i++){
-      if(dislikedUserMatches[i]["user"] === userName){
+      if(dislikedUserMatches[i]["user"] == userName){
 
         matchedNum = i;
       }
@@ -319,7 +319,7 @@ function findMatches(userName){
         if(doc.data().user == null || doc.data().user == ''){
 
         }
-        else if(doc.data().user != userName || doc.data().user.includes(userName) === false){
+        else if(doc.data().user != userName || doc.data().user.includes(userName) == false){
           this.push({
             "id": doc.id,
             "data": doc.data()
@@ -353,7 +353,7 @@ function findMatches(userName){
         var mainUserPrev = mainUser["prevMatchedUsers"];
         if(mainUserPrev){
           for(var k = 0; k < mainUserPrev.length; k++){
-            if(mainUserPrev[k] === users[i]["id"]){
+            if(mainUserPrev[k] == users[i]["id"]){
               valid = false;
             }
           }
@@ -431,7 +431,7 @@ function findMatches(userName){
     //console.log(scores);
     var storedMatches = [];
     for(i = 0; i < 10; i++){
-      if(scores.length === 0) {
+      if(scores.length == 0) {
         break;
       }
       var highMatch = {
@@ -530,7 +530,7 @@ router.post("/likeUser", (req, res) => {
     result2.then(function(ret){
       if(ret){
         for(var x = 0; x < ret.length; x++){
-          if(ret[x]["user"] === req.body.likedUserName){
+          if(ret[x]["user"] == req.body.likedUserName){
             ret.splice(x,1);
           }
         }
@@ -548,7 +548,7 @@ router.post("/dislikeUser", (req, res) => {
     result2.then(function(ret){
       if(ret){
         for(var x = 0; x < ret.length; x++){
-          if(ret[x]["user"] === req.body.dislikedUserName){
+          if(ret[x]["user"] == req.body.dislikedUserName){
             ret.splice(x,1);
           }
         }
@@ -564,7 +564,7 @@ router.post("/unlikeUser", (req, res) => {
   result.then(function(ret){
     if(ret){
       for(var x = 0; x < ret.length; x++){
-        if(ret[x]["user"] === req.body.unlikedUserName){
+        if(ret[x]["user"] == req.body.unlikedUserName){
           ret.splice(x,1);
         }
       }
