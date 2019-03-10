@@ -100,7 +100,7 @@ class MiniProfile extends Component {
                         <p>{this.props.userData.canswer9}</p>
                     </div>
                 </div>
-                <div className='row extra-row'>
+                <div className='row extra-row-imgs'>
                     <div className='col-md-4 profSect'>
                       <ProfileImage1 uData={this.props.userData}></ProfileImage1>
                     </div>
