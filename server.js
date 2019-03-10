@@ -757,7 +757,7 @@ io.on('connection', function(socket)
 		}
 	});
 
-	setInterval(function()
+	/*setInterval(function()
 	{
 		setTimeout(function()
 		{
@@ -768,7 +768,7 @@ io.on('connection', function(socket)
 			}
 			socket.emit('incomingMessage', messageData);
 		}, Math.floor(1000 + Math.random() * 14000));
-	}, 15000);
+	}, 15000);*/
 });
 
 module.exports = router;
