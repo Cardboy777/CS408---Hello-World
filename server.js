@@ -676,7 +676,7 @@ io.on('connection', function(socket)
 	userList[socket.id] = user;
 
 
-	console.log(userList);
+	//console.log(userList);
 
 	socket.on('disconnect', function()
 	{
