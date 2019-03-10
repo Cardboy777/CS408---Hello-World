@@ -20,6 +20,9 @@ div.MiniProfileWidget p.desc{
 div.MiniProfileWidget div.extra-row{
     padding: 0 1.5em 0 1.5em;
 }
+div.MiniProfileWidget div.extra-row-imgs{
+    padding: 0 1.5em 1em 1.5em;
+}
 
 div.MiniProfileWidget .profSect h4,h3{
     font-weight: bold;
