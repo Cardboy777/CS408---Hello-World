@@ -672,25 +672,39 @@ io.on('connection', function(socket)
 	user.token = "";
 	user.username = "";
 	user.socket = socket;
-
+	
 	userList[socket.id] = user;
-
-
-	//console.log(userList);
+	
+	var count = 0;
+	for (var key in userList)
+	{
+		if (userList[key] != undefined)
+		{
+			count++;
+		}
+	}
+	console.log("Count: " + count);
 
 	socket.on('disconnect', function()
 	{
 		var str = user.email || user.token;
-		if (str != undefined && userSocketMap[str])
+		if (str == undefined) { return; }
+		if (userSocketMap[str])
 		{
-			if (userSocketMap[str][socket.id])
+			if (userSocketMap[str][socket.id]) 
 			{
-				delete userSocketMap[str][socket.id];
+				delete userSocketMap[str][socket.id]; 
 			}
 			userSocketMap[str][socket.id] = undefined;
 			if (userSocketMap[str].length < 1) { delete[userSocketMap[str]]; userSocketMap[str] = undefined; }
 		}
-		if (userList[socket.id] != undefined) { delete[userList[socket.id]]; userList[socket.id] = undefined; }
+		if (userList[socket.id] != undefined) 
+		{
+			console.log("Deleting: " + socket.id);
+			delete[userList[socket.id]]; 
+			userList[socket.id] = undefined; 
+		}
+		delete user;
 	});
 	socket.on('giveSocketData', function(data)
 	{
@@ -717,13 +731,13 @@ io.on('connection', function(socket)
 
 	socket.on('testMessageClientToServer', function(msg)
 	{
-		//console.log("C2S: " + msg);
+		console.log("C2S: " + msg);
 	});
 
 	socket.on('sendMessageToUser', function(messageData)
 	{
-		//console.log("Got something!");
-		//console.log("message data: " + JSON.stringify(messageData));
+		console.log("Got something!");
+		console.log("message data: " + JSON.stringify(messageData));
 
 		var id = messageData.id;
 		var sender = messageData.sender; //{email: fq, uid: fefew}
@@ -733,9 +747,13 @@ io.on('connection', function(socket)
 		////send message to database
 		var receiverSockets = userSocketMap[receiver];///their email
 
+		var newMessageData = {};
+		newMessageData.id = id;
+		newMessageData.sender = sender.email;
+		newMessageData.message = message;
 		for (var key in receiverSockets)
 		{
-			userList[key].socket.emit('incomingMessage', {"from":sender, "msg":message});
+			userList[key].socket.emit('incomingMessage', newMessageData);
 		}
 	});
 
