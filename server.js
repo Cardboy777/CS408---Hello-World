@@ -339,7 +339,7 @@ function findMatches(userName){
     var finalMatches = [];
     var mainUser = values[0];
     var users = values[1];
-    temp = mainUser["data"]["matchedUsers"];
+    temp = mainUser["data"]["potentialMatches"];
 
     if(temp && temp.length > 0){
       //console.log(temp);
