@@ -64,6 +64,34 @@ class EditCQuestionnaire extends Component {
         else{ return true; }   
     }
 
+	componentDidMount(){
+        const that=this;
+        const db=firebase.firestore();
+        firebase.auth().onAuthStateChanged((user)=>{
+            const docRef = db.collection("usersPQ").doc(String(this.props.uAuth.uid));
+            docRef.get().then(function(doc) {
+                that.setState({
+					ca1:doc.data().canswer1,
+					ca2:doc.data().canswer2,
+					ca3:doc.data().canswer3,
+					ca4:doc.data().canswer4,
+					ca5:doc.data().canswer5,
+					ca6:doc.data().canswer6,
+					ca7:doc.data().canswer7,
+					ca8:doc.data().canswer8,
+					ca9:doc.data().canswer9,
+					ca10:doc.data().canswer10  
+                }).catch(function(err){
+                    window.alert(err);
+                });
+                console.log("pa"+that.pa1);
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        });
+
+    }
+	
     render() { 
         return ( 
             <div>
