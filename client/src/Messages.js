@@ -172,7 +172,7 @@ class Messages extends Component {
                     <MessagesUserSidebarPanel match={i} showChat={(e)=>{this.showChatReact(e, i)}}/>
                   )}
 								</div>
-								<div id="show-messages"></div>
+								<div id="show-messages" className='col-md-10 offset-2'></div>
 							</div>
 							:
 							<div>

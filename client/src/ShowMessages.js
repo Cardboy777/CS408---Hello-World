@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './firebase'
 import openSocket from 'socket.io-client';
+import SpinningLoader from './SpinningLoader';
 const socket = openSocket('http://localhost:8080');
 
 class ShowMessages extends Component {
@@ -29,8 +30,15 @@ class ShowMessages extends Component {
         db.collection("usersPQ").doc(code).get()
         .then( (msgdoc) => {
             if (msgdoc.exists) {
-
+                this.setState({
+                    loadingstate: 1,
+                    messages: msgdoc.data().messages
+                })
             } else {
+                this.setState({
+                    loadingstate: 1,
+                    messages: []
+                })
                 console.log("Messaging data does not exists\n");
             }
         })
@@ -99,10 +107,23 @@ class ShowMessages extends Component {
 
   render() {
     return (
-    <div>
-        <h1>This is the Chat area for {this.props.user.data.user} and {this.props.uData.user} </h1>
-        <textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
-        <button id="sendMessage" onClick={this.sendMessage}>Send</button>
+    <div id='ShowMessages'>
+        {this.loadingstate === 0 ?
+            <SpinningLoader/>
+        :
+            this.state.messages.length === 0 ?
+                <div>
+                    <h1>You haven't Sent Any Messages! Try saying 'Hi'</h1>
+                    <textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
+                    <button id="sendMessage" onClick={this.sendMessage}>Send</button>
+                </div>
+            :
+                <div>
+                    <h1>This is the Chat area for {this.props.user.data.user} and {this.props.uData.user} </h1>
+                    <textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
+                    <button id="sendMessage" onClick={this.sendMessage}>Send</button>
+                </div>
+        }
     </div>
     );
   }

@@ -2,7 +2,7 @@
 #MessagesPage  #leftFrame {
 	position: absolute;
 	width: 15%;
-	height: calc(90% + 2px);
+	height: calc(90% + 22px);
 	left: 0px;
 	background-color: #454545;
 	color: white;
