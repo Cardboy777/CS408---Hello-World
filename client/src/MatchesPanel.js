@@ -9,7 +9,6 @@ class MatchesPanel extends Component {
     super();
     this.Unlike = this.Unlike.bind(this);
     this.Report = this.Report.bind(this);
-    this.MessageUser = this.MessageUser.bind(this);
   }
   Unlike(e){
     this.props.unlikeFunct(this.props.userData.user);
@@ -18,9 +17,6 @@ class MatchesPanel extends Component {
   Report(message){
     this.props.reportFunct(this.props.userData.uid, this.props.userData.user, message);
   }
-  MessageUser(){
-    console.log("User wants to send Message to " + this.props.userData.user);
-  }
   addLoadingEffect(elementNode){
     ReactDOM.render(<SpinningLoader/>, elementNode);
   }
@@ -28,8 +24,7 @@ class MatchesPanel extends Component {
     return (
       <div className="MatchesPanel">
         <MiniProfile userData={this.props.userData} match_percent ={this.props.match_percent}/>
-        <button type="button" onClick={this.MessageUser} className="btn btn-outline-primary">Message</button>
-        <button type="button" onClick={this.Unlike} className="btn btn-outline-danger">Unlike</button>
+        <button type="button" onClick={this.Unlike} className="btn btn-outline-danger">Remove Match</button>
         <ReportButton reportHandler={this.Report} userData={this.props.userData}/>
       </div>
     );

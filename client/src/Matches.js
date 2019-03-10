@@ -191,6 +191,7 @@ class Matches extends Component {
           <Loading/> :
             this.state.loading_state === 1 ?
               <div className="panels-container">
+                <h2>To Talk to your Matches, go the <a href='/messages'>Messages</a> page</h2>
                 <div className="row">
                   {this.state.user_list.map((i) =>
                       <div key={i.data.user} className="panel col-md-6">
