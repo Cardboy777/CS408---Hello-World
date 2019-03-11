@@ -8,7 +8,9 @@ import './css/ShowMessages.css'
 /*var socketName = "http://localhost:8080";
 if (window.location.href.indexOf("localhost") < 0) { socketName = "http://dry-dusk-22747.herokuapp.com:8080"; }
 const socket = openSocket(socketName);*/
-const socket = openSocket("http://" + window.location.hostname + ":8080"); 
+var portNum = 8080;
+if (window.location.href.indexOf("localhost") < 0) { portNum = 44073; }
+const socket = openSocket("http://" + window.location.hostname + ":" + portNum); 
 
 class ShowMessages extends Component {
     constructor(){
