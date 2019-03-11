@@ -15,10 +15,11 @@ class ShowMessages extends Component {
         }
         this.getMessages = this.getMessages.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+		this.checkForMessages = this.checkForMessages.bind(this);
     }
     componentDidMount(){
-		this.checkForMessages();
         this.getMessages();
+		this.checkForMessages();
     }
 
     getMessages(){
@@ -55,15 +56,27 @@ class ShowMessages extends Component {
     }
 
     checkForMessages()
-	{		
+	{	
+		var that = this;
+		
 		window.localStorage.setItem("unreadMessageCount", "0");		
+		socket.on('testMessage', function(data)
+		{
+			window.alert("Test- " + data);
+		});
 		socket.on('incomingMessage', function(data)
 		{
-			console.log(JSON.stringify(data));
-			window.alert("Message Received!");
-			//add to message history json
-			//display if it's open
-			//otherwise do an animation for that person
+			let newMessages = that.state.messages
+			
+			newMessages.push({
+				message: data.message,
+				from: data.uid, //this.props.uAuth.uid,
+				timestamp: new Date().getTime()
+			})
+
+			that.setState({
+				messages: newMessages
+			})
 		});
 		
 		socket.emit('testMessageClientToServer', "FWFGWFWE");
@@ -87,8 +100,8 @@ class ShowMessages extends Component {
 		
 		//var messageText = document.getElementById("messageTextBox").value;
 		let messageObject = {};
-		messageObject.sender = {"email":userEmail, "uid":this.props.user.uid};
-		messageObject.receiver = this.props.uData.uid;
+		messageObject.sender = {"email":userEmail, "uid":this.props.uData.uid};
+		messageObject.receiver = this.props.user.uid;
 		messageObject.id = Math.random();
 		messageObject.message = message;
 		

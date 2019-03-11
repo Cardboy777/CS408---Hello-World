@@ -705,16 +705,27 @@ io.on('connection', function(socket)
 		
 		var newMessageData = {};
 		newMessageData.id = id;
-		newMessageData.sender = sender.email;
+		newMessageData.sender = sender.uid;
 		newMessageData.message = message;
 		
 		for (var i = 0; i < socketList.length; i++)
-		{
-			if (socketList[i].token == receiver)
+		{	
+			//console.log(i + ": " + socketList[i].token + ", " + socketList[i].id + ", " + socketList[i].email);
+			//socketList[i].emit('testMessage', i);
+			//if (socketList[i].token != undefined && socketList[i].token.length > 1) { console.log(socketList[i].token + ": " + receiver); }
+			if (receiver.length > 0 && socketList[i].token == receiver && socketList[i + 1])
 			{
-				console.log("Socket token: " + socketList[i].token);
-				socketList[i].emit('incomingMessage', newMessageData);
+				//socketList[i].emit('testMessage', "SDFsdfsd");
+				//console.log("Sent ^");
+				//console.log("Socket token: " + socketList[i].token + "\nSocket id: " + socketList[i].id);
+				//console.log("My id: " + socket.id);
+				io.to(socketList[i].id).emit('incomingMessage', newMessageData);
+				io.to(socketList[i + 1].id).emit('incomingMessage', newMessageData);
+				//io.to(socketList[i + 1].id).emit('testMessage', "asfasf");
+				
+				//socketList[i].emit('incomingMessage', newMessageData);
 			}
+			
 		}
 	});
 	
@@ -723,7 +734,7 @@ io.on('connection', function(socket)
 				"message":"sup",
 				"id":Math.random()
 			}
-	io.to(socket.id).emit('incomingMessage', messageData);
+	//io.to(socket.id).emit('incomingMessage', messageData);
 	
 
 	setInterval(function()
@@ -735,7 +746,7 @@ io.on('connection', function(socket)
 				"message":"sup",
 				"id":Math.random()
 			}
-			socket.emit('incomingMessage', messageData);
+			//socket.emit('incomingMessage', messageData);
 			//userList[socket.id].socket.emit('incomingMessage', messageData);
 		}, Math.floor(1000 + Math.random() * 1400));
 	}, 7500);
