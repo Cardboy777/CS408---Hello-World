@@ -15,9 +15,9 @@ class ShowMessages extends Component {
         }
         this.getMessages = this.getMessages.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
-		this.checkForMessages();
     }
     componentDidMount(){
+		this.checkForMessages();
         this.getMessages();
     }
 
@@ -60,6 +60,7 @@ class ShowMessages extends Component {
 		socket.on('incomingMessage', function(data)
 		{
 			console.log(JSON.stringify(data));
+			window.alert("Message Received!");
 			//add to message history json
 			//display if it's open
 			//otherwise do an animation for that person
@@ -92,8 +93,6 @@ class ShowMessages extends Component {
 		messageObject.message = message;
 		
         socket.emit("sendMessageToUser", messageObject); //messageObject);
-        
-
 
         //update database with message
         let date = new Date();

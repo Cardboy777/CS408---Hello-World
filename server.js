@@ -682,7 +682,6 @@ io.on('connection', function(socket)
 	socket.on('disconnect', function()
 	{
         socketList.splice(socketList.indexOf(socket), 1);
-		console.log(socketList.length);
     });
 	
 	socket.on('giveSocketData', function(data)
@@ -736,7 +735,7 @@ io.on('connection', function(socket)
 				"message":"sup",
 				"id":Math.random()
 			}
-			//socket.emit('incomingMessage', messageData);
+			socket.emit('incomingMessage', messageData);
 			//userList[socket.id].socket.emit('incomingMessage', messageData);
 		}, Math.floor(1000 + Math.random() * 1400));
 	}, 7500);
