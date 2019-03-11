@@ -9,6 +9,15 @@ const config = {
     storageBucket: "cs-408-hello-world.appspot.com",
     messagingSenderId: "27517754739"
 };
- 
+
 firebase.initializeApp(config);
+
+firebase.firestore().settings({
+  timestampsInSnapshots: true
+});
+
+export const myFirebase = firebase;
+export const myFirestore = firebase.firestore();
+export const myStorage = firebase.storage();
+
 export default firebase;

@@ -673,29 +673,89 @@ server.listen(port, function()
 io.on('connection', function(socket)
 {
 	//console.log('a user connected');
-	socket.id = Math.random();
-
-	var user = {};
+	//console.log(socket.id);
+	
+	userList[socket.id] = {};
+	
+	var user = userList[socket.id];
 	user.email = "";
 	user.token = "";
 	user.username = "";
-	user.socket = socket;
+	user.socket = socket.id;
 	
-	userList[socket.id] = user;
+	socket.on('giveSocketData', function(data)
+	{
+		if (data.email) { user.email = data.email; }
+		if (data.token) { user.token = data.token;}
+		if (data.username) { user.username = data.username; }
+		var str = data.token || data.email;
+		if (userSocketMap[str] != undefined)
+		{
+			userSocketMap[str][socket.id] = true;
+		}
+		else
+		{
+			userSocketMap[str] = {};
+			userSocketMap[str][socket.id] = true;
+		}
+		
+		console.log(data.email + ": " + socket.id);
+	});
 	
-	var count = 0;
+	socket.on('sendMessageToUser', function(messageData)
+	{
+		var id = messageData.id;
+		var sender = messageData.sender; //{email: fq, uid: fefew}
+		var receiver = messageData.receiver;//token
+		var message = messageData.message;
+		
+		console.log(sender.uid + " is sending a message to " + receiver);
+		
+		var receiverSockets = userSocketMap[receiver];///their token
+
+		var newMessageData = {};
+		newMessageData.id = id;
+		newMessageData.sender = sender.email;
+		newMessageData.message = message;
+		for (var key in receiverSockets)
+		{
+			if (userList[key] && userList[key].socket != undefined)
+			{
+				io.to(key).emit('incomingMessage', newMessageData);
+				console.log("Sending to socket: " + userList[key].socket);
+				//userList[key].socket.emit('incomingMessage', newMessageData);
+				//userList[key].socket.emit('incomingMessagee', newMessageData);
+				//io.sockets.socket(key).emit('incomingMessage', newMessageData);
+			}
+		}
+	});
+	
+	var messageData = {
+				"from":"cowboyman123@gmail.com",
+				"message":"sup",
+				"id":Math.random()
+			}
+	io.to(socket.id).emit('incomingMessage', messageData);
+	
+	
+	
+	
+	
+	
+	
+	/*var count = 0;
 	for (var key in userList)
 	{
 		if (userList[key] != undefined)
 		{
 			count++;
 		}
-	}
-	console.log("Count: " + count);
+	}*/
+	//console.log("Count: " + count);
 
-	socket.on('disconnect', function()
+	/*socket.on('disconnect', function()
 	{
-		var str = user.email || user.token;
+		var str = user.token || user.email;
 		if (str == undefined) { return; }
 		if (userSocketMap[str])
 		{
@@ -708,34 +768,13 @@ io.on('connection', function(socket)
 		}
 		if (userList[socket.id] != undefined) 
 		{
-			console.log("Deleting: " + socket.id);
+			//console.log("Deleting: " + socket.id);
 			delete[userList[socket.id]]; 
 			userList[socket.id] = undefined; 
 		}
 		delete user;
 	});
-	socket.on('giveSocketData', function(data)
-	{
-		if (data.email) { user.email = data.email; }
-		if (data.token) { user.token = data.token;}
-		if (data.username) { user.username = data.username; }
-		var str = data.email || data.token;
-		//console.log(str);
-		if (userSocketMap[str] != undefined)
-		{
-			userSocketMap[str][socket.id] = true;
-		}
-		else
-		{
-			userSocketMap[str] = {};
-			userSocketMap[str][socket.id] = true;
-		}
-
-		//console.log(JSON.stringify(user));
-		//console.log("Socket data.");
-		//console.log("Full user array: " + JSON.stringify(users));
-		//console.log("Full user socket map: " + JSON.stringify(userSocketMap));
-	});
+	
 
 	socket.on('testMessageClientToServer', function(msg)
 	{
@@ -744,14 +783,13 @@ io.on('connection', function(socket)
 
 	socket.on('sendMessageToUser', function(messageData)
 	{
-		console.log("Got something!");
-		console.log("message data: " + JSON.stringify(messageData));
-
 		var id = messageData.id;
 		var sender = messageData.sender; //{email: fq, uid: fefew}
-		var receiver = messageData.receiver;//email
+		var receiver = messageData.receiver;//token
 		var message = messageData.message;
-
+		
+		console.log(sender.uid + " is sending a message to " + receiver);
+		
 		////send message to database
 		var receiverSockets = userSocketMap[receiver];///their email
 
@@ -761,11 +799,17 @@ io.on('connection', function(socket)
 		newMessageData.message = message;
 		for (var key in receiverSockets)
 		{
-			userList[key].socket.emit('incomingMessage', newMessageData);
+			//if (userList[key] && userList[key].socket != undefined)
+			//{
+				console.log("Sending to socket: " + userList[key].socket);
+				//userList[key].socket.emit('incomingMessage', newMessageData);
+				//userList[key].socket.emit('incomingMessagee', newMessageData);
+				//io.sockets.socket(key).emit('incomingMessage', newMessageData);
+			//}
 		}
-	});
+	});*/
 
-	/*setInterval(function()
+	setInterval(function()
 	{
 		setTimeout(function()
 		{
@@ -774,9 +818,10 @@ io.on('connection', function(socket)
 				"message":"sup",
 				"id":Math.random()
 			}
-			socket.emit('incomingMessage', messageData);
-		}, Math.floor(1000 + Math.random() * 14000));
-	}, 15000);*/
+			//socket.emit('incomingMessage', messageData);
+			//userList[socket.id].socket.emit('incomingMessage', messageData);
+		}, Math.floor(1000 + Math.random() * 1400));
+	}, 7500);
 });
 
 module.exports = router;

@@ -55,7 +55,7 @@ class ShowMessages extends Component {
     }
 
     checkForMessages()
-	{
+	{		
 		window.localStorage.setItem("unreadMessageCount", "0");
 		socket.on('sendMessageToUserResponse', function(resp)
 		{
@@ -85,11 +85,9 @@ class ShowMessages extends Component {
 		
 		if (messageBox.value.length < 1) { window.alert("You must type a message in the box."); return; }
 		if (messageBox.value.split("\n").length > 12) { window.alert("You cannot have more than 12 lines of text per message."); return; }
-
-        let message = messageBox.value
-
-
-
+		
+        let message = messageBox.value;
+		
 		///set to my picture
 		messageBox.value = "";
 		
@@ -98,8 +96,8 @@ class ShowMessages extends Component {
 		
 		//var messageText = document.getElementById("messageTextBox").value;
 		let messageObject = {};
-		messageObject.sender = {"email":userEmail, "uid":userKey};
-		messageObject.receiver = "paultest@test.com";
+		messageObject.sender = {"email":userEmail, "uid":this.props.user.uid};
+		messageObject.receiver = this.props.uData.uid;
 		messageObject.id = Math.random();
 		messageObject.message = message;
 		
