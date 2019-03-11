@@ -4,7 +4,6 @@
   "description": "## Hello World is the greatest man-made developement since the computer itself",
   "main": "server.js",
   "engines": {
-    "npm": "6.8.0",
     "node": "10.15.0"
   },
   "dependencies": {
