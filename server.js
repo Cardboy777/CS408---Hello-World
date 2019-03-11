@@ -676,9 +676,6 @@ var socketList = [];
 
 io.on('connection', function(socket)
 {
-	//console.log('a user connected');
-	//console.log(socket.id);
-
 	socketList.push(socket);
 
 	socket.on('disconnect', function()
@@ -691,9 +688,10 @@ io.on('connection', function(socket)
 		if (data.email) { socket.email = data.email; }
 		if (data.token) { socket.token = data.token;}
 		if (data.username) { socket.username = data.username; }
+		if (data.socketType) { socket.socketType = data.socketType; }
 		var str = data.token || data.email;
 
-		console.log(data.email + ": " + socket.id);
+		//console.log(data.email + ": " + socket.id);
 	});
 
 	socket.on('sendMessageToUser', function(messageData)
@@ -703,55 +701,39 @@ io.on('connection', function(socket)
 		var receiver = messageData.receiver;//token
 		var message = messageData.message;
 
-		console.log(sender.uid + " is sending a message to " + receiver);
+		//console.log(sender.uid + " is sending a message to " + receiver);
 
 		var newMessageData = {};
 		newMessageData.id = id;
-		newMessageData.sender = sender.uid;
+		newMessageData.sender = sender.email;
+		newMessageData.uid = sender.uid;
 		newMessageData.message = message;
 
 		for (var i = 0; i < socketList.length; i++)
 		{
-			//console.log(i + ": " + socketList[i].token + ", " + socketList[i].id + ", " + socketList[i].email);
-			//socketList[i].emit('testMessage', i);
-			//if (socketList[i].token != undefined && socketList[i].token.length > 1) { console.log(socketList[i].token + ": " + receiver); }
-			if (receiver.length > 0 && socketList[i].token == receiver && socketList[i + 1])
-			{
-				//socketList[i].emit('testMessage', "SDFsdfsd");
-				//console.log("Sent ^");
-				//console.log("Socket token: " + socketList[i].token + "\nSocket id: " + socketList[i].id);
-				//console.log("My id: " + socket.id);
-				io.to(socketList[i].id).emit('incomingMessage', newMessageData);
-				io.to(socketList[i + 1].id).emit('incomingMessage', newMessageData);
-				//io.to(socketList[i + 1].id).emit('testMessage', "asfasf");
-
-				//socketList[i].emit('incomingMessage', newMessageData);
+			if (socketList[i].socketType != undefined) 
+			{ 
+				//console.log("Socket: " + socketList[i].socketType + ", " + socketList[i].email); 
 			}
-
+			
+			if (receiver.length > 0 && socketList[i].token == receiver)
+			{
+				//console.log("Sending to " + socketList[i].email + ", type: " + socketList[i].socketType);
+				//console.log("Socket type: " + socketList[i].socketType);
+				io.to(socketList[i].id).emit('incomingMessage', newMessageData);
+			}
+			else
+			{
+				//console.log(socketList[i].email);
+				if (socketList[i].email != undefined && socketList[i].email.indexOf("paul") > -1)
+				{
+					//console.log("Receiver length: " + receiver.length);
+					//console.log(socketList[i].token == receiver);
+				}
+				////console.log("Not sending to " + socketList[i].email + ", type: " + socketList[i].socketType + "debug: " + socketList[i].token + " != " + receiver);
+			}
 		}
 	});
-
-	var messageData = {
-				"from":"cowboyman123@gmail.com",
-				"message":"sup",
-				"id":Math.random()
-			}
-	//io.to(socket.id).emit('incomingMessage', messageData);
-
-
-	setInterval(function()
-	{
-		setTimeout(function()
-		{
-			var messageData = {
-				"from":"cowboyman123@gmail.com",
-				"message":"sup",
-				"id":Math.random()
-			}
-			//socket.emit('incomingMessage', messageData);
-			//userList[socket.id].socket.emit('incomingMessage', messageData);
-		}, Math.floor(1000 + Math.random() * 1400));
-	}, 7500);
 });
 
 module.exports = router;

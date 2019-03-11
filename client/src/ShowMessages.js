@@ -5,7 +5,10 @@ import SpinningLoader from './SpinningLoader';
 import DisplayMessage from './DisplayMessage';
 import './css/ShowMessages.css'
 
-const socket = openSocket('http://localhost:8080');
+/*var socketName = "http://localhost:8080";
+if (window.location.href.indexOf("localhost") < 0) { socketName = "http://dry-dusk-22747.herokuapp.com:8080"; }
+const socket = openSocket(socketName);*/
+const socket = openSocket("http://" + window.location.hostname + ":8080"); 
 
 class ShowMessages extends Component {
     constructor(){
@@ -23,6 +26,20 @@ class ShowMessages extends Component {
     componentDidMount(){
         this.getMessages();
 		this.checkForMessages();
+		
+		setTimeout(function()
+		{
+			//socket.emit("testMessageClientToServer", "GSRG");
+			var userData = window.localStorage.getItem("user");
+			if (userData === undefined || userData == null) { return; }
+			userData = JSON.parse(userData);
+			if (userData.email === undefined || userData.uid === undefined) { return; }
+			var newData = {};
+			newData.email = userData.email;
+			newData.token = userData.uid;
+			newData.socketType = "ShowMessages";
+			socket.emit('giveSocketData', newData);
+		}, 500);
     }
 
     getMessages(){
@@ -72,14 +89,20 @@ class ShowMessages extends Component {
 			let newMessages = that.state.messages
 			
 			newMessages.push({
+				timestamp: new Date().getTime(),
 				message: data.message,
-				from: data.uid, //this.props.uAuth.uid,
-				timestamp: new Date().getTime()
+				from: data.uid //this.props.uAuth.uid,
 			})
 
 			that.setState({
 				messages: newMessages
 			})
+			
+			var chatArea = document.getElementById("chat-area");
+			if (chatArea != undefined)
+			{
+				chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
+			}
 		});
 		
 		socket.emit('testMessageClientToServer', "FWFGWFWE");
@@ -113,25 +136,39 @@ class ShowMessages extends Component {
 		
         socket.emit("sendMessageToUser", messageObject); //messageObject);
 
+		var chatArea = document.getElementById("chat-area");
+		if (chatArea != undefined)
+		{
+			chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
+		}
+			
         //update database with message
         let date = new Date();
 
         let newMessages = this.state.messages
         newMessages.push({
-            message: message,
-            from: this.props.uAuth.uid,
-            timestamp: date.getTime()
-        })
-
+            "message": message,
+            "from": this.props.uAuth.uid,
+            "timestamp": new Date().getTime()
+        });
+		const fixedMessages = newMessages.map((obj)=> {return Object.assign({}, obj)});
+		
+		console.log(JSON.stringify(newMessages[newMessages.length - 1]));
+		
         this.setState({
             messages: newMessages
         })
-        console.log(newMessages)
-        console.log(this.state.chatroom_code)
+		console.log("RIGHT BEFORE");
+        console.log(newMessages);
+        console.log(this.state.chatroom_code);
+		console.log("RIGHT AFTER");
         const db = firebase.firestore();
-        db.collection("messages").doc(this.state.chatroom_code).set({
-			messages: newMessages
-        });
+		db.collection("messages").doc(this.state.chatroom_code).set({
+			"messages": newMessages
+		}).catch(function(err)
+		{
+			window.alert("ERROR: " + err);
+		});
 	}
 
   render() {
@@ -177,5 +214,4 @@ class ShowMessages extends Component {
     );
   }
 }
-
 export default ShowMessages;

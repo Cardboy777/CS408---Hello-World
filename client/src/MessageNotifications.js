@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import './css/MessageNotifications.css'
 import openSocket from 'socket.io-client';
 
-const socket = openSocket('http://localhost:8080');
+/*var socketName = "http://localhost:8080";
+if (window.location.href.indexOf("localhost") < 0) { socketName = "http://dry-dusk-22747.herokuapp.com:8080"; }
+const socket = openSocket(socketName);*/
+const socket = openSocket("http://" + window.location.hostname + ":8080"); 
 
 class MessageNotifications extends Component {
 	constructor(){
@@ -11,7 +14,7 @@ class MessageNotifications extends Component {
 	}
 	
 	showNotification(data) {
-		//window.alert("HERE");
+		window.alert("HERE");
 		var sender = data.sender;
 		var message = data.message;
 		
@@ -25,16 +28,23 @@ class MessageNotifications extends Component {
 	
 	componentDidMount()
 	{
+		setTimeout(function()
+		{
+			//socket.emit("testMessageClientToServer", "GSRG");
+			var userData = window.localStorage.getItem("user");
+			if (userData === undefined || userData == null) { return; }
+			userData = JSON.parse(userData);
+			if (userData.email === undefined || userData.uid === undefined) { return; }
+			var newData = {};
+			newData.email = userData.email;
+			newData.token = userData.uid;
+			newData.socketType = "Notification";
+			socket.emit('giveSocketData', newData);
+		}, 500);
 		socket.on('incomingMessage', function(data)
 		{
-			//window.alert("Received message");
 			var sender = data.sender || data.from;
 			var message = data.message;
-			
-			if (sender.indexOf("cowboy") < -1)
-			{
-				//window.alert(sender + ": " + message);
-			}
 			
 			var notif = document.getElementById("defaultNotification");
 			var notificationHolder = document.getElementById("messageNotification");

@@ -3,7 +3,12 @@ import firebase from './firebase';
 import './css/Navbar.css';
 
 import openSocket from 'socket.io-client';
-const socket = openSocket('http://localhost:8080');
+
+/*var socketName = "http://localhost:8080";
+if (window.location.href.indexOf("localhost") < 0) { socketName = "http://dry-dusk-22747.herokuapp.com:8080"; }
+const socket = openSocket(socketName);*/
+//window.alert(window.location.hostname);
+const socket = openSocket("http://" + window.location.hostname + ":8080"); 
 
 let unreadMessageCount = 0;
 
@@ -38,12 +43,13 @@ class Navbar extends Component {
 	  {
 		  if (document.getElementById("unreadMessageCount") != undefined)
 		  {
-			  if (unreadMessageCount > 0)
+			  if (unreadMessageCount > 0 && window.location.href.indexOf("/messages") < 0)
 			  {
 				  document.getElementById("unreadMessageCount").innerHTML = unreadMessageCount;
 			  }
 			  else
 			  {
+				  window.localStorage.setItem("unreadMessageCount", "0");
 				  document.getElementById("unreadMessageCount").innerHTML = "";
 			  }
 			  window.clearInterval(tempInterval);
@@ -52,11 +58,15 @@ class Navbar extends Component {
 	  
 		socket.on('incomingMessage', function(data)
 		{
-			if (window.location.href != "http://localhost:3000/messages" && document.getElementById("unreadMessageCount") != undefined)
+			if (window.location.href.indexOf("/messages") < 0 && document.getElementById("unreadMessageCount") != undefined)
 			{
 				unreadMessageCount++;
 				window.localStorage.setItem("unreadMessageCount", (unreadMessageCount + ""));
 				document.getElementById("unreadMessageCount").innerHTML = unreadMessageCount;
+			}
+			else if (window.location.href.indexOf("/messages") > -1 && document.getElementById("unreadMessageCount") != undefined)
+			{
+				document.getElementById("unreadMessageCount").innerHTML = "";
 			}
 		});
 	  
@@ -70,6 +80,7 @@ class Navbar extends Component {
 		  var newData = {};
 		  newData.email = userData.email;
 		  newData.token = userData.uid;
+		  newData.socketType = "Navbar";
 		  socket.emit('giveSocketData', newData);
 	  }, 500);
 	  
