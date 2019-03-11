@@ -97,6 +97,12 @@ class ShowMessages extends Component {
 			that.setState({
 				messages: newMessages
 			})
+			
+			var chatArea = document.getElementById("chat-area");
+			if (chatArea != undefined)
+			{
+				chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
+			}
 		});
 		
 		socket.emit('testMessageClientToServer', "FWFGWFWE");
@@ -130,6 +136,12 @@ class ShowMessages extends Component {
 		
         socket.emit("sendMessageToUser", messageObject); //messageObject);
 
+		var chatArea = document.getElementById("chat-area");
+		if (chatArea != undefined)
+		{
+			chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
+		}
+			
         //update database with message
         let date = new Date();
 
