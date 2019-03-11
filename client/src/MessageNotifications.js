@@ -33,7 +33,7 @@ class MessageNotifications extends Component {
 			
 			if (sender.indexOf("cowboy") < -1)
 			{
-				window.alert(sender + ": " + message);
+				//window.alert(sender + ": " + message);
 			}
 			
 			var notif = document.getElementById("defaultNotification");

@@ -34,22 +34,22 @@
   animation: fadein 0.5s, fadeout .5s 4s;
 }
 
-@-webkit-keyframes fadein {
+.notification @-webkit-keyframes fadein {
   from {bottom: 0; opacity: 0;} 
   to {bottom: 30px; opacity: 1;}
 }
 
-@keyframes fadein {
+.notification @keyframes fadein {
   from {bottom: 0; opacity: 0;}
   to {bottom: 30px; opacity: 1;}
 }
 
-@-webkit-keyframes fadeout {
+.notification @-webkit-keyframes fadeout {
   from {bottom: 30px; opacity: 1;} 
   to {bottom: 45px; opacity: 0;}
 }
 
-@keyframes fadeout {
+.notification @keyframes fadeout {
   from {bottom: 30px; opacity: 1;}
   to {bottom: 45px; opacity: 0;}
 }
