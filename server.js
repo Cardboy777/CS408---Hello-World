@@ -12,7 +12,7 @@ var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 var port = process.env.PORT || 8080;
 app.set('view engine', 'ejs');
-
+app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -676,40 +676,40 @@ io.on('connection', function(socket)
 {
 	//console.log('a user connected');
 	//console.log(socket.id);
-	
+
 	socketList.push(socket);
-	
+
 	socket.on('disconnect', function()
 	{
         socketList.splice(socketList.indexOf(socket), 1);
     });
-	
+
 	socket.on('giveSocketData', function(data)
 	{
 		if (data.email) { socket.email = data.email; }
 		if (data.token) { socket.token = data.token;}
 		if (data.username) { socket.username = data.username; }
 		var str = data.token || data.email;
-		
+
 		console.log(data.email + ": " + socket.id);
 	});
-	
+
 	socket.on('sendMessageToUser', function(messageData)
 	{
 		var id = messageData.id;
 		var sender = messageData.sender; //{email: fq, uid: fefew}
 		var receiver = messageData.receiver;//token
 		var message = messageData.message;
-		
+
 		console.log(sender.uid + " is sending a message to " + receiver);
-		
+
 		var newMessageData = {};
 		newMessageData.id = id;
 		newMessageData.sender = sender.uid;
 		newMessageData.message = message;
-		
+
 		for (var i = 0; i < socketList.length; i++)
-		{	
+		{
 			//console.log(i + ": " + socketList[i].token + ", " + socketList[i].id + ", " + socketList[i].email);
 			//socketList[i].emit('testMessage', i);
 			//if (socketList[i].token != undefined && socketList[i].token.length > 1) { console.log(socketList[i].token + ": " + receiver); }
@@ -722,20 +722,20 @@ io.on('connection', function(socket)
 				io.to(socketList[i].id).emit('incomingMessage', newMessageData);
 				io.to(socketList[i + 1].id).emit('incomingMessage', newMessageData);
 				//io.to(socketList[i + 1].id).emit('testMessage', "asfasf");
-				
+
 				//socketList[i].emit('incomingMessage', newMessageData);
 			}
-			
+
 		}
 	});
-	
+
 	var messageData = {
 				"from":"cowboyman123@gmail.com",
 				"message":"sup",
 				"id":Math.random()
 			}
 	//io.to(socket.id).emit('incomingMessage', messageData);
-	
+
 
 	setInterval(function()
 	{
