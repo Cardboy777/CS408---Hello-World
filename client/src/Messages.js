@@ -8,6 +8,7 @@ import MessagesUserSidebarPanel from './MessagesUserSidebarPanel';
 import ReactDOM from 'react-dom';
 import SpinningLoader from './SpinningLoader';
 import ShowMessages from './ShowMessages';
+import MessageNotifications from './MessageNotifications';
 
 const db = firebase.firestore();
 
@@ -162,6 +163,7 @@ class Messages extends Component {
     return (
       <div id='MessagesPage'>
         <Header {...this.props} />
+		<MessageNotifications/>
         { this.state.loading_state === 0 ?
           <Loading/> :
 						this.state.loading_state === 1 ?
