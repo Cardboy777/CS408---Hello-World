@@ -12,6 +12,7 @@
     "firebase-admin": "^7.0.0",
     "http": "^0.0.0",
     "nodemailer": "^5.1.1",
+    "react": "^16.8.4",
     "react-firebase-file-uploader": "^2.4.2",
     "request": "^2.88.0",
     "socket.io": "^2.2.0",
@@ -24,7 +25,8 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm instal --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
