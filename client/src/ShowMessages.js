@@ -89,9 +89,9 @@ class ShowMessages extends Component {
 			let newMessages = that.state.messages
 			
 			newMessages.push({
+				timestamp: new Date().getTime(),
 				message: data.message,
-				from: data.uid, //this.props.uAuth.uid,
-				timestamp: new Date().getTime()
+				from: data.uid //this.props.uAuth.uid,
 			})
 
 			that.setState({
@@ -135,23 +135,28 @@ class ShowMessages extends Component {
 
         let newMessages = this.state.messages
         newMessages.push({
-            message: message,
-            from: this.props.uAuth.uid,
-            timestamp: date.getTime()
-        })
-
+            "message": message,
+            "from": this.props.uAuth.uid,
+            "timestamp": new Date().getTime()
+        });
+		const fixedMessages = newMessages.map((obj)=> {return Object.assign({}, obj)});
+		
+		console.log(JSON.stringify(newMessages[newMessages.length - 1]));
+		
         this.setState({
             messages: newMessages
         })
-        console.log(newMessages)
-        console.log(this.state.chatroom_code)
+		console.log("RIGHT BEFORE");
+        console.log(newMessages);
+        console.log(this.state.chatroom_code);
+		console.log("RIGHT AFTER");
         const db = firebase.firestore();
-		if (newMessages != undefined)
+		db.collection("messages").doc(this.state.chatroom_code).set({
+			"messages": newMessages
+		}).catch(function(err)
 		{
-			db.collection("messages").doc(this.state.chatroom_code).set({
-				messages: newMessages
-			});
-		}
+			window.alert("ERROR: " + err);
+		});
 	}
 
   render() {

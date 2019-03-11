@@ -14,7 +14,7 @@ class MessageNotifications extends Component {
 	}
 	
 	showNotification(data) {
-		//window.alert("HERE");
+		window.alert("HERE");
 		var sender = data.sender;
 		var message = data.message;
 		

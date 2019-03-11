@@ -691,7 +691,7 @@ io.on('connection', function(socket)
 		if (data.socketType) { socket.socketType = data.socketType; }
 		var str = data.token || data.email;
 
-		console.log(data.email + ": " + socket.id);
+		//console.log(data.email + ": " + socket.id);
 	});
 
 	socket.on('sendMessageToUser', function(messageData)
@@ -701,11 +701,12 @@ io.on('connection', function(socket)
 		var receiver = messageData.receiver;//token
 		var message = messageData.message;
 
-		console.log(sender.uid + " is sending a message to " + receiver);
+		//console.log(sender.uid + " is sending a message to " + receiver);
 
 		var newMessageData = {};
 		newMessageData.id = id;
 		newMessageData.sender = sender.email;
+		newMessageData.uid = sender.uid;
 		newMessageData.message = message;
 
 		for (var i = 0; i < socketList.length; i++)
@@ -714,12 +715,23 @@ io.on('connection', function(socket)
 			{ 
 				//console.log("Socket: " + socketList[i].socketType + ", " + socketList[i].email); 
 			}
-			if (receiver.length > 0 && socketList[i].token == receiver && socketList[i + 1])
+			
+			if (receiver.length > 0 && socketList[i].token == receiver)
 			{
+				//console.log("Sending to " + socketList[i].email + ", type: " + socketList[i].socketType);
 				//console.log("Socket type: " + socketList[i].socketType);
 				io.to(socketList[i].id).emit('incomingMessage', newMessageData);
 			}
-
+			else
+			{
+				//console.log(socketList[i].email);
+				if (socketList[i].email != undefined && socketList[i].email.indexOf("paul") > -1)
+				{
+					//console.log("Receiver length: " + receiver.length);
+					//console.log(socketList[i].token == receiver);
+				}
+				////console.log("Not sending to " + socketList[i].email + ", type: " + socketList[i].socketType + "debug: " + socketList[i].token + " != " + receiver);
+			}
 		}
 	});
 });
