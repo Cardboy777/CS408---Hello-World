@@ -15,10 +15,11 @@ class ShowMessages extends Component {
         }
         this.getMessages = this.getMessages.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
-		this.checkForMessages();
+		this.checkForMessages = this.checkForMessages.bind(this);
     }
     componentDidMount(){
         this.getMessages();
+		this.checkForMessages();
     }
 
     getMessages(){
@@ -55,7 +56,9 @@ class ShowMessages extends Component {
     }
 
     checkForMessages()
-	{		
+	{	
+		var that = this;
+		
 		window.localStorage.setItem("unreadMessageCount", "0");		
 		socket.on('testMessage', function(data)
 		{
@@ -63,14 +66,15 @@ class ShowMessages extends Component {
 		});
 		socket.on('incomingMessage', function(data)
 		{
-			let newMessages = this.state.messages
+			let newMessages = that.state.messages
+			
 			newMessages.push({
 				message: data.message,
 				from: data.uid, //this.props.uAuth.uid,
 				timestamp: new Date().getTime()
 			})
 
-			this.setState({
+			that.setState({
 				messages: newMessages
 			})
 		});
