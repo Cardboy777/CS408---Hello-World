@@ -90,33 +90,7 @@
 	float: right;
 }
 
-#MessagesPage .message {
-	max-width: 50%;
-	border-radius: 10px;
-	padding: 5px;
-	padding-bottom: 1px;
-	margin-bottom: 0px;
-	text-align: left;
-}
 
-#MessagesPage .message-sender {
-	background-color: #DDDDDD;
-	float: left;
-	margin-left: 5px;
-	color: black;
-	word-break: break-all;
-}
-
-#MessagesPage .message-self {
-	background-color: #2579E4;
-	float: right;
-	margin-right: 5px;
-	color: white;
-	max-width: 50%;
-	width: auto;
-	word-break: break-all;
-	text-align: right;
-}
 
 #MessagesPage .no-display {
 	display: none;
@@ -165,3 +139,33 @@
 #MessagesPage #sendMessage:hover {
 	background-color: rgb(0, 165, 250);
 }
+
+#ShowMessages #chat-area{
+	height: 84vh;
+	overflow:auto;
+}
+
+#ShowMessages .message {
+	border-radius: 10px;
+	font-weight: 500;
+	font-size: 1.2em;
+	padding: 0.2em 0.8em 0.2em 0.8em;
+	margin: 0.5em 5em 0.5em 5em;
+}
+
+#ShowMessages .message-sender {
+	float: left;
+	background-color: #DDDDDD;
+	color: black;
+	word-break: break-all;
+	text-align: left;
+}
+
+#ShowMessages .message-self {
+	float: right;
+	background-color: #2579E4;
+	color: white;
+	word-break: break-all;
+	text-align: right;
+}
+br.clearfloat { clear: both; } 
