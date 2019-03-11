@@ -26,6 +26,8 @@ class Messages extends Component {
     // this.checkLogin()
 	 // this.getListUser()
 	 this.renderListUser();
+	 console.log("in mount");
+	 console.log(this.currentUserId.uid);
   }
 
 
@@ -92,12 +94,12 @@ class Messages extends Component {
 	var that = this;
 	console.log("in rlu");
 	console.log(this.currentUserId);
-	myFirestore.collection("usersPQ").doc("mLUGrX6hNuUTII2DlcBywewHVd63").onSnapshot(function(doc) {
+	myFirestore.collection("usersPQ").doc(this.currentUserId.uid).onSnapshot(function(doc) {
 	  	console.log("Current data: ", doc.data());
 	  	this.listUser = doc.data().matchedUsers;
 	  	console.log(this.listUser);
 	  	console.log("Inside renderlistuser1-----" + this.listUser);
-    	if (this.listUser.length > 0) {
+    	if (this.listUser && this.listUser.length > 0) {
 			console.log("Inside renderlistuser");
       	 	let viewListUser = []
       		this.listUser.forEach((item, index) => {
@@ -178,7 +180,8 @@ class Messages extends Component {
                 currentPeerUser={this.state.currentPeerUser}
               />
             ) : (
-				<h1>hi</h1>
+				 (this.state.viewListUser1 ? (<h1>hi</h1>):(<h1>Sorry, you don't have any matches yet...</h1>))
+
               // <WelcomeBoard
               //   currentUserNickname={this.currentUserNickname}
               //   currentUserAvatar={this.currentUserAvatar}
