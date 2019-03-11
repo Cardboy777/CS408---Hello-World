@@ -10,6 +10,7 @@ class ShowMessages extends Component {
         this.state ={
             loadingstate: 0,
             messages: [],
+            chatroom_code: null
         }
         this.getMessages = this.getMessages.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
@@ -27,18 +28,23 @@ class ShowMessages extends Component {
             code = this.props.user.data.uid + this.props.uData.uid;
         }
         const db = firebase.firestore();
-        db.collection("usersPQ").doc(code).get()
+        db.collection("messages").doc(code).get()
         .then( (msgdoc) => {
             if (msgdoc.exists) {
                 this.setState({
                     loadingstate: 1,
-                    messages: msgdoc.data().messages
+                    messages: msgdoc.data().messages,
+                    chatroom_code: code
                 })
             } else {
                 this.setState({
                     loadingstate: 1,
-                    messages: []
+                    messages: [],
+                    chatroom_code: code
                 })
+                db.collection("messages").doc(code).set({
+                    messages: []
+                });
                 console.log("Messaging data does not exists\n");
             }
         })
@@ -70,39 +76,54 @@ class ShowMessages extends Component {
 		
 		socket.emit('testMessageClientToServer', "FWFGWFWE");
 	}
-    sendMessage(e, user)
+    sendMessage(e)
 	{
 		e.preventDefault();
-		var messageFrame = document.getElementById("messageFrame");
-		var senderMessage = document.getElementById("sampleSenderMessage");
-		var selfMessage = document.getElementById("sampleSelfMessage");
-		var sendMessageDiv = document.getElementById("send-message");
-		var messageBox = document.getElementById("messageBox");
-		var messageButton = document.getElementById("sendMessage");
+		let messageFrame = document.getElementById("messageFrame");
+		let messageBox = document.getElementById("messageBox");
 		
 		if (messageBox.value.length < 1) { window.alert("You must type a message in the box."); return; }
 		if (messageBox.value.split("\n").length > 12) { window.alert("You cannot have more than 12 lines of text per message."); return; }
-		var clon = selfMessage.cloneNode(true);
+
+        let message = messageBox.value
+
+
+
 		///set to my picture
-		clon.id = "";
-		clon.children[1].children[0].innerHTML = messageBox.value.split("\n").join("<br>");
-		clon.className = clon.className.replace("no-display", "");
-		messageFrame.appendChild(clon);
 		messageBox.value = "";
 		
-		var currentUser = JSON.parse(window.localStorage.getItem("user"));
-		var userEmail = currentUser.email;
-		var userKey = currentUser.uid;
+		let userEmail = this.props.uAuth.email;
+		let userKey = this.props.uAuth.uid;
 		
 		//var messageText = document.getElementById("messageTextBox").value;
-		var messageObject = {};
+		let messageObject = {};
 		messageObject.sender = {"email":userEmail, "uid":userKey};
 		messageObject.receiver = "paultest@test.com";
 		messageObject.id = Math.random();
-		messageObject.message = "TEST";
+		messageObject.message = message;
 		
-		socket.emit("sendMessageToUser", messageObject); //messageObject);
+        socket.emit("sendMessageToUser", messageObject); //messageObject);
+        
 
+
+        //update database with message
+        let date = new Date();
+
+        let newMessages = this.state.messages
+        newMessages.push({
+            message: message,
+            from: this.props.uAuth.uid,
+            timestamp: date.getTime()
+        })
+
+        this.setState({
+            messages: newMessages
+        })
+        console.log(newMessages)
+        const db = firebase.firestore();
+        db.collection("messages").doc(this.state.chatroom_code).update({
+			messages: newMessages
+        });
 	}
 
   render() {
@@ -120,8 +141,11 @@ class ShowMessages extends Component {
             :
                 <div>
                     <h1>This is the Chat area for {this.props.user.data.user} and {this.props.uData.user} </h1>
-                    <textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
-                    <button id="sendMessage" onClick={this.sendMessage}>Send</button>
+                
+                    <form>
+                        <textarea id="messageBox" rows="5" cols="100" name='message' rows='1' placeholder="Type your message here."></textarea>
+                        <button id="sendMessage" onClick={this.sendMessage}>Send</button>
+                    </form>
                 </div>
         }
     </div>
