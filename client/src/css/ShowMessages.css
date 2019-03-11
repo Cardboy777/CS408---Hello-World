@@ -1,0 +1,35 @@
+#ShowMessages #messageBox {
+	width: 90%;
+	border-radius: 5px;
+	border: 0px;
+	resize: none;
+}
+
+#ShowMessages #messageBox:hover {
+	background-color: #FDFDFD;
+}
+
+#ShowMessages #messageBox:focus {
+	background-color: white;
+}
+
+#ShowMessages #sendMessage {
+	position: relative;
+	float: right;
+	width: calc(10% - 5px);
+	height: 100%;
+	background-color: rgb(0, 150, 240);
+	border: 0px;
+	outline: 0px;
+	border-radius: 5px;
+	color: white;
+	font-size: 25px;
+}
+
+#ShowMessages #sendMessage:hover {
+	background-color: rgb(0, 165, 250);
+}
+#ShowMessages #chat-area{
+	height: 84vh;
+	overflow:auto;
+}

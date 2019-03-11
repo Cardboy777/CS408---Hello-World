@@ -1,0 +1,24 @@
+#ShowMessages .message {
+	border-radius: 10px;
+	font-weight: 500;
+	font-size: 1.2em;
+	padding: 0.2em 0.8em 0.2em 0.8em;
+	margin: 0.5em 5em 0.5em 5em;
+}
+
+#ShowMessages .message-sender {
+	float: left;
+	background-color: #DDDDDD;
+	color: black;
+	word-break: break-all;
+	text-align: left;
+}
+
+#ShowMessages .message-self {
+	float: right;
+	background-color: #2579E4;
+	color: white;
+	word-break: break-all;
+	text-align: right;
+}
+br.clearfloat { clear: both; } 

@@ -11,6 +11,7 @@ import Page404 from './Page404';
 import firebase from './firebase';
 import PersonalityQuestionnaire from './PersonalityQnn';
 import CodingQuestionnaire from './CodingQnn';
+import MessageNotifications from './MessageNotifications';
 
 class App extends Component {
   constructor(){
@@ -247,6 +248,7 @@ class App extends Component {
             </BrowserRouter> :
             <React.Fragment></React.Fragment>
         }
+		<MessageNotifications/>
       </div>
     );
   }

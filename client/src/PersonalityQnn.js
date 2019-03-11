@@ -130,9 +130,9 @@ class PersonalityQuestionnaire extends Component {
             canswer9:'',
             canswer10:'',
             avatarFile:"b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png",
-            pictureFile1:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
-            pictureFile2:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg",
-            pictureFile3:"4ad37bcc-b0e1-40de-b926-a46e029115b4.jpg"
+            pictureFile1:"",
+            pictureFile2:"",
+            pictureFile3:""
         });
         window.alert("Survey Submitted! Please fill out the next one");
        //this.setState.nextToggle=true;
@@ -185,7 +185,6 @@ class PersonalityQuestionnaire extends Component {
                    
                   });
             }
-
         });
     }
 */
@@ -340,16 +339,13 @@ class PersonalityQuestionnaire extends Component {
                 </label>
                 <br/>
                 <button type="submit" class="btn btn-outline-light btn-lg">Submit</button>
-
             </div>
         </form>
         <div class="form-group col-md-12">
             <button type="redirect" class="btn btn-outline-danger btn-lg" onClick={this.checkSubmit}>Next Questionnaire</button>
         </div>
-
         </div>
         );
     }
 }
-
 export default PersonalityQuestionnaire;
