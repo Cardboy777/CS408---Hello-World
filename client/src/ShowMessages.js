@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from './firebase'
 import openSocket from 'socket.io-client';
 import SpinningLoader from './SpinningLoader';
+import DisplayMessage from './DisplayMessage';
 const socket = openSocket('http://localhost:8080');
 
 class ShowMessages extends Component {
@@ -54,7 +55,7 @@ class ShowMessages extends Component {
     }
 
     checkForMessages()
-	{
+	{		
 		window.localStorage.setItem("unreadMessageCount", "0");
 		socket.on('sendMessageToUserResponse', function(resp)
 		{
@@ -84,11 +85,9 @@ class ShowMessages extends Component {
 		
 		if (messageBox.value.length < 1) { window.alert("You must type a message in the box."); return; }
 		if (messageBox.value.split("\n").length > 12) { window.alert("You cannot have more than 12 lines of text per message."); return; }
-
-        let message = messageBox.value
-
-
-
+		
+        let message = messageBox.value;
+		
 		///set to my picture
 		messageBox.value = "";
 		
@@ -97,8 +96,8 @@ class ShowMessages extends Component {
 		
 		//var messageText = document.getElementById("messageTextBox").value;
 		let messageObject = {};
-		messageObject.sender = {"email":userEmail, "uid":userKey};
-		messageObject.receiver = "paultest@test.com";
+		messageObject.sender = {"email":userEmail, "uid":this.props.user.uid};
+		messageObject.receiver = this.props.uData.uid;
 		messageObject.id = Math.random();
 		messageObject.message = message;
 		
@@ -129,7 +128,7 @@ class ShowMessages extends Component {
   render() {
     return (
     <div id='ShowMessages'>
-        {this.loadingstate === 0 ?
+        {this.state.loadingstate === 0 ?
             <SpinningLoader/>
         :
             this.state.messages.length === 0 ?
@@ -140,10 +139,17 @@ class ShowMessages extends Component {
                 </div>
             :
                 <div>
-                    <h1>This is the Chat area for {this.props.user.data.user} and {this.props.uData.user} </h1>
+                    <div id='chat-area'>
+                        {this.state.messages.map((i)=>
+                            this.state.messages.length === i+1 ?
+                                <DisplayMessage me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={true}/>
+                            :
+                                <DisplayMessage me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={false}/>
+                        )}
+                    </div>
                 
                     <form>
-                        <textarea id="messageBox" rows="5" cols="100" name='message' rows='1' placeholder="Type your message here."></textarea>
+                        <textarea id="messageBox" rows="5" cols="100" name='message' rows='2' placeholder="Type your message here."></textarea>
                         <button id="sendMessage" onClick={this.sendMessage}>Send</button>
                     </form>
                 </div>

@@ -27,8 +27,14 @@ class MessageNotifications extends Component {
 	{
 		socket.on('incomingMessage', function(data)
 		{
+			//window.alert("Received message");
 			var sender = data.sender || data.from;
 			var message = data.message;
+			
+			if (sender.indexOf("cowboy") < -1)
+			{
+				window.alert(sender + ": " + message);
+			}
 			
 			var notif = document.getElementById("defaultNotification");
 			var notificationHolder = document.getElementById("messageNotification");
