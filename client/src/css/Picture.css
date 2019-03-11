@@ -11,15 +11,38 @@
     color:black;
     margin-left:50px; 
 }
-#PictureBox{
-    margin-left: 50px;
+#PictureBox .img{
+    height: 15rem;
+    width: 15rem;
+    text-align: center;
+    align-content: center;
 }
+
 #PictureBox .noImage{
-    height: 10rem;
-    width: 10rem;
+    height: 15rem;
+    width: 15rem;
     border: 2px solid black;
     text-align: center;
     font-size: 1.5em;
-    line-height: 5em;
+    line-height: 8.5em;
     border-radius: 5px;
+}
+
+#PictureBox img.pic{
+    height: 15rem;
+    width: 15rem;
+}
+#PictureBox{
+    margin-left: 2em;
+}
+#PictureBox{
+    margin-left: 2em;
+}
+
+#PictureBox #update-pic-btn{
+    margin-left: 0.2em;
+}
+
+#PictureBox .space-man-joe-don{
+    margin-bottom: 0.5em;
 }

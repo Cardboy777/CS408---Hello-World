@@ -23,8 +23,6 @@
 #frontpageDiv #frontpageContainer{
     padding-left: 4em;
     padding-right: 4em;
-    position: relative;
-    bottom:0;
 }
 
 #frontpageDiv #frontpageContainer p{

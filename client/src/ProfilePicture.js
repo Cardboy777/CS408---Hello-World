@@ -96,7 +96,6 @@ class ProfilePictureUpload extends Component {
                     <img src={this.state.avatarURL} alt="Avatar" width="250" height="250"/>
                 }
                 </h6>
-                <br/>
             <form>
                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#Upmodal">Change Profile Picture</button>
                 <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"id="Upmodal" aria-hidden="true">

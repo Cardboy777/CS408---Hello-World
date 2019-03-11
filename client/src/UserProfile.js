@@ -52,7 +52,7 @@ class UserProfile extends Component {
             <div id="col-md-4">
               <ProfilePicture/>
             </div>
-            <div className='col-md-8'>
+            <div className='col-md-8 info'>
               <h1 id="pname">{this.state.name}</h1>
               <div id="infoPage"> 
                 <h5>Gender: <b>{this.state.gender} </b></h5>

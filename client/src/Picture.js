@@ -157,13 +157,15 @@ class Picture extends Component {
         return ( 
         <div id="PictureBox">
             <div >
-            {   this.state.pictureURL ?
-                <img width="250" height="250" src={this.state.pictureURL} alt="first slide"/>
-                :
-                <div className='noImage'>No Image</div>
-            }
-            <br/>
-            <button type="button"  class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target={this.state.pmodal} align="center">Update Picture</button>   
+                <div className='space-man-joe-don'>
+                    {   this.state.pictureURL ?
+                        <div className='pic'><img className='pic' src={this.state.pictureURL} alt="first slide"/></div>
+                        :
+                        <div className='noImage'>No Image</div>
+                    }
+                </div>  
+                    <button type="button" id='update-pic-btn' class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target={this.state.pmodal} align="center">Update Picture</button>
+                
             </div> 
             <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id={this.state.pmodalId} aria-hidden="true">
                     <div class="modal-dialog ">
