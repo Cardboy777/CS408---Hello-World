@@ -3,6 +3,8 @@ import firebase from './firebase'
 import openSocket from 'socket.io-client';
 import SpinningLoader from './SpinningLoader';
 import DisplayMessage from './DisplayMessage';
+import './css/ShowMessages.css'
+
 const socket = openSocket('http://localhost:8080');
 
 class ShowMessages extends Component {
@@ -15,7 +17,8 @@ class ShowMessages extends Component {
         }
         this.getMessages = this.getMessages.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
-		this.checkForMessages = this.checkForMessages.bind(this);
+        this.checkForMessages = this.checkForMessages.bind(this);
+        this.sendMessageButtonEvent= this.sendMessageButtonEvent.bind(this);
     }
     componentDidMount(){
         this.getMessages();
@@ -80,11 +83,14 @@ class ShowMessages extends Component {
 		});
 		
 		socket.emit('testMessageClientToServer', "FWFGWFWE");
-	}
-    sendMessage(e)
+    }
+    
+    sendMessageButtonEvent(e){
+        e.preventDefault();
+        this.sendMessage();
+    }
+    sendMessage()
 	{
-		e.preventDefault();
-		let messageFrame = document.getElementById("messageFrame");
 		let messageBox = document.getElementById("messageBox");
 		
 		if (messageBox.value.length < 1) { window.alert("You must type a message in the box."); return; }
@@ -121,13 +127,24 @@ class ShowMessages extends Component {
             messages: newMessages
         })
         console.log(newMessages)
+        console.log(this.state.chatroom_code)
         const db = firebase.firestore();
-        db.collection("messages").doc(this.state.chatroom_code).update({
+        db.collection("messages").doc(this.state.chatroom_code).set({
 			messages: newMessages
         });
 	}
 
   render() {
+
+    //listener for the Enter key for next
+    window.addEventListener('keydown',(e)=>{
+        let messageBox = document.getElementById("messageBox")
+        if ( document.activeElement === messageBox && e.keyCode === 13) {
+            e.preventDefault();
+            this.sendMessage();
+        }
+    }, false);
+
     return (
     <div id='ShowMessages'>
         {this.state.loadingstate === 0 ?
@@ -144,15 +161,15 @@ class ShowMessages extends Component {
                     <div id='chat-area'>
                         {this.state.messages.map((i)=>
                             this.state.messages.length === i+1 ?
-                                <DisplayMessage me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={true}/>
+                                <DisplayMessage key={i.timestamp} me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={true}/>
                             :
-                                <DisplayMessage me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={false}/>
+                                <DisplayMessage key={i.timestamp} me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={false}/>
                         )}
                     </div>
                 
                     <form>
                         <textarea id="messageBox" rows="5" cols="100" name='message' rows='2' placeholder="Type your message here."></textarea>
-                        <button id="sendMessage" onClick={this.sendMessage}>Send</button>
+                        <button id="sendMessage" onClick={this.sendMessageButtonEvent}>Send</button>
                     </form>
                 </div>
         }

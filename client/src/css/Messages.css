@@ -5,57 +5,6 @@
 	left: 0px;
 	background-color: #454545;
 	color: white;
-	text-align: center;
-}
-
-#MessagesPage  .user-holder {
-	position: relative;
-	width: 100%;
-	height: 50px;
-	background-color: Transparent;
-	border: none;
-	outline: none;
-	background-position: center;
-	transition: background .4s;
-}
-
-#MessagesPage .user-holder:hover {
-	cursor: pointer;
-}
-
-#MessagesPage .userMessageImage {
-	#float: left;
-	height: 80%;
-	margin-top: 5px;
-	width: auto;
-	margin-left: 5px;
-}
-
-#MessagesPage .user-message-name {
-	position: relative;
-	line-height: 50px;
-	#float: left;
-	margin-left: 10px;
-}
-
-#MessagesPage .matched-button {
-	position: relative;
-	width: 100%;
-	height: 50px;
-	background-color: Transparent;
-	border: none;
-	outline: none;
-	background-position: center;
-	transition: background .4s;
-}
-
-#MessagesPage .matched-button:hover {
-	 background: #787878 radial-gradient(circle, transparent 1%, #AAAAAA 50%) center/15000%;
-}
-
-#MessagesPage .matched-button:active {
-	background-size: 100%;
-	transition: background 0s;
 }
 
 #MessagesPage #messageFrame {
@@ -89,34 +38,6 @@
 	float: right;
 }
 
-#MessagesPage .message {
-	max-width: 50%;
-	border-radius: 10px;
-	padding: 5px;
-	padding-bottom: 1px;
-	margin-bottom: 0px;
-	text-align: left;
-}
-
-#MessagesPage .message-sender {
-	background-color: #DDDDDD;
-	#float: left;
-	margin-left: 5px;
-	color: black;
-	word-break: break-all;
-}
-
-#MessagesPage .message-self {
-	background-color: #2579E4;
-	#float: right;
-	margin-right: 5px;
-	color: white;
-	max-width: 50%;
-	width: auto;
-	word-break: break-all;
-	text-align: right;
-}
-
 #MessagesPage .no-display {
 	display: none;
 }
@@ -132,35 +53,9 @@
 	padding: 5px;
 	display: none;
 }
-
-#MessagesPage #messageBox {
-	width: 90%;
-	border-radius: 5px;
-	border: 0px;
-	resize: none;
-}
-
-#MessagesPage #messageBox:hover {
-	background-color: #FDFDFD;
-}
-
-#MessagesPage #messageBox:focus {
-	background-color: white;
-}
-
-#MessagesPage #sendMessage {
-	position: relative;
-	float: right;
-	width: calc(10% - 5px);
-	height: 100%;
-	background-color: rgb(0, 150, 240);
-	border: 0px;
-	outline: 0px;
-	border-radius: 5px;
-	color: white;
-	font-size: 25px;
-}
-
-#MessagesPage #sendMessage:hover {
-	background-color: rgb(0, 165, 250);
+#MessagesPage #leftbar-name{
+	text-align: center;
+	background-color: #363636;
+	padding-bottom: 0.2em;
+	margin-bottom: 0;
 }

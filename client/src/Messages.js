@@ -18,10 +18,8 @@ class Messages extends Component {
 		this.state = {
 				loading_state: 0,
 				user_list: null,
-				user_list_index: 0
-			}
+    }
 		this.fetchMatches = this.fetchMatches.bind(this);
-		this.showChatReact = this.showChatReact.bind(this);
 		this.showChat = this.showChat.bind(this);
 		//this.loadMatches();
 	}
@@ -105,57 +103,12 @@ class Messages extends Component {
     })
   }
 	
-	showChat(obj, user)
+	showChat(user)
 	{
 		console.log(user)
-		let sendMessageDiv = document.getElementById("show-messages");
+    let sendMessageDiv = document.getElementById("show-messages");
+    ReactDOM.unmountComponentAtNode(sendMessageDiv)
 		ReactDOM.render(<ShowMessages {...this.props} user={user} />, sendMessageDiv);
-		/*
-		var messageFrame = document.getElementById("messageFrame");
-		var senderMessage = document.getElementById("sampleSenderMessage");
-		var selfMessage = document.getElementById("sampleSelfMessage");
-		
-		var messageBox = document.getElementById("messageBox");
-		var messageButton = document.getElementById("sendMessage");
-		
-		var userName = document.getElementById(obj).children[1].innerHTML;
-		
-		sendMessageDiv.style.display = "inline-block";
-		var messageHistory = conversationHistory[userName];
-		for (var i = messageFrame.children.length - 1; i > 1; i--)
-		{
-			messageFrame.children[i].remove();
-		}
-		if (conversationHistory[userName] != undefined)
-		{
-			var messages = messageHistory.Messages;
-			for (var i = 0; i < messages.length; i++)
-			{
-				var message = messages[i];
-				var clon;
-				if (message.sender == "Me")
-				{
-					clon = selfMessage.cloneNode(true);
-					///set to my picture
-				}
-				else
-				{
-					clon = senderMessage.cloneNode(true);
-					///set to their picture
-				}
-				clon.id = "";
-				clon.children[1].children[0].innerHTML = message.message;
-				clon.className = clon.className.replace("no-display", "");
-				messageFrame.appendChild(clon);
-			}
-		}*/
-	}
-	
-	showChatReact(ev, user)
-	{
-		ev.preventDefault();
-		//window.alert("HERE");
-		this.showChat(ev.currentTarget.id, user);
 	}
 	
   render() {
@@ -169,9 +122,9 @@ class Messages extends Component {
 						this.state.loading_state === 1 ?
 							<div>
 								<div id="leftFrame">
-									<p>Matches</p>
+									<h4 id='leftbar-name'>Matches</h4>
 									{this.state.user_list.map((i) =>
-                    <MessagesUserSidebarPanel match={i} showChat={(e)=>{this.showChatReact(e, i)}}/>
+                    <MessagesUserSidebarPanel key={i.data.uid} match={i} showChat={(e)=>{this.showChat(i)}}/>
                   )}
 								</div>
 								<div id="show-messages" className='col-md-10 offset-2'></div>

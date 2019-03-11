@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './css/ReportButton.css';
+import './css/DisplayMessage.css';
 
 class DisplayMessage extends Component {
 
@@ -11,14 +11,23 @@ class DisplayMessage extends Component {
                     <div className='message message-self'>
                         {this.props.msg.message}
                     </div>
-                    
+                    {this.props.last ?
+                        <p>{this.props.msg.timestamp}</p>
+                    :
+                        <React.Fragment/>
+                    }
                     <br className='clearfloat'/>
                 </div>
             :
                 <div>
                     <div className='message message-sender'>
                        {this.props.msg.message}
-                    </div> 
+                    </div>
+                    {this.props.last ?
+                        this.props.msg.timestamp
+                    :
+                        <React.Fragment/>
+                    }
                     <br className='clearfloat'/>
                 </div>
             }
