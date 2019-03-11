@@ -56,17 +56,7 @@ class ShowMessages extends Component {
 
     checkForMessages()
 	{		
-		window.localStorage.setItem("unreadMessageCount", "0");
-		socket.on('sendMessageToUserResponse', function(resp)
-		{
-			window.alert(resp);
-		});
-		
-		socket.on('receiveMessage', function(msg)
-		{
-			window.alert("Receiving: " + JSON.stringify(msg));
-		});
-		
+		window.localStorage.setItem("unreadMessageCount", "0");		
 		socket.on('incomingMessage', function(data)
 		{
 			console.log(JSON.stringify(data));

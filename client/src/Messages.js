@@ -1,233 +1,194 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import './css/Messages.css'
-import ChatBoard from './chatBoard'
-import { myFirebase, myFirestore } from './firebase'
+import firebase from './firebase';
+import Loading from './Loading';
+import ListLoadingError from './ListLoadingError';
+import MessagesUserSidebarPanel from './MessagesUserSidebarPanel';
+import ReactDOM from 'react-dom';
+import SpinningLoader from './SpinningLoader';
+import ShowMessages from './ShowMessages';
+import MessageNotifications from './MessageNotifications';
 
-// import openSocket from 'socket.io-client';
-// const socket = openSocket('http://localhost:8080');
+const db = firebase.firestore();
 
 class Messages extends Component {
-	constructor(props) {
-    super(props)
-    this.state = {
-      isLoading: true,
-      isOpenDialogConfirmLogout: false,
-      currentPeerUser: null
+	constructor(){
+		super();
+		this.state = {
+				loading_state: 0,
+				user_list: null,
+				user_list_index: 0
+			}
+		this.fetchMatches = this.fetchMatches.bind(this);
+		this.showChatReact = this.showChatReact.bind(this);
+		this.showChat = this.showChat.bind(this);
+		//this.loadMatches();
+	}
+
+	componentDidMount(){
+    this.fetchMatches();
+  }
+	
+	//requests more potentail matches from the server
+  fetchMatches(){
+    fetch("/api/getMatches", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+          "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify({ username: this.props.uData.user }), // body data type must match "Content-Type" header
+    })
+    .then(res => res.json())
+    .then(arrayList => {
+      //console.log(arrayList);
+      this.getUserListData(arrayList);
+    }).catch((message) =>{
+      this.setState({
+        loading_state: 2
+      })
+    });
+	}
+
+  getUserListData(arraylist){
+    //console.log(arraylist)
+    let promises=[];
+    const db = firebase.firestore();
+    for(let k in arraylist){
+      let result = db.collection("usersPQ").doc(arraylist[k].uid).get()
+        .then( (userdoc) => {
+          if (userdoc.exists) {
+            return userdoc.data();
+          } else {
+            //console.log('No user data available for ')
+           // console.log(arraylist[k]);
+          }
+        })
+        .catch( (error) => {
+          //console.log('Error gettign doc from DB for ')
+           //console.log(arraylist[k]);
+        })
+      promises.push(result)
     }
-    this.currentUserId = JSON.parse(window.localStorage.getItem("user"));
-    // this.currentUserAvatar = localStorage.getItem(AppString.PHOTO_URL)
-    this.currentUserNickname = JSON.parse(window.localStorage.getItem("user"));
-    this.listUser = []
-	this.viewListUser1 = []
+    //wait for all promises in array to finish
+    Promise.all(promises).then((newarray) => {
+      let arry = []
+      for (let i in arraylist){
+        if(newarray[i] !== undefined){
+          arry.push({
+            uid: arraylist[i].uid,
+            match_percent: arraylist[i].match_percent,
+            user: arraylist[i].user,
+            data: newarray[i]
+          })
+        }
+      }
+      console.log("Final List:")
+      console.log(arry)
+      if(arry.length === 0){
+        this.setState({
+          loading_state: 2
+        })
+      }
+      else{
+        this.setState({
+          user_list : arry,
+          loading_state : 1
+        })
+      }
+    })
   }
-
-  componentDidMount() {
-    // this.checkLogin()
-	 // this.getListUser()
-	 this.renderListUser();
-	 console.log("in mount");
-	 console.log(this.currentUserId.uid);
-  }
-
-
-  // checkLogin = () => {
-  //   if (!localStorage.getItem(AppString.ID)) {
-  //     this.setState({ isLoading: false }, () => {
-  //       this.props.history.push('/')
-  //     })
-  //   } else {
-  //     this.getListUser()
-  //   }
-  // }
-
-  // getListUser = sync () => {
-    // myFirestore.collection("usersPQ").doc("LZ4cQ4PkDgbVLexbavYXmmpzofk1").onSnapshot(function(doc) {
-    //     console.log("Current data: ", doc.data());
-	// 	this.listUser = doc.data().prevMatchedUsers;
-	// 	console.log(this.listUser);
-    // });
-
-
-    // if (result.docs.length > 0) {
-    //   this.listUser = [...result.docs]
-    //   this.setState({ isLoading: false })
-    // }
-  // }
-
-  // onLogoutClick = () => {
-  //   this.setState({
-  //     isOpenDialogConfirmLogout: true
-  //   })
-  // }
-
-  // doLogout = () => {
-  //   this.setState({ isLoading: true })
-  //   myFirebase
-  //     .auth()
-  //     .signOut()
-  //     .then(() => {
-  //       this.setState({ isLoading: false }, () => {
-  //         localStorage.clear()
-  //         this.props.showToast(1, 'Logout success')
-  //         this.props.history.push('/')
-  //       })
-  //     })
-  //     .catch(function(err) {
-  //       this.setState({ isLoading: false })
-  //       this.props.showToast(0, err.message)
-  //     })
-  // }
-
-  // hideDialogConfirmLogout = () => {
-  //   this.setState({
-  //     isOpenDialogConfirmLogout: false
-  //   })
-  // }
-
-  // onProfileClick = () => {
-  //   this.props.history.push('/profile')
-  // }
-
-  renderListUser = async () => {
-	// this.getListUser();
-	var that = this;
-	console.log("in rlu");
-	console.log(this.currentUserId);
-	myFirestore.collection("usersPQ").doc(this.currentUserId.uid).onSnapshot(function(doc) {
-	  	console.log("Current data: ", doc.data());
-	  	this.listUser = doc.data().matchedUsers;
-	  	console.log(this.listUser);
-	  	console.log("Inside renderlistuser1-----" + this.listUser);
-    	if (this.listUser && this.listUser.length > 0) {
-			console.log("Inside renderlistuser");
-      	 	let viewListUser = []
-      		this.listUser.forEach((item, index) => {
-				console.log("inside for each!!!" + item);
-        		if (item.uid !== this.currentUserId) {
-					console.log("inside if");
-          			viewListUser.push(
-	            		<button
-							className = 'viewWrapItemFocused'
-	              			// className={
-	              			//   this.state.currentPeerUser &&
-	              			//   this.state.currentPeerUser === item
-	              			//     ? 'viewWrapItemFocused'
-	              			//     : 'viewWrapItem'
-	              			// }
-	              			key={item.uid}
-	              			onClick={() => {
-	                			that.setState({ currentPeerUser: item })
-	              			}}
-	            		>
-			              {/* <img
-			                className="viewAvatarItem"
-			                src={item.data().photoUrl}
-			                alt="icon avatar"
-			              /> */}
-				              <div className="viewWrapContentItem">
-				                <span className="textItem">{
-				                  item.user
-				                }</span>
-				              </div>
-			            </button>
-          			)
-		  			console.log(viewListUser);
-        		}
-      		});
-			console.log("outside for each!");
-			console.log(viewListUser[0]);
-			that.setState({
-				viewListUser1: viewListUser
-			});
-      		return viewListUser;
-    	} else {
-      		return null
-    	}
-	});
-  }
-
+	
+	showChat(obj, user)
+	{
+		console.log(user)
+		let sendMessageDiv = document.getElementById("show-messages");
+		ReactDOM.render(<ShowMessages {...this.props} user={user} />, sendMessageDiv);
+		/*
+		var messageFrame = document.getElementById("messageFrame");
+		var senderMessage = document.getElementById("sampleSenderMessage");
+		var selfMessage = document.getElementById("sampleSelfMessage");
+		
+		var messageBox = document.getElementById("messageBox");
+		var messageButton = document.getElementById("sendMessage");
+		
+		var userName = document.getElementById(obj).children[1].innerHTML;
+		
+		sendMessageDiv.style.display = "inline-block";
+		var messageHistory = conversationHistory[userName];
+		for (var i = messageFrame.children.length - 1; i > 1; i--)
+		{
+			messageFrame.children[i].remove();
+		}
+		if (conversationHistory[userName] != undefined)
+		{
+			var messages = messageHistory.Messages;
+			for (var i = 0; i < messages.length; i++)
+			{
+				var message = messages[i];
+				var clon;
+				if (message.sender == "Me")
+				{
+					clon = selfMessage.cloneNode(true);
+					///set to my picture
+				}
+				else
+				{
+					clon = senderMessage.cloneNode(true);
+					///set to their picture
+				}
+				clon.id = "";
+				clon.children[1].children[0].innerHTML = message.message;
+				clon.className = clon.className.replace("no-display", "");
+				messageFrame.appendChild(clon);
+			}
+		}*/
+	}
+	
+	showChatReact(ev, user)
+	{
+		ev.preventDefault();
+		//window.alert("HERE");
+		this.showChat(ev.currentTarget.id, user);
+	}
+	
   render() {
 
     return (
-      <div className="root1">
-		  <Header/>
-		  {console.log("below header!")}
-		  {console.log(this.state.currentPeerUser)}
-        {/* Header */}
-        {/* <div className="header">
-          <span>MAIN</span>
-          <img
-            className="icProfile"
-            alt="An icon default avatar"
-            src={images.ic_default_avatar}
-            onClick={this.onProfileClick}
-          />
-          <img
-            className="icLogout"
-            alt="An icon logout"
-            src={images.ic_logout}
-            onClick={this.onLogoutClick}
-          />
-        </div> */}
-
-        {/* Body */}
-        <div className="body">
-          <div className="viewListUser"> {this.state.viewListUser1}</div>
-
-          <div className="viewBoard">
-             {this.state.currentPeerUser ? (
-              <ChatBoard
-                currentPeerUser={this.state.currentPeerUser}
-              />
-            ) : (
-				 (this.state.viewListUser1 ? (<h1>hi</h1>):(<h1>Sorry, you don't have any matches yet...</h1>))
-
-              // <WelcomeBoard
-              //   currentUserNickname={this.currentUserNickname}
-              //   currentUserAvatar={this.currentUserAvatar}
-              // />
-            )}
-           </div>
-        </div>
-
-        {/* Dialog confirm */}
-        {/* {this.state.isOpenDialogConfirmLogout ? (
-          <div className="viewCoverScreen">
-            {this.renderDialogConfirmLogout()}
-          </div>
-        ) : null} */}
-
-        {/* Loading */}
-        {/* {this.state.isLoading ? (
-          <div className="viewLoading">
-            <ReactLoading
-              type={'spin'}
-              color={'#203152'}
-              height={'3%'}
-              width={'3%'}
-            />
-          </div>
-        ) : null} */}
+      <div id='MessagesPage'>
+        <Header {...this.props} />
+		<MessageNotifications/>
+        { this.state.loading_state === 0 ?
+          <Loading/> :
+						this.state.loading_state === 1 ?
+							<div>
+								<div id="leftFrame">
+									<p>Matches</p>
+									{this.state.user_list.map((i) =>
+                    <MessagesUserSidebarPanel match={i} showChat={(e)=>{this.showChatReact(e, i)}}/>
+                  )}
+								</div>
+								<div id="show-messages" className='col-md-10 offset-2'></div>
+							</div>
+							:
+							<div>
+								<div id="leftFrame">
+									<p>Matches</p>
+								</div>
+									<ListLoadingError>
+										<p>You can't send any messages because you don't have any matches.</p> <p>Find some matches by going to the '<a href='/matching'>Find Matches</a>' page and Liking some users.</p>
+									</ListLoadingError>
+							</div>
+				}
       </div>
-    )
+    );
   }
-
-  // renderDialogConfirmLogout = () => {
-  //   return (
-  //     <div>
-  //       <div className="titleDialogConfirmLogout">Are you sure to logout?</div>
-  //       <div className="viewWrapButtonDialogConfirmLogout">
-  //         <button className="btnYes" onClick={this.doLogout}>
-  //           YES
-  //         </button>
-  //         <button className="btnNo" onClick={this.hideDialogConfirmLogout}>
-  //           CANCEL
-  //         </button>
-  //       </div>
-  //     </div>
-  //   )
-  // }
 }
 
 export default Messages;

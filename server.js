@@ -670,34 +670,27 @@ server.listen(port, function()
     console.log('Server is listening on ' + port);
 });
 
+var socketList = [];
+
 io.on('connection', function(socket)
 {
 	//console.log('a user connected');
 	//console.log(socket.id);
 	
-	userList[socket.id] = {};
+	socketList.push(socket);
 	
-	var user = userList[socket.id];
-	user.email = "";
-	user.token = "";
-	user.username = "";
-	user.socket = socket.id;
+	socket.on('disconnect', function()
+	{
+        socketList.splice(socketList.indexOf(socket), 1);
+		console.log(socketList.length);
+    });
 	
 	socket.on('giveSocketData', function(data)
 	{
-		if (data.email) { user.email = data.email; }
-		if (data.token) { user.token = data.token;}
-		if (data.username) { user.username = data.username; }
+		if (data.email) { socket.email = data.email; }
+		if (data.token) { socket.token = data.token;}
+		if (data.username) { socket.username = data.username; }
 		var str = data.token || data.email;
-		if (userSocketMap[str] != undefined)
-		{
-			userSocketMap[str][socket.id] = true;
-		}
-		else
-		{
-			userSocketMap[str] = {};
-			userSocketMap[str][socket.id] = true;
-		}
 		
 		console.log(data.email + ": " + socket.id);
 	});
@@ -711,21 +704,17 @@ io.on('connection', function(socket)
 		
 		console.log(sender.uid + " is sending a message to " + receiver);
 		
-		var receiverSockets = userSocketMap[receiver];///their token
-
 		var newMessageData = {};
 		newMessageData.id = id;
 		newMessageData.sender = sender.email;
 		newMessageData.message = message;
-		for (var key in receiverSockets)
+		
+		for (var i = 0; i < socketList.length; i++)
 		{
-			if (userList[key] && userList[key].socket != undefined)
+			if (socketList[i].token == receiver)
 			{
-				io.to(key).emit('incomingMessage', newMessageData);
-				console.log("Sending to socket: " + userList[key].socket);
-				//userList[key].socket.emit('incomingMessage', newMessageData);
-				//userList[key].socket.emit('incomingMessagee', newMessageData);
-				//io.sockets.socket(key).emit('incomingMessage', newMessageData);
+				console.log("Socket token: " + socketList[i].token);
+				socketList[i].emit('incomingMessage', newMessageData);
 			}
 		}
 	});
@@ -737,77 +726,6 @@ io.on('connection', function(socket)
 			}
 	io.to(socket.id).emit('incomingMessage', messageData);
 	
-	
-	
-	
-	
-	
-	
-	/*var count = 0;
-	for (var key in userList)
-	{
-		if (userList[key] != undefined)
-		{
-			count++;
-		}
-	}*/
-	//console.log("Count: " + count);
-
-	/*socket.on('disconnect', function()
-	{
-		var str = user.token || user.email;
-		if (str == undefined) { return; }
-		if (userSocketMap[str])
-		{
-			if (userSocketMap[str][socket.id]) 
-			{
-				delete userSocketMap[str][socket.id]; 
-			}
-			userSocketMap[str][socket.id] = undefined;
-			if (userSocketMap[str].length < 1) { delete[userSocketMap[str]]; userSocketMap[str] = undefined; }
-		}
-		if (userList[socket.id] != undefined) 
-		{
-			//console.log("Deleting: " + socket.id);
-			delete[userList[socket.id]]; 
-			userList[socket.id] = undefined; 
-		}
-		delete user;
-	});
-	
-
-	socket.on('testMessageClientToServer', function(msg)
-	{
-		console.log("C2S: " + msg);
-	});
-
-	socket.on('sendMessageToUser', function(messageData)
-	{
-		var id = messageData.id;
-		var sender = messageData.sender; //{email: fq, uid: fefew}
-		var receiver = messageData.receiver;//token
-		var message = messageData.message;
-		
-		console.log(sender.uid + " is sending a message to " + receiver);
-		
-		////send message to database
-		var receiverSockets = userSocketMap[receiver];///their email
-
-		var newMessageData = {};
-		newMessageData.id = id;
-		newMessageData.sender = sender.email;
-		newMessageData.message = message;
-		for (var key in receiverSockets)
-		{
-			//if (userList[key] && userList[key].socket != undefined)
-			//{
-				console.log("Sending to socket: " + userList[key].socket);
-				//userList[key].socket.emit('incomingMessage', newMessageData);
-				//userList[key].socket.emit('incomingMessagee', newMessageData);
-				//io.sockets.socket(key).emit('incomingMessage', newMessageData);
-			//}
-		}
-	});*/
 
 	setInterval(function()
 	{
