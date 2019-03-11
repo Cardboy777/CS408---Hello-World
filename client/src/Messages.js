@@ -133,7 +133,7 @@ class Messages extends Component {
 							:
 							<div>
 								<div id="leftFrame">
-									<p>Matches</p>
+									<h4 id='leftbar-name'>Matches</h4>
 								</div>
 									<ListLoadingError>
 										<p>You can't send any messages because you don't have any matches.</p> <p>Find some matches by going to the '<a href='/matching'>Find Matches</a>' page and Liking some users.</p>
