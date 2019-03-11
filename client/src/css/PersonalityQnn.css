@@ -1,3 +1,11 @@
-#jumboText{
+#PQPage #jumboText{
     color: black;
+}
+#PQPage #pq-submit{
+    margin-top: 0.5em;
+}
+
+#PQPage #pq-submit-error{
+    color: red;
+    margin-left: 1em;
 }

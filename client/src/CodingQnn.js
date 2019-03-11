@@ -27,20 +27,14 @@ class CodingQuestionnaire extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.checkCompleted = this.checkCompleted.bind(this);
     }
-    /*
-    myCallback=(username) =>{
-        //this.props.callbackFromParent(PersonalityQuestionnaire);
-        this.setState({username:username})
-    }*/
+
     handleSubmit = e =>{
         e.preventDefault();
         const db =firebase.firestore();
         db.settings({
             timestampsInSnapshots: true
         }); 
-        //let cuid;
-       // window.alert(cuid);
-       // console.log(cuid);
+
         if(!this.handleValidation()){
             return;
         }
@@ -56,69 +50,36 @@ class CodingQuestionnaire extends Component {
             canswer8: this.state.ca8,
             canswer9: this.state.ca9,
             canswer10: this.state.ca10
-        });
-        /* this.setState({
-            ca1:"",
-            ca2:"",
-            ca3:"",
-            ca4:"",
-            ca5:"",
-            ca6:"",
-            ca7:"",
-            ca8:"",
-            ca9:"",
-            ca10:""
-        }); */
-        window.alert("You've successfully finished the Questionnaires!!");
-        
+        }).then(()=>{
+            //once data has been successfully updated in db, redirect to next questionnaire
+            this.checkCompleted();
+        })
     }
 
-    /*handleSubmit (event){
-        event.preventDefault();
-        const questionnaireRef = firebase.database().ref('usersCQ');
-        const questionnaire ={
-            answer1: this.state.a1,
-            answer2: this.state.a2,
-            answer3: this.state.a3,
-            answer4: this.state.a4,
-            answer5: this.state.a5,
-            answer6: this.state.a6,
-            answer7: this.state.a7,
-            answer8: this.state.a8,
-            answer9: this.state.a9,
-            answer10: this.state.a10,
-        }
-        questionnaireRef.push(questionnaire);
-        this.setState({
-            a1:"",
-            a2:"",
-            a3:"",
-            a4:"",
-            a5:"",
-            a6:"",
-            a7:"",
-            a8:"",
-            a9:"",
-            a10:""
-        });
-    }*/
-
+   
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value
         });
     }
+
+    updateErrorText(text){
+        window.scrollTo(0,document.body.scrollHeight);
+        let error = document.getElementById('cq-submit-error')
+        error.innerHTML=text
+    }
+
     handleValidation(){
-        if(this.state.ca1===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca2===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca3===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca4===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca5===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca6===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca7===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca8===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca9===""){ window.alert("Invalid Question Input"); return false;}
-        else if(this.state.ca10===""){ window.alert("Invalid Question Input"); return false;}
+        if(this.state.ca1===""){ this.updateErrorText("Invalid Motivation Input"); return false;}
+        else if(this.state.ca2===""){ this.updateErrorText("Invalid Coding Language Input"); return false;}
+        else if(this.state.ca3===""){ this.updateErrorText("Invalid Search Algorithm Input"); return false;}
+        else if(this.state.ca4===""){ this.updateErrorText("Invalid Group Work Input"); return false;}
+        else if(this.state.ca5===""){ this.updateErrorText("Invalid IOS/Android Input"); return false;}
+        else if(this.state.ca6===""){ this.updateErrorText("Invalid IDE Input"); return false;}
+        else if(this.state.ca7===""){ this.updateErrorText("Invalid WebDev Input"); return false;}
+        else if(this.state.ca8===""){ this.updateErrorText("Invalid When do You Code Input"); return false;}
+        else if(this.state.ca9===""){ this.updateErrorText("Invalid Hackathon Input"); return false;}
+        else if(this.state.ca10===""){ this.updateErrorText("Invalid Data Structure Input"); return false;}
         else{ return true; }
         
     }
@@ -129,45 +90,20 @@ class CodingQuestionnaire extends Component {
             window.location.href="/";
         }
     }
-    //not sure if i need this
-    /*componentDidMount(){
-        const questionnaireRef =firebase.database().ref('usersPQ');
-        questionnaireRef.on('value',(snapshot)=>{
-            let questionnaire=snapshot.val();
-            let newState=[];
-            for(let q in questionnaire){
-                newState.push({
-                    id:q,
-                    answer1: questionnaire[q].answer1,
-                    answer2: questionnaire[q].answer2,
-                    answer3: questionnaire[q].answer3,
-                    answer4: questionnaire[q].answer4,
-                    answer5: questionnaire[q].answer5,
-                    answer6: questionnaire[q].answer6,
-                    answer7: questionnaire[q].answer7,
-                    answer8: questionnaire[q].answer8,
-                    answer9: questionnaire[q].answer9,
-                    answer10: questionnaire[q].answer10,
-                    //
-                });
-            }
-            this.setState({
-                questionnaire:newState
-            });
-        });
-    }*/
+
 
     // need to add the bootstrap for this page
     //should add the value to all the options of select
     render() { 
         return ( 
-            <div>
+            <div id='CQPage'>
             <form onSubmit={this.handleSubmit}>
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
                         <h2 class="display-4" id="jumboText">Coding Questionnaire</h2>
                     </div>
                 </div>
+            <div className='col-md-6 offset-3'>
                 <div class="form-group col-md-12">
                 <label>What motivates you to code?
                     <select class="form-control" id="ca1" name="ca1" onChange={this.handleChange} value={this.state.ca1}>
@@ -239,14 +175,11 @@ class CodingQuestionnaire extends Component {
                     </select>
                 </label>
                 <br />
-            
-                <button type="submit" class="btn btn-outline-light btn-lg" onClick={this.handleSubmit}>Submit</button>
-                
+                <button id='cq-submit' type="submit" class="btn btn-outline-light btn-lg">Submit</button>
+                <span id='cq-submit-error'></span>
+            </div>
             </div>
         </form>
-        <div class="form-group col-md-12">
-            <button class="btn btn-outline-danger btn-lg" onClick={this.checkCompleted}  >Done</button>
-        </div>
         </div> 
         );
     }
