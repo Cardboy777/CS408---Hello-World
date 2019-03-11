@@ -15,7 +15,9 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+})
 var userList = {};
 var userSocketMap = {};
 
