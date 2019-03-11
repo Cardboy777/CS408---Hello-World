@@ -1,16 +1,25 @@
-#uploadLogo{
+#PictureBox #uploadLogo{
     color: white;
     width: 25px;
     height:25px;
 }
-#pmodal{
+#PictureBox #pmodal{
     color: black;
     margin-left: 50px;
 }
-.modal.fade.bd-example-modal{
+#PictureBox .modal.fade.bd-example-modal{
     color:black;
     margin-left:50px; 
 }
 #PictureBox{
     margin-left: 50px;
+}
+#PictureBox .noImage{
+    height: 10rem;
+    width: 10rem;
+    border: 2px solid black;
+    text-align: center;
+    font-size: 1.5em;
+    line-height: 5em;
+    border-radius: 5px;
 }

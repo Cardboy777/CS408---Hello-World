@@ -30,3 +30,7 @@ div.MiniProfileWidget .profSect h4,h3{
 div.MiniProfileWidget div.extra-row p{
     font-size: 1.2em;
 }
+
+div.MiniProfileWidget hr{
+    border: 1px solid #dbdbdb;
+}

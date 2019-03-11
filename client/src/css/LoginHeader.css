@@ -19,7 +19,7 @@
 }
 
 /* Full-width input fields */
-#LoginHeader input[type=text], input[type=password] {
+#LoginHeader .signup-modal input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -29,20 +29,20 @@
   border-radius: 9px;
 }
 
-#LoginHeader input[type=text]:hover, #LoginHeader input[type=password]:hover {
+#LoginHeader .signup-modal input[type=text]:hover, #LoginHeader input[type=password]:hover {
 	border: 1px solid #88D;
 	outline: 0;
 	background-color: #FEFEFE;
 }
 
-#LoginHeader input[type=text]:focus, input[type=password]:focus {
+#LoginHeader .signup-modal input[type=text]:focus, input[type=password]:focus {
 	border: 1px solid #48c;
 	outline: 0;
 	background-color: #FAFAFA;
 }
 
 /* Set a style for all buttons */
-#LoginHeader button[class=signup] {
+#LoginHeader .signup-modal button[class=signup] {
   background-color: #36D;
   color: white;
   padding: 14px 20px;
@@ -53,11 +53,11 @@
   border-radius: 5px;
 }
 
-#LoginHeader button[class=signup] {
+#LoginHeader .signup-modal button[class=signup] {
 	border-radius: 5px;
 }
 
-#LoginHeader button[class=signup]:hover {
+#LoginHeader .signup-modal button[class=signup]:hover {
 	background-color: #47E;
 }
 
@@ -200,5 +200,11 @@
 
 #LoginHeader #signupForm h3{
   color: black;
+  margin: 0.5em 0 0 0.5em;
+}
+
+#LoginHeader #signup-error{
+  color: red;
+  font-weight: 600;
   margin: 0.5em 0 0 0.5em;
 }

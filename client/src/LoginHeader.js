@@ -51,68 +51,16 @@ class LoginHeader extends Component {
 			// Handle Errors here.
 			console.log(JSON.stringify(error));
 			let errorElement = document.getElementById("loginError");
-			errorElement.innerHTML='Login Error';
+			errorElement.innerHTML=error.message;
 			errorElement.style.display = "inline-block";
 			// ...
 		  });
     }
     signUp(e){
 		e.preventDefault();
-		if (/*this.state.validUsername === true && */this.state.validEmail === true && this.state.validPassword === true)
+		if (this.state.validEmail === true && this.state.validPassword === true)
 		{
-			/*firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(data){
-				window.alert(JSON.stringify(data.user.uid));
-				const db=firebase.firestore;
-			if(data.user.uid){
-				window.alert("help");
-				db.collection("usersPQ").doc(data.user.uid).set({
-					uid:data.user.uid,
-					user: this.state.username,
-					gender: '',
-					age: '',
-					location: '',
-					PQComplete: false,
-					CQComplete:false,
-					attractGender: '',
-					panswer1: '',
-					panswer2: '',
-					panswer3: '',
-					panswer4: '',
-					panswer5: '',
-					panswer6: '',
-					panswer7: '',
-					panswer8: '',
-					panswer9: '',
-					panswer10: '',
-					panswer11: '',
-					panswer12: '',
-					panswer13: '',
-					panswer14:'',
-					panswer15: '',
-					panswer16: '',
-					panswer17: '',
-					describe: '',
-					canswer1:'',
-					canswer2:'',
-					canswer3:'',
-					canswer4:'',
-					canswer5:'',
-					canswer6:'',
-					canswer7:'',
-					canswer8:'',
-					canswer9:'',
-					canswer10:'',
-					avatarFile:'b76c5a34-13eb-4c4d-bd3f-a81c73bcea4e.png',
-					pictureFile1:'1efd88dc-6df2-4735-81ea-93a555901556.jpg',
-					pictureFile2:'1efd88dc-6df2-4735-81ea-93a555901556.jpg',
-					pictureFile3:'1efd88dc-6df2-4735-81ea-93a555901556.jpg'
-				}).then(function() {
-					console.log("Document successfully written!");
-				})
-				.catch(function(error) {
-					console.error("Error writing document: ", error);
-				});
-			}*/
+
 			firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(dat)
 			{
 				var newUser = {};
@@ -123,14 +71,11 @@ class LoginHeader extends Component {
 
 			}).catch(function(error) {
 				// Handle Errors here.
-				let errorCode = error.code;
-				let errorMessage = error.message;
-				console.log("Error: " + errorCode + "\n" + errorMessage);
+				let errorspan = document.getElementById('signup-error')
+				errorspan.innerHTML= error.message
 			});
 		
 		}
-		//let transitionTo = Router.transitionTo('/PersonalityQuestionnaire')
-
     }
     toggleLoginState(e){
         e.preventDefault();
@@ -224,7 +169,7 @@ class LoginHeader extends Component {
         }
         else{
             modal=
-			<div className="centerThis">
+			<div className="centerThis signup-modal">
 				<form id="signupForm" className="modal-content animate" action="">
 					<div className="imgcontainer">
 						<span onClick={this.toggleLoginState} className="close" title="Close Signup">&times;</span>
@@ -244,7 +189,7 @@ class LoginHeader extends Component {
 						<input id="usernameBox" type="text" placeholder="Enter Username" name="username" onKeyUp={this.checkUsername} onFocus={this.checkUsername} onBlur={this.checkUsername} required/>
 						<label className="inputError" id="signupUsernameError">Error:</label>
 						*/}
-						
+						<span id='signup-error'></span>
 						<button className="signup" type="button" onClick={this.signUp}>Sign Up</button>
 					</div>
 				</form>

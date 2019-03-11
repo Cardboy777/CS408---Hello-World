@@ -7,6 +7,12 @@ import ProfileImage3 from './ProfileImage3';
 
 class MiniProfile extends Component {
 
+    componentDidMount(){
+        let div = document.getElementById(this.props.userData.user + '-match-percent')
+        let color= (this.props.match_percent/100) *120;
+        div.style.color = 'hsl(' + color + ', 100%, 45%)';
+    }
+
     render() {
         return (
             <div className='MiniProfileWidget'>
@@ -20,7 +26,7 @@ class MiniProfile extends Component {
                                 <h1 className="name">{this.props.userData.user}</h1>
                                 <p className='desc'>{this.props.userData.describe}</p>
                             </div>
-                            <div className='compatibilityDiv col-md-1'>
+                            <div id={this.props.userData.user + '-match-percent'} className='compatibilityDiv col-md-1'>
                                 <h2 className="compat-percent">{this.props.match_percent}%</h2>
                             </div>
                             </div>
@@ -34,12 +40,14 @@ class MiniProfile extends Component {
                                 <p>{this.props.userData.location}</p>
                             </div>
                             <div className='col-md-4 profSect'>
-                                <h4>Values</h4>
-                                <p>{this.props.userData.panswer2}</p>
+                                <h4>Age</h4>
+                                <p>{this.props.userData.age}</p>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <hr/>
 
                 <div className='row extra-row'>
                     <div className='col-md-4 profSect'>

@@ -1,22 +1,9 @@
-#profileNameAndPicture{
-    color:white;
-    margin-left: 50px;
-    float: left;
-    width: 50%;
+#UserProfilePage .profile-content{
+    background-color: ghostwhite;
+    padding: 2em;
+    border-radius: 10px;
+    color: black;
 }
-#pname{
-    margin-left: 50px;
-}
-#infoPage{
-    display:block;
-    float: right;
-    top: 100%;
-    width: 50%;
-}
-#userInterestPhotos{
-    display: block;
-}
-
-#buttonBlock{
-    margin-left:25px;
+#UserProfilePage .extra-info{
+    margin: 1em 2em 0 2em;
 }

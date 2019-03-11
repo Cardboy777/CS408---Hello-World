@@ -39,33 +39,106 @@ class UserProfile extends Component {
       });
     });
   }
+  doNotDisplay(){
+    return false;
+  }
+
   render() {
     return (
       <div id="UserProfilePage">
         <Header {...this.props}/><br/>
-        <div id="profileNameAndPicture">
-          <h1 id="pname">{this.state.name}</h1>
-           <div id="infoPage"> 
-            <h5>Gender: <b>{this.state.gender} </b></h5>
-            <h5>Age: <b> {this.state.age} </b></h5>
-            <h5>Interested in: <b>{this.state.attractgender}</b></h5>
-            <h5>Description: {this.state.description}</h5>
+        <div className='profile-content col-md-8 offset-2'>
+          <div className='row'>
+            <div id="col-md-4">
+              <ProfilePicture/>
+            </div>
+            <div className='col-md-8'>
+              <h1 id="pname">{this.state.name}</h1>
+              <div id="infoPage"> 
+                <h5>Gender: <b>{this.state.gender} </b></h5>
+                <h5>Age: <b> {this.state.age} </b></h5>
+                <h5>Interested in: <b>{this.state.attractgender}</b></h5>
+                <h5>Description: <b>{this.state.description}</b></h5>
+              </div>
+            </div>
           </div>
-          <ProfilePicture/>
-          <div id="userInterestPhotos">
-          <div> <Picture name="pictureFile1"/></div>
-          <div><Picture name="pictureFile2"/></div>
-          <Picture name="pictureFile3"/>
           <br/>
+          <div className='row'>
+              <div className='col-md-4'><Picture name="pictureFile1"/></div>
+              <div className='col-md-4'><Picture name="pictureFile2"/></div>
+              <div className='col-md-4'><Picture name="pictureFile3"/></div>
           </div>
-        </div> 
-        <br/>
+          <div className='extra-info'>
+            <div className='row'>
+              <div className='col-md-4'>
+                  <h3>Language</h3>
+                  <p>{this.props.uData.canswer2}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Data Structure</h3>
+                  <p>{this.props.uData.canswer10}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Editor</h3>
+                  <p>{this.props.uData.canswer6}</p>
+              </div>
+            </div>
+
+            <div className='row'>
+              <div className='col-md-4'>
+                  <h3>Search Algorithm</h3>
+                  <p>{this.props.uData.canswer3}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Works Best</h3>
+                  <p>{this.props.uData.panswer8}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Personality</h3>
+                  <p>{this.props.uData.panswer3}</p>
+              </div>
+            </div>
+
+            <div className='row'>
+              <div className='col-md-4'>
+                  <h3>Motivation</h3>
+                  <p>{this.props.uData.panswer1}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Indoor/Outdoor</h3>
+                  <p>{this.props.uData.panswer6}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Motivation (Coding)</h3>
+                  <p>{this.props.uData.canswer1}</p>
+              </div>
+            </div>
+
+            <div className='row'>
+              <div className='col-md-4'>
+                  <h3>Music</h3>
+                  <p>{this.props.uData.panswer7}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Codes During</h3>
+                  <p>{this.props.uData.canswer8}</p>
+              </div>
+              <div className='col-md-4'>
+                  <h3>Hackathons</h3>
+                  <p>{this.props.uData.canswer9}</p>
+              </div>
+            </div>
+            
+          </div>
+
+          <br/>
           <div id="buttonBlock">
             <EditPQuestionnaire {...this.props}/>
             <br/>
             <EditCQuestionnaire {...this.props}/>
-         </div> 
-      </div>    
+          </div>
+        </div>
+      </div>
     );
   }
 }

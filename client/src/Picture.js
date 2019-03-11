@@ -157,8 +157,10 @@ class Picture extends Component {
         return ( 
         <div id="PictureBox">
             <div >
-            {   this.state.pictureURL &&
+            {   this.state.pictureURL ?
                 <img width="250" height="250" src={this.state.pictureURL} alt="first slide"/>
+                :
+                <div className='noImage'>No Image</div>
             }
             <br/>
             <button type="button"  class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target={this.state.pmodal} align="center">Update Picture</button>   
