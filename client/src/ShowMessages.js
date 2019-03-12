@@ -25,10 +25,12 @@ class ShowMessages extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.checkForMessages = this.checkForMessages.bind(this);
         this.sendMessageButtonEvent= this.sendMessageButtonEvent.bind(this);
+        
+        this.checkSend= this.checkSend.bind(this);
     }
     componentDidMount(){
         this.getMessages();
-		this.checkForMessages();
+        this.checkForMessages();
 		
 		setTimeout(function()
 		{
@@ -61,6 +63,8 @@ class ShowMessages extends Component {
                     messages: msgdoc.data().messages,
                     chatroom_code: code
                 })
+                let messageList = document.getElementById('chat-area');
+                messageList.scrollTop= messageList.scrollHeight;
             } else {
                 this.setState({
                     loadingstate: 1,
@@ -89,23 +93,24 @@ class ShowMessages extends Component {
 		});
 		socket.on('incomingMessage', function(data)
 		{
-			let newMessages = that.state.messages
-			
-			newMessages.push({
-				timestamp: new Date().getTime(),
-				message: data.message,
-				from: data.uid //this.props.uAuth.uid,
-			})
+            if(data.uid === that.props.user.data.uid){
+                let newMessages = that.state.messages
+                newMessages.push({
+                    timestamp: new Date().getTime(),
+                    message: data.message,
+                    from: data.uid //this.props.uAuth.uid,
+                })
 
-			that.setState({
-				messages: newMessages
-			})
-			
-			var chatArea = document.getElementById("chat-area");
-			if (chatArea != undefined)
-			{
-				chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
-			}
+                that.setState({
+                    messages: newMessages
+                })
+                
+                var chatArea = document.getElementById("chat-area");
+                if (chatArea != undefined)
+                {
+                    chatArea.scrollTop = chatArea.scrollHeight - chatArea.clientHeight;
+                }
+            }
 		});
 		
 		socket.emit('testMessageClientToServer', "FWFGWFWE");
@@ -172,25 +177,22 @@ class ShowMessages extends Component {
 		{
 			window.alert("ERROR: " + err);
 		});
-	}
+    }
+    
+    checkSend(e){
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            this.sendMessage()
+        }
+    }
 
   render() {
-
-    //listener for the Enter key for next
-    window.addEventListener('keydown',(e)=>{
-        let messageBox = document.getElementById("messageBox")
-        if ( document.activeElement === messageBox && e.keyCode === 13) {
-            e.preventDefault();
-            this.sendMessage();
-        }
-    }, false);
 
     return (
     <div id='ShowMessages'>
         {this.state.loadingstate === 0 ?
             <SpinningLoader/>
         :
-            
                 <div>
                     <div id='chat-area'>
                         {this.state.messages.length === 0 ?
@@ -204,7 +206,7 @@ class ShowMessages extends Component {
                         )}
                     </div>
                     <form>
-                        <textarea id="messageBox" rows="5" cols="100" name='message' rows='2' placeholder="Type your message here."></textarea>
+                        <textarea id="messageBox" onKeyPress={this.checkSend} rows="5" cols="100" name='message' rows='2' placeholder="Type your message here."></textarea>
                         <button id="sendMessage" onClick={this.sendMessageButtonEvent}>Send</button>
                     </form>
                 </div>
