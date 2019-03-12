@@ -3,7 +3,19 @@
     padding: 2em;
     border-radius: 10px;
     color: black;
+    margin-bottom: 1em;
 }
 #UserProfilePage .extra-info{
     margin: 1em 2em 0 2em;
+}
+#UserProfilePage .info{
+    margin: 0 0 0 1em;
+}
+#UserProfilePage #pname{
+    font-size: 4em;
+    font-weight: 800;
+    margin-top: -0.2em;
+}
+#UserProfilePage #infoPage h5{
+    font-size: 1.4em;
 }
