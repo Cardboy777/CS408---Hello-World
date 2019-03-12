@@ -10,7 +10,7 @@ const socket = openSocket(socketName);*/
 var portNum = 8080;
 var preLink = "http://";
 if (window.location.href.indexOf("localhost") < 0) { portNum = 44073; preLink = "https://"; }
-const socket = openSocket(preLink + window.location.hostname + ":" + portNum); 
+const socket = openSocket(); //preLink + window.location.hostname + ":" + portNum); 
 
 let unreadMessageCount = 0;
 
