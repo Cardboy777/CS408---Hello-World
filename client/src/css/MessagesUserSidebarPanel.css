@@ -50,3 +50,17 @@
 	background-size: 100%;
 	transition: background 0s;
 }
+
+.MessagesUserSidebarPanel .online {
+	margin: 0.9em 0.8em 0 0;
+	float: right;
+	height: 1em;
+	width: 1em;
+}
+
+.MessagesUserSidebarPanel .offline {
+	margin: 0.9em 0.8em 0 0;
+	float: right;
+	height: 1em;
+	width: 1em;
+}

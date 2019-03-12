@@ -11,67 +11,11 @@ class UserProfile extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name:'',
-      age:'',
-      gender:'',
-      description:'',
-      attractGender:'',
-	  lastOnline:''
+	    lastOnline:''
     }
     
   }
-  componentDidMount(){
-    const db =firebase.firestore();
-    let that =this;
-   
-    firebase.auth().onAuthStateChanged((user)=>{
-      // window.alert(user.uid);
-      const docRef = db.collection("usersPQ").doc(user.uid);
-      docRef.get().then(function(doc) {
-        that.setState({
-          name: doc.data().user,
-          gender: doc.data().gender,
-          age:  doc.data().age,
-          description: doc.data().describe,
-          attractgender: doc.data().attractGender,        
-          });
-      }).catch(function(error) {
-        console.log("Error getting document:", error);
-      });
-	  
-	  const statRef = db.collection("userStats").doc(user.uid);
-      statRef.get().then(function(doc) {
-		  var lastOnlineTime = doc.data().lastOnlineTime || new Date().getTime();
-		  var lastCheck = Math.floor((new Date().getTime() - lastOnlineTime) / 1000);
-		  var onlineString = "Online";
-		  if (lastCheck < 30)
-		  {
-			  onlineString = "Online";
-		  }
-		  else if (lastCheck < 3600)
-		  {
-			  onlineString = "Last seen " + Math.floor(lastCheck / 60) + " minutes ago";
-		  }
-		  else if (lastCheck < 86400)
-		  {
-			  onlineString = "Last seen " + Math.floor(lastCheck / 3600) + " hours ago";
-		  }
-		  else 
-		  {
-			  onlineString = "Last seen " + Math.floor(lastCheck / 86400) + " days ago";
-		  }
-        that.setState({
-          lastOnline: onlineString
-          });
-      }).catch(function(error) {
-        console.log("Error getting document:", error);
-      });
-    });
-  }
-  doNotDisplay(){
-    return false;
-  }
-
+  
   render() {
     return (
       <div id="UserProfilePage">
@@ -82,13 +26,12 @@ class UserProfile extends Component {
               <ProfilePicture/>
             </div>
             <div className='col-md-8 info'>
-              <h1 id="pname">{this.state.name}</h1>
+              <h1 id="pname">{this.props.uData.user}</h1>
               <div id="infoPage"> 
-				<h5>Online Status: <b>{this.state.lastOnline} </b></h5>
-                <h5>Gender: <b>{this.state.gender} </b></h5>
-                <h5>Age: <b> {this.state.age} </b></h5>
-                <h5>Interested in: <b>{this.state.attractgender}</b></h5>
-                <h5>Description: <b>{this.state.description}</b></h5>
+                <h5>Gender: <b>{this.props.uData.gender} </b></h5>
+                <h5>Age: <b> {this.props.uData.age} </b></h5>
+                <h5>Interested in: <b>{this.props.uData.attractGender}</b></h5>
+                <h5>Description: <b>{this.props.uData.describe}</b></h5>
               </div>
             </div>
           </div>

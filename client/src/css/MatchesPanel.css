@@ -11,3 +11,8 @@ div.MatchesPanel button{
 div.MatchesPanel button.skip{
     width: 15%;
 }
+
+div.MatchesPanel .online{
+    font-size: 1.2em;
+    color: green;
+}

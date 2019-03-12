@@ -33,3 +33,7 @@
 	height: 84vh;
 	overflow:auto;
 }
+#ShowMessages #no-msg-msg{
+	margin-top: 30vh;
+	text-align: center;
+}

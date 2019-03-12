@@ -190,23 +190,19 @@ class ShowMessages extends Component {
         {this.state.loadingstate === 0 ?
             <SpinningLoader/>
         :
-            this.state.messages.length === 0 ?
-                <div>
-                    <h1>You haven't Sent Any Messages! Try saying 'Hi'</h1>
-                    <textarea id="messageBox" rows="5" cols="100" placeholder="Type your message here."></textarea>
-                    <button id="sendMessage" onClick={this.sendMessage}>Send</button>
-                </div>
-            :
+            
                 <div>
                     <div id='chat-area'>
-                        {this.state.messages.map((i)=>
+                        {this.state.messages.length === 0 ?
+                            <h1 id='no-msg-msg'>You haven't Sent Any Messages! Try saying 'Hi'</h1>
+                        :
+                        this.state.messages.map((i)=>
                             this.state.messages.length === i+1 ?
                                 <DisplayMessage key={i.timestamp} me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={true}/>
                             :
                                 <DisplayMessage key={i.timestamp} me={this.props.uData.uid} them={this.props.user.data.uid} msg={i} last={false}/>
                         )}
                     </div>
-                
                     <form>
                         <textarea id="messageBox" rows="5" cols="100" name='message' rows='2' placeholder="Type your message here."></textarea>
                         <button id="sendMessage" onClick={this.sendMessageButtonEvent}>Send</button>

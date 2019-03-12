@@ -7,21 +7,6 @@ import ProfileImage3 from './ProfileImage3';
 
 class MiniProfile extends Component {
 
-    componentDidMount(){
-        let div = document.getElementById(this.props.userData.user + '-match-percent')
-        let color= (this.props.match_percent/100) *120;
-        div.style.color = 'hsl(' + color + ', 100%, 45%)';
-		
-		/*var usernames = document.getElementsByClassName("usernameDiv");
-		for (var i = 0; i < usernames.length; i++)
-		{
-			if (usernames[i].children[0] != undefined)
-			{
-				var username = usernames[i].children[0].innerHTML;
-			}
-		}*/
-    }
-
     render() {
         return (
             <div className='MiniProfileWidget'>
@@ -33,6 +18,7 @@ class MiniProfile extends Component {
                         <div className='row'>
                             <div className='usernameDiv col-md-10'>
                                 <h1 className="name">{this.props.userData.user}</h1>
+                                {this.props.children}
                                 <p className='desc'>{this.props.userData.describe}</p>
                             </div>
                             <div id={this.props.userData.user + '-match-percent'} className='compatibilityDiv col-md-1'>
