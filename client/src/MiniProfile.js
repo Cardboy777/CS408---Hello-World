@@ -11,6 +11,15 @@ class MiniProfile extends Component {
         let div = document.getElementById(this.props.userData.user + '-match-percent')
         let color= (this.props.match_percent/100) *120;
         div.style.color = 'hsl(' + color + ', 100%, 45%)';
+		
+		/*var usernames = document.getElementsByClassName("usernameDiv");
+		for (var i = 0; i < usernames.length; i++)
+		{
+			if (usernames[i].children[0] != undefined)
+			{
+				var username = usernames[i].children[0].innerHTML;
+			}
+		}*/
     }
 
     render() {

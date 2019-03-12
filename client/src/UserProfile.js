@@ -15,7 +15,8 @@ class UserProfile extends Component {
       age:'',
       gender:'',
       description:'',
-      attractGender:''
+      attractGender:'',
+	  lastOnline:''
     }
     
   }
@@ -33,6 +34,34 @@ class UserProfile extends Component {
           age:  doc.data().age,
           description: doc.data().describe,
           attractgender: doc.data().attractGender,        
+          });
+      }).catch(function(error) {
+        console.log("Error getting document:", error);
+      });
+	  
+	  const statRef = db.collection("userStats").doc(user.uid);
+      statRef.get().then(function(doc) {
+		  var lastOnlineTime = doc.data().lastOnlineTime || new Date().getTime();
+		  var lastCheck = Math.floor((new Date().getTime() - lastOnlineTime) / 1000);
+		  var onlineString = "Online";
+		  if (lastCheck < 30)
+		  {
+			  onlineString = "Online";
+		  }
+		  else if (lastCheck < 3600)
+		  {
+			  onlineString = "Last seen " + Math.floor(lastCheck / 60) + " minutes ago";
+		  }
+		  else if (lastCheck < 86400)
+		  {
+			  onlineString = "Last seen " + Math.floor(lastCheck / 3600) + " hours ago";
+		  }
+		  else 
+		  {
+			  onlineString = "Last seen " + Math.floor(lastCheck / 86400) + " days ago";
+		  }
+        that.setState({
+          lastOnline: onlineString
           });
       }).catch(function(error) {
         console.log("Error getting document:", error);
@@ -55,6 +84,7 @@ class UserProfile extends Component {
             <div className='col-md-8'>
               <h1 id="pname">{this.state.name}</h1>
               <div id="infoPage"> 
+				<h5>Online Status: <b>{this.state.lastOnline} </b></h5>
                 <h5>Gender: <b>{this.state.gender} </b></h5>
                 <h5>Age: <b> {this.state.age} </b></h5>
                 <h5>Interested in: <b>{this.state.attractgender}</b></h5>

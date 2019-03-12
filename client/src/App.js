@@ -153,19 +153,18 @@ class App extends Component {
 				lastOnlineTime: new Date().getTime(),
 			});
 		}, 10000);*/
-		
-		db.collection("usersByEmail").doc(user.email).get().then(function(userData)
+		db.collection("userStats").doc(user.uid).get().then(function(userData)
 		{
 			if (userData.exists)
 			{
 				var data = userData.data();
-				db.collection("usersByEmail").doc(user.email).update({
+				db.collection("userStats").doc(user.uid).update({
 					lastOnlineTime: new Date().getTime(),
 				});
 			}
 			else
 			{
-				db.collection("usersByEmail").doc(user.email).set({
+				db.collection("userStats").doc(user.uid).set({
 					lastOnlineTime: new Date().getTime(),
 				});
 			}
@@ -173,7 +172,7 @@ class App extends Component {
 		
 		var aa = setInterval(function()
 		{
-			db.collection("usersByEmail").doc(user.email).update({
+			db.collection("userStats").doc(user.uid).update({
 				lastOnlineTime: new Date().getTime(),
 			});
 		}, 10000);
