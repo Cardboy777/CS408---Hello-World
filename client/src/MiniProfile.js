@@ -6,7 +6,13 @@ import ProfileImage2 from './ProfileImage2';
 import ProfileImage3 from './ProfileImage3';
 
 class MiniProfile extends Component {
-
+    
+    componentDidMount(){
+        let div = document.getElementById(this.props.userData.user + '-match-percent')
+        let color= (this.props.match_percent/100) *120;
+        div.style.color = 'hsl(' + color + ', 100%, 45%)';
+    }
+    
     render() {
         return (
             <div className='MiniProfileWidget'>
