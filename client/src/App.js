@@ -175,7 +175,7 @@ class App extends Component {
 			db.collection("userStats").doc(user.uid).update({
 				lastOnlineTime: new Date().getTime(),
 			});
-		}, 10000);
+		}, 5000);
   }
 
   render() {

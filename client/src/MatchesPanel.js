@@ -31,7 +31,7 @@ class MatchesPanel extends Component {
             var lastCheck = Math.floor((new Date().getTime() - lastOnlineTime) / 1000);
             var onlineString = "Online";
             let lonline;
-            if (lastCheck < 30)
+            if (lastCheck < 11)
             {
                 lonline=true;
                 onlineString = "Online";
@@ -39,7 +39,7 @@ class MatchesPanel extends Component {
             else if (lastCheck < 3600)
             {
                 lonline=false;
-                onlineString = "Last seen " + Math.floor(lastCheck / 60) + " minutes ago";
+                onlineString = "Last seen " + Math.ceil(lastCheck / 60) + " minutes ago";
             }
             else if (lastCheck < 86400)
             {
