@@ -39,7 +39,15 @@ class MatchesPanel extends Component {
             else if (lastCheck < 3600)
             {
                 lonline=false;
-                onlineString = "Last seen " + Math.ceil(lastCheck / 60) + " minutes ago";
+				var timeInMinutes = Math.ceil(lastCheck / 60);
+				if (timeInMinutes > 1)
+				{
+					onlineString = "Last seen " + timeInMinutes + " minutes ago";
+				}
+				else
+                {
+					onlineString = "Last seen " + timeInMinutes + " minute ago";
+				}
             }
             else if (lastCheck < 86400)
             {
