@@ -135,10 +135,12 @@ class LoginHeader extends Component {
 		this.setState({password : pass});
 		var error = document.getElementById("signupPasswordError");
 		if (pass.length === 0) { error.style.display = "none"; return; }
-		/*if (pass.length < 8 || pass.length > 256)
+		if (pass.length < 8 || pass.length > 256)
 		{
 			error.innerHTML = "Your password must be between 8 and 256 characters."
 			error.style.display = "inline-block";
+			this.setState({validPassword: true});
+			return;
 		}
 		else
 		{
@@ -146,8 +148,7 @@ class LoginHeader extends Component {
 			this.setState({validPassword: true});
 			return;
 		}
-		this.setState({validPassword: false});*/
-		this.setState({validPassword: true});
+		//this.setState({validPassword: false});
 	}
 
     render() {
