@@ -40,7 +40,7 @@ class MessageNotifications extends Component {
 		}, 500);
 		socket.on('incomingMessage', function(data)
 		{
-			var sender = data.sender || data.from;
+			var sender = data.uid || data.sender || data.from;
 			var message = data.message;
 			
 			var notif = document.getElementById("defaultNotification");

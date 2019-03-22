@@ -14,6 +14,14 @@
 	text-align: left;
 }
 
+#ShowMessages .message-sender-self {
+	float: right;
+	background-color: #DDDDDD;
+	color: black;
+	word-break: break-all;
+	text-align: right;
+}
+
 #ShowMessages .message-self {
 	float: right;
 	background-color: #2579E4;

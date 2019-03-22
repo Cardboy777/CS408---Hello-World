@@ -112,7 +112,7 @@ class Picture extends Component {
     
     handleUploadSuccess =(filename1)=>{
         let this2=this;
-       if( /([^\s]+\.(jpg|png|gif|bmp)$)/.test(filename1) ){
+       //if( /([^\s]+\.(jpg|png|gif|bmp)$)/.test(filename1) ){
         this2.setState({pictureFile: filename1, progress: 100, isUploading: false});
         firebase.storage().ref('user_images').child(filename1).getDownloadURL().then(url => {
             this2.setState({
@@ -148,9 +148,9 @@ class Picture extends Component {
                 }
             });
         });
-      }else{
-          window.alert("Incorrect File Type");
-      }
+      //}else{
+      //    window.alert("Incorrect File Type");
+      //}
     }
  
     render() { 

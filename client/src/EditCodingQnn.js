@@ -71,7 +71,7 @@ class EditCQuestionnaire extends Component {
             const docRef = db.collection("usersPQ").doc(String(this.props.uAuth.uid));
             docRef.get().then(function(doc) {
                 that.setState({
-					ca1:doc.data().canswer1,
+					//ca1:doc.data().canswer1,
 					ca2:doc.data().canswer2,
 					ca3:doc.data().canswer3,
 					ca4:doc.data().canswer4,

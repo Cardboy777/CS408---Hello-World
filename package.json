@@ -1,45 +1,45 @@
 {
-  "name": "hello-world",
-  "version": "1.0.0",
-  "description": "## Hello World is the greatest man-made developement since the computer itself",
-  "main": "server.js",
-  "engines": {
-    "node": "10.15.0"
-  },
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "concurrently": "^4.1.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
-    "firebase": "^5.8.3",
-    "firebase-admin": "^7.0.0",
-    "http": "^0.0.0",
-    "node-pre-gyp": "^0.12.0",
-    "nodemailer": "^5.1.1",
-    "react": "^16.8.4",
-    "react-firebase-file-uploader": "^2.4.2",
-    "request": "^2.88.0",
-    "socket.io": "^2.2.0",
-    "socket.io-client": "^2.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.9"
-  },
-  "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm install && npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ShivanDesai/CS408---Hello-World.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ShivanDesai/CS408---Hello-World/issues"
-  },
-  "homepage": "https://github.com/ShivanDesai/CS408---Hello-World#readme"
+	"name": "hello-world",
+	"version": "1.0.0",
+	"description": "## Hello World is the greatest man-made developement since the computer itself",
+	"main": "server.js",
+	"engines": {
+		"node": "10.15.0"
+	},
+	"dependencies": {
+		"body-parser": "^1.18.3",
+		"concurrently": "^4.1.0",
+		"ejs": "^2.6.1",
+		"express": "^4.16.4",
+		"firebase": "^5.8.3",
+		"firebase-admin": "^7.0.0",
+		"http": "^0.0.0",
+		"node-pre-gyp": "^0.12.0",
+		"nodemailer": "^5.1.1",
+		"react": "^16.8.4",
+		"react-firebase-file-uploader": "^2.4.2",
+		"request": "^2.88.0",
+		"socket.io": "^2.2.0",
+		"socket.io-client": "^2.2.0"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.9"
+	},
+	"scripts": {
+		"start": "node server.js",
+		"server": "nodemon server.js",
+		"client": "npm start --prefix client",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"heroku-postbuild": "cd client && npm install && npm run build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Cardboy777/CS408---Hello-World.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Cardboy777/CS408---Hello-World/issues"
+	},
+	"homepage": "https://github.com/Cardboy777/CS408---Hello-World#readme"
 }

@@ -20,7 +20,7 @@ class DisplayMessage extends Component {
                 </div>
             :
                 <div>
-                    <div className='message message-sender'>
+                    <div className='message message-sender-self'>
                        {this.props.msg.message}
                     </div>
                     {this.props.last ?

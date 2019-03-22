@@ -54,7 +54,7 @@ class PersonalityQuestionnaire extends Component {
         else if(this.state.gender===""){ this.updateErrorText("Invalid Gender Input"); return false; }
         else if(this.state.age===""){ this.updateErrorText("Invalid Age Input"); return false; }
         else if(/[^0-9]+/.test(this.state.age)){ this.updateErrorText("Invalid Age Input"); return false;}
-        else if(this.state.location===""){ this.updateErrorText("Invalid Location Input"); return false; }
+        //else if(this.state.location===""){ this.updateErrorText("Invalid Location Input"); return false; }
         else if(this.state.attrgender===""){ this.updateErrorText("Invalid Interested In Input"); return false; }
         else if(this.state.pa1===""){ this.updateErrorText("Invalid Motivation Input"); return false;}
         else if(this.state.pa2===""){ this.updateErrorText("Invalid Value Input"); return false;}

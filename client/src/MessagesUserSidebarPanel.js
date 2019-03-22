@@ -36,7 +36,7 @@ class MessagesUserSidebarPanel extends Component {
             var lastOnlineTime = doc.data().lastOnlineTime || new Date().getTime();
             var lastCheck = Math.floor((new Date().getTime() - lastOnlineTime) / 1000);
             let lonline;
-            if (lastCheck < 11)
+            if (lastCheck < 11000)
             {
               lonline=true;
             }
