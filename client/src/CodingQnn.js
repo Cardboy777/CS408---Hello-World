@@ -74,7 +74,7 @@ class CodingQuestionnaire extends Component {
         else if(this.state.ca2===""){ this.updateErrorText("Invalid Coding Language Input"); return false;}
         else if(this.state.ca3===""){ this.updateErrorText("Invalid Search Algorithm Input"); return false;}
         else if(this.state.ca4===""){ this.updateErrorText("Invalid Group Work Input"); return false;}
-        else if(this.state.ca5===""){ this.updateErrorText("Invalid IOS/Android Input"); return false;}
+        //else if(this.state.ca5===""){ this.updateErrorText("Invalid IOS/Android Input"); return false;}
         else if(this.state.ca6===""){ this.updateErrorText("Invalid IDE Input"); return false;}
         else if(this.state.ca7===""){ this.updateErrorText("Invalid WebDev Input"); return false;}
         else if(this.state.ca8===""){ this.updateErrorText("Invalid When do You Code Input"); return false;}
