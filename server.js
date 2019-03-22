@@ -716,7 +716,7 @@ io.on('connection', function(socket)
 				//console.log("Socket: " + socketList[i].socketType + ", " + socketList[i].email); 
 			}
 			
-			if (receiver.length > 0 && socketList[i].token == receiver)
+			if (receiver.length > 0 && (socketList[i].token == receiver || socketList[i].token == sender.uid))
 			{
 				//console.log("Sending to " + socketList[i].email + ", type: " + socketList[i].socketType);
 				//console.log("Socket type: " + socketList[i].socketType);

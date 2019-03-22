@@ -31,10 +31,10 @@ class MatchesPanel extends Component {
 				)
 				var onlineString = 'Online'
 				let lonline
-				if (lastCheck < 11) {
+				if (lastCheck < 11000) {
 					lonline = true
 					onlineString = 'Online'
-				} else if (lastCheck < 3600) {
+				} else if (lastCheck < 3600000) {
 					lonline = false
 					var timeInMinutes = Math.ceil(lastCheck / 60)
 					if (timeInMinutes > 1) {
@@ -42,7 +42,7 @@ class MatchesPanel extends Component {
 					} else {
 						onlineString = 'Last seen ' + timeInMinutes + ' minute ago'
 					}
-				} else if (lastCheck < 86400) {
+				} else if (lastCheck < 86400000) {
 					lonline = false
 					onlineString =
 						'Last seen ' + Math.floor(lastCheck / 3600) + ' hours ago'

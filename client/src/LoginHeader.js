@@ -114,7 +114,7 @@ class LoginHeader extends Component {
 		var error = document.getElementById("signupEmailError");
 		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		
-		if (email.length === 0) { error.style.display = "none"; return; }
+		/*if (email.length === 0) { error.style.display = "none"; return; }
 		if (re.test(String(email).toLowerCase()))
 		{
 			error.style.display = "none";
@@ -126,7 +126,8 @@ class LoginHeader extends Component {
 			error.innerHTML = "Your email must be of the form abcd@domain.com";
 			error.style.display = "inline-block";
 		}
-		this.setState({validEmail: false});
+		this.setState({validEmail: false});*/
+		this.setState({validEmail: true});
 	}
 	checkPassword(e){
         e.preventDefault();
@@ -134,7 +135,7 @@ class LoginHeader extends Component {
 		this.setState({password : pass});
 		var error = document.getElementById("signupPasswordError");
 		if (pass.length === 0) { error.style.display = "none"; return; }
-		if (pass.length < 8 || pass.length > 256)
+		/*if (pass.length < 8 || pass.length > 256)
 		{
 			error.innerHTML = "Your password must be between 8 and 256 characters."
 			error.style.display = "inline-block";
@@ -145,7 +146,8 @@ class LoginHeader extends Component {
 			this.setState({validPassword: true});
 			return;
 		}
-		this.setState({validPassword: false});
+		this.setState({validPassword: false});*/
+		this.setState({validPassword: true});
 	}
 
     render() {
