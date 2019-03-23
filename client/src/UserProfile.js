@@ -13,23 +13,27 @@ class UserProfile extends Component {
     this.state = {
 	    lastOnline:''
     }
-    
+
   }
-  
+
+  truncate(s){
+      return s.substring(0,5);
+  }
+
   render() {
     return (
       <div id="UserProfilePage">
         <Header {...this.props}/><br/>
         <div className='profile-content col-md-8 offset-2'>
           <div className='row'>
-            <div id="col-md-4">
+            <div id="col-md-4" >
               <ProfilePicture/>
             </div>
             <div className='col-md-8 info'>
-              <h1 id="pname">{this.props.uData.user}</h1>
-              <div id="infoPage"> 
+              <h1 id="pname">{this.truncate(this.props.uData.user)}</h1>
+              <div id="infoPage">
                 <h5>Gender: <b>{this.props.uData.gender} </b></h5>
-                <h5>Age: <b> {this.props.uData.age} </b></h5>
+                <h5>Age: <b> 21 </b></h5>
                 <h5>Interested in: <b>{this.props.uData.attractGender}</b></h5>
                 <h5>Description: <b>{this.props.uData.describe}</b></h5>
               </div>
@@ -39,13 +43,13 @@ class UserProfile extends Component {
           <div className='row'>
               <div className='col-md-4'><Picture name="pictureFile1"/></div>
               <div className='col-md-4'><Picture name="pictureFile2"/></div>
-              <div className='col-md-4'><Picture name="pictureFile3"/></div>
+              <div className='col-md-4'><Picture name="pictureFile3" unclickable="true"/></div>
           </div>
           <div className='extra-info'>
             <div className='row'>
               <div className='col-md-4'>
                   <h3>Language</h3>
-                  <p>{this.props.uData.canswer2}</p>
+                  <p>C++</p>
               </div>
               <div className='col-md-4'>
                   <h3>Data Structure</h3>
@@ -101,7 +105,7 @@ class UserProfile extends Component {
                   <p>{this.props.uData.canswer9}</p>
               </div>
             </div>
-            
+
           </div>
 
           <br/>
@@ -118,9 +122,9 @@ class UserProfile extends Component {
 
 export default UserProfile;
 /**
- * 
- * 
-        
+ *
+ *
+
         <Link to={{ pathname: '/user/PersonalityQnn', state: this.state }}>Profile Questionnaire</Link><br/>
         <Link to={{ pathname: '/user/CodingQnn', state: this.state }}>Coding Questionnaire</Link><br/>
         <br/>

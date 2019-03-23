@@ -5,3 +5,6 @@
 #PPSection{
     margin-left: 50px;
 }
+.rotatedImg{
+    transform: rotate(180deg);
+}

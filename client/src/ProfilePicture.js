@@ -5,7 +5,7 @@ import './css/ProfilePicture.css';
 class ProfilePictureUpload extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             username:'',
             avatar:'',
             avatarUrl:'',
@@ -33,12 +33,12 @@ class ProfilePictureUpload extends Component {
                             this2.setState({
                                 avatarURL: url
                             });
-                            
+
                         });
                     //}
                 }).catch(function(error){
                     console.log(error);
-                });  
+                });
                 console.log("username"+this2.state.username);
             }
         });
@@ -76,7 +76,7 @@ class ProfilePictureUpload extends Component {
                     db.collection('usersPQ').doc(user.uid).update({
                        avatarFile:filename
                     });
-                    
+
                 }
             });
         });
@@ -85,15 +85,15 @@ class ProfilePictureUpload extends Component {
       //    window.alert("Incorrect File Type");
       //}
     }
- 
-    render() { 
+
+    render() {
         return (
-            
-            <div id="PPSection"> 
+
+            <div id="PPSection">
                 <h6>
                 {
                     this.state.avatarURL &&
-                    <img src={this.state.avatarURL} alt="Avatar" width="250" height="250"/>
+                    <img className="rotatedImg" src={this.state.avatarURL} alt="Avatar" width="250" height="250"/>
                 }
                 </h6>
             <form>
@@ -127,18 +127,18 @@ class ProfilePictureUpload extends Component {
                                 />
                                 <button type="submit"class="btn btn-danger" />
                                 </form>
-                                    
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-danger">Update</button>
-                                </div>   
+                                </div>
                         </div>
                     </div>
                 </div>
-            </form>       
+            </form>
         </div>
         );
     }
 }
- 
+
 export default ProfilePictureUpload;

@@ -30,6 +30,10 @@ class Picture extends Component {
                     pmodal:modalname,
                     pmodalId:modalID
                 });
+
+                if(this2.props.unclickable){
+                    console.log("unclickable present");
+                }
                 //window.alert(user.uid);
                 //get user info
                 //window.alert(currpic);
@@ -44,14 +48,14 @@ class Picture extends Component {
                     });
                     firebase.storage().ref('user_images').child(doc.data().pictureFile1).getDownloadURL().then((url) => {
                         console.log(url);
-                        this2.setState({ 
+                        this2.setState({
                             pictureURL:url
                         });
                     });
                     }).catch(function(error){
                             console.log(error);
-                    }); 
-                }                
+                    });
+                }
                 else if(currpic ==="pictureFile2"){
                     //window.alert("it's pictureFile2");
                     console.log("picture comp")
@@ -62,13 +66,13 @@ class Picture extends Component {
                     });
                     firebase.storage().ref('user_images').child(doc.data().pictureFile2).getDownloadURL().then((url) => {
                         console.log(url);
-                        this2.setState({ 
+                        this2.setState({
                             pictureURL:url
                         });
                     });
                     }).catch(function(error){
                             console.log(error);
-                    }); 
+                    });
                 }
                 else if(currpic ==="pictureFile3"){
                     //window.alert("it's pictureFile3");
@@ -80,13 +84,13 @@ class Picture extends Component {
                     });
                     firebase.storage().ref('user_images').child(doc.data().pictureFile3).getDownloadURL().then((url) => {
                         console.log(url);
-                        this2.setState({ 
+                        this2.setState({
                             pictureURL:url
                         });
                     });
                     }).catch(function(error){
                             console.log(error);
-                    }); 
+                    });
                 }
             }
             else{
@@ -94,7 +98,7 @@ class Picture extends Component {
             }
             });
     }
-    
+
     handleUploadStart=()=>{
         this.setState({
             isuploading:true, progress:0
@@ -109,7 +113,7 @@ class Picture extends Component {
         this.setState({isuploading:false});
         console.log(error);
     }
-    
+
     handleUploadSuccess =(filename1)=>{
         let this2=this;
        //if( /([^\s]+\.(jpg|png|gif|bmp)$)/.test(filename1) ){
@@ -118,7 +122,7 @@ class Picture extends Component {
             this2.setState({
                 pictureURL: url
             });
-            
+
             const currpic=this2.state.currPic;
             const db =firebase.firestore();
             firebase.auth().onAuthStateChanged((user) => {
@@ -152,9 +156,9 @@ class Picture extends Component {
       //    window.alert("Incorrect File Type");
       //}
     }
- 
-    render() { 
-        return ( 
+
+    render() {
+        return (
         <div id="PictureBox">
             <div >
                 <div className='space-man-joe-don'>
@@ -163,16 +167,21 @@ class Picture extends Component {
                         :
                         <div className='noImage'>No Image</div>
                     }
-                </div>  
+                </div>
+                {   this.props.unclickable ?
+                    <button type="button" id='update-pic-btn' class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target={this.state.pmodalw} align="center">Update Picture</button>
+                    :
                     <button type="button" id='update-pic-btn' class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target={this.state.pmodal} align="center">Update Picture</button>
-                
-            </div> 
+                }
+                    {/* <button type="button" id='update-pic-btn' class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target={this.state.pmodal} disabled="true" align="center">Update Picture</button> */}
+
+            </div>
             <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id={this.state.pmodalId} aria-hidden="true">
                     <div class="modal-dialog ">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle" color="black">Update your Pictures</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -196,16 +205,16 @@ class Picture extends Component {
                                 />
                                 <button type="submit"class="btn btn-danger" />
                                 </form>
-                                    
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" data-dismiss="modal" class="btn btn-danger">Update</button>
-                                </div>   
+                                </div>
                         </div>
                     </div>
-                </div>   
+                </div>
         </div> );
     }
 }
- 
+
 export default Picture;
