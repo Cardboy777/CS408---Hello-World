@@ -288,10 +288,10 @@ function removeMatch(userName, removeUserName){
     var remMatch = matchRef.update({
       matchedUsers: admin.firestore.FieldValue.arrayRemove(match)
     });
-    matchRef = db.collection('usersPQ').doc(dislikedUser["id"]);
+    /**matchRef = db.collection('usersPQ').doc(dislikedUser["id"]);
     var remMatch = matchRef.update({
       matchedUsers: admin.firestore.FieldValue.arrayRemove(dislikedUserMatches[matchedNum])
-    });
+    });**/
     return getMatches(userName);
 
   });
@@ -344,6 +344,7 @@ function findMatches(userName){
     temp = mainUser["data"]["potentialMatches"];
 
     if(temp && temp.length > 0){
+
       //console.log(temp);
       return temp;
     }
@@ -384,7 +385,7 @@ function findMatches(userName){
           "userID": users[i]["id"],
           "data": users[i]["data"]
         };
-        if((thisScore["data"]["gender"] == mainUser["data"]["attractGender"] || mainUser["data"]["attractGender"] == "Both") && (thisScore["data"]["attractGender"] == "Both" || thisScore["data"]["attractGender"] == mainUser["data"]["gender"])){
+        if((thisScore["data"]["gender"] == mainUser["data"]["attractGender"] || mainUser["data"]["attractGender"] == "Both")){
           if(valid){
             scores.push(thisScore);
           }
@@ -421,7 +422,7 @@ function findMatches(userName){
             "userID": users[random]["id"],
             "data": users[random]["data"]
           };
-          if((thisScore["data"]["gender"] == mainUser["data"]["attractGender"] || mainUser["data"]["attractGender"] == "Both") && (thisScore["data"]["attractGender"] == "Both" || thisScore["data"]["attractGender"] == mainUser["data"]["gender"])){
+          if((thisScore["data"]["gender"] == mainUser["data"]["attractGender"] || mainUser["data"]["attractGender"] == "Both")){
             if(valid){
                 scores.push(thisScore);
             }
@@ -448,15 +449,15 @@ function findMatches(userName){
       }
       var matchNumber = -1;
       for(j = 0; j < scores.length; j++){
-        if(Math.floor(scores[j]["score"]*100/27) > highMatch["match_percent"]){
+        if(Math.floor(scores[j]["score"]*100/17) > highMatch["match_percent"]){
           highMatch = {
             "data" : scores[j]["data"],
-            "match_percent" : Math.floor(scores[j]["score"]*100/27),
+            "match_percent" : Math.floor(scores[j]["score"]*100/17),
             "uid" : scores[j]["userID"],
           };
           storedMatch = {
             "user": scores[j]["data"]["user"],
-            "match_percent" : Math.floor(scores[j]["score"]*100/27),
+            "match_percent" : Math.floor(scores[j]["score"]*100/17),
             "uid" : scores[j]["userID"],
           }
           matchNumber = j;
@@ -493,7 +494,7 @@ function findMatches(userName){
         potentialMatches: admin.firestore.FieldValue.arrayUnion.apply(null, storedMatches)
       });
       var setPrevMatched = matchRef.update({
-        prevMatchedUsers: admin.firestore.FieldValue.arrayUnion.apply(null, matchesIDS)
+        prevMatchedUsers: matchesIDS
       });
     }
     return finalMatches;
@@ -711,11 +712,11 @@ io.on('connection', function(socket)
 
 		for (var i = 0; i < socketList.length; i++)
 		{
-			if (socketList[i].socketType != undefined) 
-			{ 
-				//console.log("Socket: " + socketList[i].socketType + ", " + socketList[i].email); 
+			if (socketList[i].socketType != undefined)
+			{
+				//console.log("Socket: " + socketList[i].socketType + ", " + socketList[i].email);
 			}
-			
+
 			if (receiver.length > 0 && (socketList[i].token == receiver || socketList[i].token == sender.uid))
 			{
 				//console.log("Sending to " + socketList[i].email + ", type: " + socketList[i].socketType);
